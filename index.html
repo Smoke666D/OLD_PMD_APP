@@ -14,6 +14,9 @@
     <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
     <meta name="msapplication-TileColor" content="#00aba9">
     <meta name="theme-color" content="#f8b739">
+    <link href="./node_modules/@fortawesome/fontawesome-free/css/fontawesome.css" rel="stylesheet">
+    <link href="./node_modules/@fortawesome/fontawesome-free/css/brands.css" rel="stylesheet">
+    <link href="./node_modules/@fortawesome/fontawesome-free/css/solid.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
   </head>
   <body scroll="no">
@@ -23,13 +26,13 @@
       <div class="ui-titletext">SIDER PDM tools</div>
       <div class="ui-titlecontrols">
         <button id="min-btn" class="ui-btn minimize">
-          <svg viewBox="0 0 512 512"><path fill="currentColor" d="M464 352H48c-26.5 0-48 21.5-48 48v32c0 26.5 21.5 48 48 48h416c26.5 0 48-21.5 48-48v-32c0-26.5-21.5-48-48-48z"></path></svg>
+          <i class="fa-solid fa-window-minimize"></i>
         </button>
         <button id="max-btn" class="ui-btn maximize">
-          <svg viewBox="0 0 512 512"><path fill="currentColor" d="M464 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h416c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm0 394c0 3.3-2.7 6-6 6H54c-3.3 0-6-2.7-6-6V192h416v234z"></path></svg>
+          <i class="fa-solid fa-window-maximize"></i>
         </button>
         <button id="close-btn" class="ui-btn exit">
-          <svg viewBox="0 0 352 512"><path fill="currentColor" d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"></path></svg>
+          <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
     </div>
@@ -38,7 +41,7 @@
 		  <nav id="sidebar" class="shadow">
         <div class="sidebar-button">
           <a href="#" class="close d-flex ml-auto justify-content-center align-items-center px-3" onclick="toogleNav()">
-            <svg viewBox="0 0 352 512"><path fill="currentColor" d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"></path></svg>
+            <i class="fa-solid fa-xmark"></i>
           </a>
         </div>
         <img src="img/logo.jpg" class="logo">
@@ -46,7 +49,7 @@
           <li class="nav-major">
             <a class="navItem" id="nav-devicePage" onclick="loadContent('devicePage')" href="#">
               <div class="fas">
-                <svg height="511pt" viewBox="0 0 576 512" width="511pt" class="svg-icon"><path fill="currentColor" d="M280.37 148.26L96 300.11V464a16 16 0 0 0 16 16l112.06-.29a16 16 0 0 0 15.92-16V368a16 16 0 0 1 16-16h64a16 16 0 0 1 16 16v95.64a16 16 0 0 0 16 16.05L464 480a16 16 0 0 0 16-16V300L295.67 148.26a12.19 12.19 0 0 0-15.3 0zM571.6 251.47L488 182.56V44.05a12 12 0 0 0-12-12h-56a12 12 0 0 0-12 12v72.61L318.47 43a48 48 0 0 0-61 0L4.34 251.47a12 12 0 0 0-1.6 16.9l25.5 31A12 12 0 0 0 45.15 301l235.22-193.74a12.19 12.19 0 0 1 15.3 0L530.9 301a12 12 0 0 0 16.9-1.6l25.5-31a12 12 0 0 0-1.7-16.93z"></path></svg>
+                <i class="fa-solid fa-house-chimney"></i>
               </div>
               <span>Контроллер</span>
             </a>
@@ -65,15 +68,15 @@
           <li class="nav-major">
             <a class="navItem" id="nav-toolsPage" onclick="loadContent('toolsPage')" href="#">
               <div class="fas">
-                <svg viewBox="0 0 512 512"><path d="M331.8 224.1c28.29 0 54.88 10.99 74.86 30.97l19.59 19.59c40.01-17.74 71.25-53.3 81.62-96.65c5.725-23.92 5.34-47.08 .2148-68.4c-2.613-10.88-16.43-14.51-24.34-6.604l-68.9 68.9h-75.6V97.2l68.9-68.9c7.912-7.912 4.275-21.73-6.604-24.34c-21.32-5.125-44.48-5.51-68.4 .2148c-55.3 13.23-98.39 60.22-107.2 116.4C224.5 128.9 224.2 137 224.3 145l82.78 82.86C315.2 225.1 323.5 224.1 331.8 224.1zM384 278.6c-23.16-23.16-57.57-27.57-85.39-13.9L191.1 158L191.1 95.99l-127.1-95.99L0 63.1l96 127.1l62.04 .0077l106.7 106.6c-13.67 27.82-9.251 62.23 13.91 85.39l117 117.1c14.62 14.5 38.21 14.5 52.71-.0016l52.75-52.75c14.5-14.5 14.5-38.08-.0016-52.71L384 278.6zM227.9 307L168.7 247.9l-148.9 148.9c-26.37 26.37-26.37 69.08 0 95.45C32.96 505.4 50.21 512 67.5 512s34.54-6.592 47.72-19.78l119.1-119.1C225.5 352.3 222.6 329.4 227.9 307zM64 472c-13.25 0-24-10.75-24-24c0-13.26 10.75-24 24-24S88 434.7 88 448C88 461.3 77.25 472 64 472z"/></svg>
+                <i class="fa-solid fa-screwdriver-wrench"></i>
               </div>
-              <span>Инструменты</span>
+              <span>Настройки</span>
             </a>
           </li>
           <li class="nav-major">
             <a class="navItem" id="nav-firmwarePage" onclick="loadContent('firmwarePage')" href="#">
               <div class="fas">
-                <svg viewBox="0 0 512 512"><path fill="currentColor" d="M416 48v416c0 26.51-21.49 48-48 48H144c-26.51 0-48-21.49-48-48V48c0-26.51 21.49-48 48-48h224c26.51 0 48 21.49 48 48zm96 58v12a6 6 0 0 1-6 6h-18v6a6 6 0 0 1-6 6h-42V88h42a6 6 0 0 1 6 6v6h18a6 6 0 0 1 6 6zm0 96v12a6 6 0 0 1-6 6h-18v6a6 6 0 0 1-6 6h-42v-48h42a6 6 0 0 1 6 6v6h18a6 6 0 0 1 6 6zm0 96v12a6 6 0 0 1-6 6h-18v6a6 6 0 0 1-6 6h-42v-48h42a6 6 0 0 1 6 6v6h18a6 6 0 0 1 6 6zm0 96v12a6 6 0 0 1-6 6h-18v6a6 6 0 0 1-6 6h-42v-48h42a6 6 0 0 1 6 6v6h18a6 6 0 0 1 6 6zM30 376h42v48H30a6 6 0 0 1-6-6v-6H6a6 6 0 0 1-6-6v-12a6 6 0 0 1 6-6h18v-6a6 6 0 0 1 6-6zm0-96h42v48H30a6 6 0 0 1-6-6v-6H6a6 6 0 0 1-6-6v-12a6 6 0 0 1 6-6h18v-6a6 6 0 0 1 6-6zm0-96h42v48H30a6 6 0 0 1-6-6v-6H6a6 6 0 0 1-6-6v-12a6 6 0 0 1 6-6h18v-6a6 6 0 0 1 6-6zm0-96h42v48H30a6 6 0 0 1-6-6v-6H6a6 6 0 0 1-6-6v-12a6 6 0 0 1 6-6h18v-6a6 6 0 0 1 6-6z"></path></svg>
+                <i class="fa-solid fa-microchip"></i>
               </div>
               <span>Обновить прошивку</span>
             </a>
@@ -81,7 +84,7 @@
           <li class="nav-major">
             <a class="navItem" id="nav-infoPage" onclick="loadContent('infoPage')" href="#">
               <div class="fas">
-                <svg viewBox="0 0 192 512"><path fill="currentColor" d="M20 424.229h20V279.771H20c-11.046 0-20-8.954-20-20V212c0-11.046 8.954-20 20-20h112c11.046 0 20 8.954 20 20v212.229h20c11.046 0 20 8.954 20 20V492c0 11.046-8.954 20-20 20H20c-11.046 0-20-8.954-20-20v-47.771c0-11.046 8.954-20 20-20zM96 0C56.235 0 24 32.235 24 72s32.235 72 72 72 72-32.235 72-72S135.764 0 96 0z"></path></svg>
+                <i class="fa-solid fa-info"></i>
               </div>
               <span>Справка</span>
             </a>
@@ -93,23 +96,23 @@
       <div id="content" class="p-4 p-md-5">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <div class="container-fluid">
-            <button aria-label="Refresh data" id="refreshData-button" onclick="connectUpdate()" class="btn btn-primary" data-toggle="tooltip" title="Обновить данные из контроллера">
-              <svg id="i-loading" viewBox="0 0 512 512"><path fill="currentColor" d="M370.72 133.28C339.458 104.008 298.888 87.962 255.848 88c-77.458.068-144.328 53.178-162.791 126.85-1.344 5.363-6.122 9.15-11.651 9.15H24.103c-7.498 0-13.194-6.807-11.807-14.176C33.933 94.924 134.813 8 256 8c66.448 0 126.791 26.136 171.315 68.685L463.03 40.97C478.149 25.851 504 36.559 504 57.941V192c0 13.255-10.745 24-24 24H345.941c-21.382 0-32.09-25.851-16.971-40.971l41.75-41.749zM32 296h134.059c21.382 0 32.09 25.851 16.971 40.971l-41.75 41.75c31.262 29.273 71.835 45.319 114.876 45.28 77.418-.07 144.315-53.144 162.787-126.849 1.344-5.363 6.122-9.15 11.651-9.15h57.304c7.498 0 13.194 6.807 11.807 14.176C478.067 417.076 377.187 504 256 504c-66.448 0-126.791-26.136-171.315-68.685L48.97 471.03C33.851 486.149 8 475.441 8 454.059V320c0-13.255 10.745-24 24-24z"></path></svg>
+            <button aria-label="Connect" onclick="connectPDM()" class="btn btn-primary" data-toggle="tooltip" title="Подключиться к PDM">
+              <i class="fa-brands fa-usb"></i>
             </button>
-            <button aria-label="Upload data" id="uploadData-button" onclick="connectGrab()" class="btn btn-primary" data-toggle="tooltip" title="Загрузить данные в контроллер">
-              <svg viewBox="0 0 512 512"><path fill="currentColor" d="M296 384h-80c-13.3 0-24-10.7-24-24V192h-87.7c-17.8 0-26.7-21.5-14.1-34.1L242.3 5.7c7.5-7.5 19.8-7.5 27.3 0l152.2 152.2c12.6 12.6 3.7 34.1-14.1 34.1H320v168c0 13.3-10.7 24-24 24zm216-8v112c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24V376c0-13.3 10.7-24 24-24h136v8c0 30.9 25.1 56 56 56h80c30.9 0 56-25.1 56-56v-8h136c13.3 0 24 10.7 24 24zm-124 88c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20zm64 0c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20z"></path></svg>
+            <button aria-label="Open file" onclick="loadScriptFromFile()" class="btn btn-primary" data-toggle="tooltip" title="Загрузить скрипт из файла">
+              <i class="fa-solid fa-folder-open"></i>
             </button>
-            <button aria-label="Download to file" onclick="saveConfigsToFile()" class="btn btn-primary" data-toggle="tooltip" title="Сохранить конфигурацию в файл">
-              <svg viewBox="0 0 448 512"><path fill="currentColor" d="M433.941 129.941l-83.882-83.882A48 48 0 0 0 316.118 32H48C21.49 32 0 53.49 0 80v352c0 26.51 21.49 48 48 48h352c26.51 0 48-21.49 48-48V163.882a48 48 0 0 0-14.059-33.941zM224 416c-35.346 0-64-28.654-64-64 0-35.346 28.654-64 64-64s64 28.654 64 64c0 35.346-28.654 64-64 64zm96-304.52V212c0 6.627-5.373 12-12 12H76c-6.627 0-12-5.373-12-12V108c0-6.627 5.373-12 12-12h228.52c3.183 0 6.235 1.264 8.485 3.515l3.48 3.48A11.996 11.996 0 0 1 320 111.48z"></path></svg>
+            <button aria-label="process script" id="processScript-button" onclick="ProcessScript()" class="btn btn-primary" data-toggle="tooltip" title="Обработать скрипт">
+              <i class="fa-solid fa-arrows-rotate"></i>
             </button>
-            <button aria-label="Upload to file" onclick="loadConfigsFromFile()" class="btn btn-primary" data-toggle="tooltip" title="Загрузить конфигурацию из файла">
-              <svg viewBox="0 0 576 512"><path fill="currentColor" d="M572.694 292.093L500.27 416.248A63.997 63.997 0 0 1 444.989 448H45.025c-18.523 0-30.064-20.093-20.731-36.093l72.424-124.155A64 64 0 0 1 152 256h399.964c18.523 0 30.064 20.093 20.73 36.093zM152 224h328v-48c0-26.51-21.49-48-48-48H272l-64-64H48C21.49 64 0 85.49 0 112v278.046l69.077-118.418C86.214 242.25 117.989 224 152 224z"></path></svg>
+            <button aria-label="Upload data" id="uploadScript-button" onclick="uploadScript()" class="btn btn-primary" data-toggle="tooltip" title="Загрузить скрипт">
+              <i class="fa-solid fa-upload"></i>
             </button>
-            <button aria-label="Reset data" id="uploadData-button" onclick="resetSettings()" class="btn btn-primary" data-toggle="tooltip" title="Сбросить настройки">
-              <svg viewBox="0 0 448 512"><path fill="currentColor" d="M432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zM53.2 467a48 48 0 0 0 47.9 45h245.8a48 48 0 0 0 47.9-45L416 128H32z"></path></svg>
+            <button aria-label="Dowload data" id="downloadScript-button" onclick="downloadScript()" class="btn btn-primary" data-toggle="tooltip" title="Выгрузить скрипт">
+              <i class="fa-solid fa-download"></i>
             </button>
             <button aria-label="Toggle Menu" onclick="toogleNav()" class="btn btn-primary" data-toggle="tooltip" title="Скрыть/показать меню">
-              <svg viewBox="0 0 448 512"><path fill="currentColor" d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"></path></svg>
+              <i class="fa-solid fa-bars"></i>
             </button>
           </div>
         </nav>
@@ -171,25 +174,457 @@
         <!------------------------------------------------------------------------------------------------------------->
         <div id="scadaPage" class="content-data hidden electron">
           <div class="row">
-            <div id="cars-status" class="card col-9">
+            <div id="cars-status" class="card col">
               <div class="card-body">
                 <p class="card-title">Cтатус</p>
                 <div class="card-icon">
-                  <svg viewBox="0 0 192 512"><path fill="currentColor" d="M20 424.229h20V279.771H20c-11.046 0-20-8.954-20-20V212c0-11.046 8.954-20 20-20h112c11.046 0 20 8.954 20 20v212.229h20c11.046 0 20 8.954 20 20V492c0 11.046-8.954 20-20 20H20c-11.046 0-20-8.954-20-20v-47.771c0-11.046 8.954-20 20-20zM96 0C56.235 0 24 32.235 24 72s32.235 72 72 72 72-32.235 72-72S135.764 0 96 0z"></path></svg>
+                  <i class="fa-solid fa-info"></i>
                 </div>
                 <div class="d-flex justify-content-center">
-                  <p id="value-status" class="card-text">Готов к запуску</p>
+                  <p id="value-status" class="card-text">Готов</p>
                 </div>
               </div>
             </div>
             <div class="card col">
               <div class="card-body">
-                <p class="card-title">Режим</p>
+                <p class="card-title">LUA</p>
                 <div class="card-icon">
-                  <svg height="511pt" width="511pt" viewBox="0 0 512 512"><path fill="currentColor" d="M487.4 315.7l-42.6-24.6c4.3-23.2 4.3-47 0-70.2l42.6-24.6c4.9-2.8 7.1-8.6 5.5-14-11.1-35.6-30-67.8-54.7-94.6-3.8-4.1-10-5.1-14.8-2.3L380.8 110c-17.9-15.4-38.5-27.3-60.8-35.1V25.8c0-5.6-3.9-10.5-9.4-11.7-36.7-8.2-74.3-7.8-109.2 0-5.5 1.2-9.4 6.1-9.4 11.7V75c-22.2 7.9-42.8 19.8-60.8 35.1L88.7 85.5c-4.9-2.8-11-1.9-14.8 2.3-24.7 26.7-43.6 58.9-54.7 94.6-1.7 5.4.6 11.2 5.5 14L67.3 221c-4.3 23.2-4.3 47 0 70.2l-42.6 24.6c-4.9 2.8-7.1 8.6-5.5 14 11.1 35.6 30 67.8 54.7 94.6 3.8 4.1 10 5.1 14.8 2.3l42.6-24.6c17.9 15.4 38.5 27.3 60.8 35.1v49.2c0 5.6 3.9 10.5 9.4 11.7 36.7 8.2 74.3 7.8 109.2 0 5.5-1.2 9.4-6.1 9.4-11.7v-49.2c22.2-7.9 42.8-19.8 60.8-35.1l42.6 24.6c4.9 2.8 11 1.9 14.8-2.3 24.7-26.7 43.6-58.9 54.7-94.6 1.5-5.5-.7-11.3-5.6-14.1zM256 336c-44.1 0-80-35.9-80-80s35.9-80 80-80 80 35.9 80 80-35.9 80-80 80z"></path></svg>
+                  <i class="fa-solid fa-moon"></i>
                 </div>
                 <div class="d-flex justify-content-center">
-                  <p id="value-mode" class="card-text">Ручной</p>
+                  <p id="value-mode" class="card-text">Ok</p>
+                </div>
+              </div>
+            </div>
+            <div id="card-battery" class="card col">
+              <div class="card-body">
+                <p class="card-title">Аккумулятор</p>
+                <div class="card-icon">
+                  <i class="fa-solid fa-car-battery"></i>
+                </div>
+                <div class="d-flex justify-content-center">
+                  <div class="card-text">
+                    <p id="value-battery">14.4</p>
+                    <p class="units">В</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div id="card-dout-1" class="card col">
+              <div class="card-body">
+                <p class="card-title">Выход</p>
+                <div class="card-icon">
+                  <p>1</p>
+                </div>
+                <div class="d-flex justify-content-center">
+                  <div class="d-flex justify-content-center">
+                    <div class="card-text">
+                      <p id="current-dout-1">00.00</p>
+                      <p class="units">А</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="card-dout-2" class="card col">
+              <div class="card-body">
+                <p class="card-title">Выход</p>
+                <div class="card-icon">
+                  <p>2</p>
+                </div>
+                <div class="d-flex justify-content-center">
+                  <div class="d-flex justify-content-center">
+                    <div class="card-text">
+                      <p id="current-dout-2">00.00</p>
+                      <p class="units">А</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="card-dout-3" class="card col">
+              <div class="card-body">
+                <p class="card-title">Выход</p>
+                <div class="card-icon">
+                  <p>3</p>
+                </div>
+                <div class="d-flex justify-content-center">
+                  <div class="d-flex justify-content-center">
+                    <div class="card-text">
+                      <p id="current-dout-3">00.00</p>
+                      <p class="units">А</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="card-dout-4" class="card col">
+              <div class="card-body">
+                <p class="card-title">Выход</p>
+                <div class="card-icon">
+                  <p>4</p>
+                </div>
+                <div class="d-flex justify-content-center">
+                  <div class="d-flex justify-content-center">
+                    <div class="card-text">
+                      <p id="current-dout-4">00.00</p>
+                      <p class="units">А</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div id="card-dout-5" class="card col">
+              <div class="card-body">
+                <p class="card-title">Выход</p>
+                <div class="card-icon">
+                  <p>5</p>
+                </div>
+                <div class="d-flex justify-content-center">
+                  <div class="d-flex justify-content-center">
+                    <div class="card-text">
+                      <p id="current-dout-5">00.00</p>
+                      <p class="units">А</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="card-dout-6" class="card col">
+              <div class="card-body">
+                <p class="card-title">Выход</p>
+                <div class="card-icon">
+                  <p>6</p>
+                </div>
+                <div class="d-flex justify-content-center">
+                  <div class="d-flex justify-content-center">
+                    <div class="card-text">
+                      <p id="current-dout-6">00.00</p>
+                      <p class="units">А</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="card-dout-7" class="card col">
+              <div class="card-body">
+                <p class="card-title">Выход</p>
+                <div class="card-icon">
+                  <p>7</p>
+                </div>
+                <div class="d-flex justify-content-center">
+                  <div class="d-flex justify-content-center">
+                    <div class="card-text">
+                      <p id="current-dout-7">00.00</p>
+                      <p class="units">А</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="card-dout-8" class="card col">
+              <div class="card-body">
+                <p class="card-title">Выход</p>
+                <div class="card-icon">
+                  <p>8</p>
+                </div>
+                <div class="d-flex justify-content-center">
+                  <div class="d-flex justify-content-center">
+                    <div class="card-text">
+                      <p id="current-dout-8">00.00</p>
+                      <p class="units">А</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div id="card-dout-9" class="card col">
+              <div class="card-body">
+                <p class="card-title">Выход</p>
+                <div class="card-icon">
+                  <p>9</p>
+                </div>
+                <div class="d-flex justify-content-center">
+                  <div class="d-flex justify-content-center">
+                    <div class="card-text">
+                      <p id="current-dout-9">00.00</p>
+                      <p class="units">А</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="card-dout-10" class="card col">
+              <div class="card-body">
+                <p class="card-title">Выход</p>
+                <div class="card-icon">
+                  <p>10</p>
+                </div>
+                <div class="d-flex justify-content-center">
+                  <div class="d-flex justify-content-center">
+                    <div class="card-text">
+                      <p id="current-dout-10">00.00</p>
+                      <p class="units">А</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="card-dout-11" class="card col">
+              <div class="card-body">
+                <p class="card-title">Выход</p>
+                <div class="card-icon">
+                  <p>11</p>
+                </div>
+                <div class="d-flex justify-content-center">
+                  <div class="d-flex justify-content-center">
+                    <div class="card-text">
+                      <p id="current-dout-11">00.00</p>
+                      <p class="units">А</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="card-dout-12" class="card col">
+              <div class="card-body">
+                <p class="card-title">Выход</p>
+                <div class="card-icon">
+                  <p>12</p>
+                </div>
+                <div class="d-flex justify-content-center">
+                  <div class="d-flex justify-content-center">
+                    <div class="card-text">
+                      <p id="current-dout-12">00.00</p>
+                      <p class="units">А</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div id="card-dout-13" class="card col">
+              <div class="card-body">
+                <p class="card-title">Выход</p>
+                <div class="card-icon">
+                  <p>13</p>
+                </div>
+                <div class="d-flex justify-content-center">
+                  <div class="d-flex justify-content-center">
+                    <div class="card-text">
+                      <p id="current-dout-13">00.00</p>
+                      <p class="units">А</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="card-dout-14" class="card col">
+              <div class="card-body">
+                <p class="card-title">Выход</p>
+                <div class="card-icon">
+                  <p>14</p>
+                </div>
+                <div class="d-flex justify-content-center">
+                  <div class="d-flex justify-content-center">
+                    <div class="card-text">
+                      <p id="current-dout-14">00.00</p>
+                      <p class="units">А</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="card-dout-15" class="card col">
+              <div class="card-body">
+                <p class="card-title">Выход</p>
+                <div class="card-icon">
+                  <p>15</p>
+                </div>
+                <div class="d-flex justify-content-center">
+                  <div class="d-flex justify-content-center">
+                    <div class="card-text">
+                      <p id="current-dout-15">00.00</p>
+                      <p class="units">А</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="card-dout-16" class="card col">
+              <div class="card-body">
+                <p class="card-title">Выход</p>
+                <div class="card-icon">
+                  <p>16</p>
+                </div>
+                <div class="d-flex justify-content-center">
+                  <div class="d-flex justify-content-center">
+                    <div class="card-text">
+                      <p id="current-dout-16">00.00</p>
+                      <p class="units">А</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div id="card-dout-17" class="card col">
+              <div class="card-body">
+                <p class="card-title">Выход</p>
+                <div class="card-icon">
+                  <p>17</p>
+                </div>
+                <div class="d-flex justify-content-center">
+                  <div class="d-flex justify-content-center">
+                    <div class="card-text">
+                      <p id="current-dout-17">00.00</p>
+                      <p class="units">А</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="card-dout-18" class="card col">
+              <div class="card-body">
+                <p class="card-title">Выход</p>
+                <div class="card-icon">
+                  <p>18</p>
+                </div>
+                <div class="d-flex justify-content-center">
+                  <div class="d-flex justify-content-center">
+                    <div class="card-text">
+                      <p id="current-dout-18">00.00</p>
+                      <p class="units">А</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="card-dout-19" class="card col">
+              <div class="card-body">
+                <p class="card-title">Выход</p>
+                <div class="card-icon">
+                  <p>19</p>
+                </div>
+                <div class="d-flex justify-content-center">
+                  <div class="d-flex justify-content-center">
+                    <div class="card-text">
+                      <p id="current-dout-19">00.00</p>
+                      <p class="units">А</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="card-dout-20" class="card col">
+              <div class="card-body">
+                <p class="card-title">Выход</p>
+                <div class="card-icon">
+                  <p>20</p>
+                </div>
+                <div class="d-flex justify-content-center">
+                  <div class="d-flex justify-content-center">
+                    <div class="card-text">
+                      <p id="current-dout-20">00.00</p>
+                      <p class="units">А</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="card col">
+              <div class="card-body">
+                <p class="card-title">Цифровые входы</p>
+                <div class="card-icon">
+                  <svg viewBox="0 0 448 512"><path fill="currentColor" d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34zm192-34l-136-136c-9.4-9.4-24.6-9.4-33.9 0l-22.6 22.6c-9.4 9.4-9.4 24.6 0 33.9l96.4 96.4-96.4 96.4c-9.4 9.4-9.4 24.6 0 33.9l22.6 22.6c9.4 9.4 24.6 9.4 33.9 0l136-136c9.4-9.2 9.4-24.4 0-33.8z"></path></svg>
+                </div>
+                <div class="card-table">
+                  <div class="row">
+                    <div class="col">
+                      <p>1</p>
+                    </div>
+                    <div class="col">
+                      <p>2</p>
+                    </div>
+                    <div class="col">
+                      <p>3</p>
+                    </div>
+                    <div class="col">
+                      <p>4</p>
+                    </div>
+                    <div class="col">
+                      <p>5</p>
+                    </div>
+                    <div class="col">
+                      <p>6</p>
+                    </div>
+                    <div class="col">
+                      <p>7</p>
+                    </div>
+                    <div class="col">
+                      <p>8</p>
+                    </div>
+                    <div class="col">
+                      <p>9</p>
+                    </div>
+                    <div class="col">
+                      <p>10</p>
+                    </div>
+                    <div class="col">
+                      <p>11</p>
+                    </div>
+                    <div class="col">
+                      <p>12</p>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <p id="value-din-1">&#10005;</p>
+                    </div>
+                    <div class="col">
+                      <p id="value-din-2">&#10003;</p>
+                    </div>
+                    <div class="col">
+                      <p id="value-din-3">&#10005;</p>
+                    </div>
+                    <div class="col">
+                      <p id="value-din-4">&#10005;</p>
+                    </div>
+                    <div class="col">
+                      <p id="value-din-5">&#10005;</p>
+                    </div>
+                    <div class="col">
+                      <p id="value-din-6">&#10005;</p>
+                    </div>
+                    <div class="col">
+                      <p id="value-din-7">&#10005;</p>
+                    </div>
+                    <div class="col">
+                      <p id="value-din-8">&#10005;</p>
+                    </div>
+                    <div class="col">
+                      <p id="value-din-9">&#10005;</p>
+                    </div>
+                    <div class="col">
+                      <p id="value-din-10">&#10005;</p>
+                    </div>
+                    <div class="col">
+                      <p id="value-din-11">&#10005;</p>
+                    </div>
+                    <div class="col">
+                      <p id="value-din-12">&#10005;</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -198,6 +633,10 @@
         <!------------------------------------------------------------------------------------------------------------->
         <div id="toolsPage" class="content-data hidden electron">
           <h2>Инструменты</h2>
+          <i class="fa-solid fa-link"></i>
+          <i class="fa-solid fa-minimize"></i>
+          <i class="fa-solid fa-arrows-spin"></i>
+          <i class="fa-solid fa-upload"></i>
         </div>
         <!------------------------------------------------------------------------------------------------------------->
         <div id="firmwarePage" class="content-data hidden electron">

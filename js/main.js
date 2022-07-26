@@ -21,8 +21,6 @@ document.addEventListener( "DOMContentLoaded", function( event ) {
 		})
 	})
 	*/
-	document.getElementById( 'refreshData-button' ).disabled = true;
-	document.getElementById( 'uploadData-button' ).disabled  = true;
 	document.getElementById( 'versionSowtware' ).innerHTML   = softwareVersion;
 	windowButtonsInit();
   loadContent( 'devicePage' );
