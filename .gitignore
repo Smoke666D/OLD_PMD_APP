@@ -1,0 +1,23 @@
+#******************* Tempory ********************
+UTIL\index_make.html
+UTIL\index.html
+*.pyc
+#******************** Output ********************
+release-builds
+*.ewa
+#******************* Archives *******************
+*.rar
+*.tar
+*.7z
+*.zip
+*.arj
+*.cab
+*.lzh
+#**************** Node and yarn *****************
+/node_modules
+yarn-error.log
+yarn.lock
+dist
+#******************* Util ***********************
+/UTIL/index.html
+/UTIL/index.html.gzip
