@@ -1,4 +1,6 @@
 :root {
+  --line-border-fill: #f8b739;
+  --line-border-empty: #e0e0e0;
   --blue: #007bff;
   --indigo: #6610f2;
   --purple: #6f42c1;
@@ -5599,7 +5601,8 @@ a.close.disabled {
 .carousel-caption {
   position: absolute;
   right: 15%;
-  bottom: 20px;
+  bottom: 20p
+  x;
   left: 15%;
   z-index: 10;
   padding-top: 20px;

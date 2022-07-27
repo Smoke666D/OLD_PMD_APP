@@ -18,6 +18,7 @@
     <link href="./node_modules/@fortawesome/fontawesome-free/css/brands.css" rel="stylesheet">
     <link href="./node_modules/@fortawesome/fontawesome-free/css/solid.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/progressStep.css">
   </head>
   <body scroll="no">
     <div id="alerts"></div>
@@ -46,6 +47,14 @@
         </div>
         <img src="img/logo.jpg" class="logo">
 	      <ul class="list-unstyled components">
+          <li class="nav-major">
+            <a class="navItem" id="nav-luaPage" onclick="loadContent('luaPage')" href="#">
+              <div class="fas">
+                <i class="fa-solid fa-moon"></i>
+              </div>
+              <span>LUA</span>
+            </a>
+          </li>
           <li class="nav-major">
             <a class="navItem" id="nav-devicePage" onclick="loadContent('devicePage')" href="#">
               <div class="fas">
@@ -116,6 +125,27 @@
             </button>
           </div>
         </nav>
+        <!------------------------------------------------------------------------------------------------------------->
+        <div id="luaPage" class="content-data hidden">
+          <h2>LUA</h2>
+          <div id="progressStep-container" class="progress-container">
+            <div class="progress" id="progressStage"></div>
+            <div id="stage-0" class="circle"></div>
+            <div id="stage-1" class="circle"></div>
+            <div id="stage-2" class="circle"></div>
+            <div id="stage-3" class="circle"></div>
+            <div id="stage-4" class="circle"></div>
+          </div>
+          
+
+
+
+          <button class="btn" id="prev">Clean</button>
+          <button class="btn" id="lload">Loading</button>
+          <button class="btn" id="eerror">Error</button>
+          <button class="btn" id="ssuccess">Success</button>
+          <button class="btn" id="next">Next</button>
+        </div>
         <!------------------------------------------------------------------------------------------------------------->
         <div id="devicePage" class="content-data hidden">
           <h2>Контроллер</h2>
@@ -699,6 +729,7 @@
     <script type="text/javascript" src="js/version.js"></script>
     <script type="text/javascript" src="js/sidebar.js"></script>
     <script type="text/javascript" src="js/window-buttons.js"></script>
+    <script type="text/javascript" src="js/progressStep.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
     <!--------------------------------------------------------------------------------------------------------------->
     <script>

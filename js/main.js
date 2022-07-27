@@ -23,7 +23,7 @@ document.addEventListener( "DOMContentLoaded", function( event ) {
 	*/
 	document.getElementById( 'versionSowtware' ).innerHTML   = softwareVersion;
 	windowButtonsInit();
-  loadContent( 'devicePage' );
+  loadContent( 'luaPage' );
 	return;
 });
 /*----------------------------------------------------------------------------*/
