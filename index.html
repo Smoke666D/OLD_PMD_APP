@@ -19,6 +19,7 @@
     <link href="./node_modules/@fortawesome/fontawesome-free/css/solid.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/progressStep.css">
+    <link rel="stylesheet" href="css/lua.css">
   </head>
   <body scroll="no">
     <div id="alerts"></div>
@@ -74,10 +75,13 @@
               <span>Мониторинг</span>
             </a>
           </li>
+
+
+
           <li class="nav-major">
             <a class="navItem" id="nav-toolsPage" onclick="loadContent('toolsPage')" href="#">
               <div class="fas">
-                <i class="fa-solid fa-screwdriver-wrench"></i>
+                <i class="fa-solid fa-gear"></i>
               </div>
               <span>Настройки</span>
             </a>
@@ -111,14 +115,8 @@
             <button aria-label="Open file" onclick="loadScriptFromFile()" class="btn btn-primary" data-toggle="tooltip" title="Загрузить скрипт из файла">
               <i class="fa-solid fa-folder-open"></i>
             </button>
-            <button aria-label="process script" id="processScript-button" onclick="ProcessScript()" class="btn btn-primary" data-toggle="tooltip" title="Обработать скрипт">
-              <i class="fa-solid fa-arrows-rotate"></i>
-            </button>
-            <button aria-label="Upload data" id="uploadScript-button" onclick="uploadScript()" class="btn btn-primary" data-toggle="tooltip" title="Загрузить скрипт">
-              <i class="fa-solid fa-upload"></i>
-            </button>
-            <button aria-label="Dowload data" id="downloadScript-button" onclick="downloadScript()" class="btn btn-primary" data-toggle="tooltip" title="Выгрузить скрипт">
-              <i class="fa-solid fa-download"></i>
+            <button aria-label="Start" class="btn btn-primary" onclick="processingScript()" data-toggle="tooltip" title="Запуск обработки скрипта">
+              <i class="fa-solid fa-play"></i>
             </button>
             <button aria-label="Toggle Menu" onclick="toogleNav()" class="btn btn-primary" data-toggle="tooltip" title="Скрыть/показать меню">
               <i class="fa-solid fa-bars"></i>
@@ -132,19 +130,19 @@
             <div class="progress" id="progressStage"></div>
             <div class="progress-stage">
               <div class="progress-stage-top">
-                <i class="fa-brands fa-usb"></i>
+                <i class="fa-solid fa-folder-open"></i>
               </div>
               <div id="circle-stage-0" class="circle"></div>
             </div>
             <div class="progress-stage">
               <div class="progress-stage-top">
-                <i class="fa-solid fa-folder-open"></i>
+                <i class="fa-solid fa-link"></i>
               </div>
               <div id="circle-stage-1" class="circle"></div>
             </div>
             <div class="progress-stage">
               <div class="progress-stage-top">
-                <i class="fa-solid fa-link"></i>
+                <i class="fa-solid fa-clipboard-check"></i>
               </div>
               <div id="circle-stage-2" class="circle"></div>
             </div>
@@ -162,9 +160,20 @@
             </div>
             <div class="progress-stage">
               <div class="progress-stage-top">
+                <i class="fa-brands fa-usb"></i>
+              </div>
+              <div id="circle-stage-5" class="circle"></div>
+            </div>
+            <div class="progress-stage">
+              <div class="progress-stage-top">
                 <i class="fa-solid fa-upload"></i>
               </div>
               <div id="circle-stage-5" class="circle"></div>
+            </div>
+          </div>
+          <div class="row">
+            <div id="lua-cli" class="alert alert-info info-box">
+
             </div>
           </div>
         </div>
@@ -684,11 +693,90 @@
         </div>
         <!------------------------------------------------------------------------------------------------------------->
         <div id="toolsPage" class="content-data hidden electron">
-          <h2>Инструменты</h2>
-          <i class="fa-solid fa-link"></i>
-          <i class="fa-solid fa-minimize"></i>
-          <i class="fa-solid fa-arrows-spin"></i>
-          <i class="fa-solid fa-upload"></i>
+          <h2>Настройки</h2>
+          <h5><i class="fa-solid fa-screwdriver-wrench"></i> Инструментарий</h5>
+          <br>
+          <h5><i class="fa-solid fa-clipboard-check"></i> Проверка</h5>
+          <div class="row unselect">
+            <div class="col-sm-auto pos-name">
+              <label class="switch">
+                <input type="checkbox" class="check-input" id="coolantTempOpenCircuitAlarmEnb">
+                <span class="slider"></span>
+              </label>
+              <label class="form-check-label">Активировать</label>
+            </div>
+          </div>
+          <br>
+          <h5><i class="fa-solid fa-link"></i> Линкер</h5>
+          <div class="row unselect">
+            <div class="col-sm-auto pos-name">
+              <label class="switch">
+                <input type="checkbox" class="check-input" id="coolantTempOpenCircuitAlarmEnb">
+                <span class="slider"></span>
+              </label>
+              <label class="form-check-label">Активировать</label>
+            </div>
+          </div>
+          <br>
+          <h5><i class="fa-solid fa-minimize"></i> Минимайзер</h5>
+          <div class="row unselect">
+            <div class="col-sm-auto pos-name">
+              <label class="switch">
+                <input type="checkbox" class="check-input" id="coolantTempOpenCircuitAlarmEnb">
+                <span class="slider"></span>
+              </label>
+              <label class="form-check-label">Активировать</label>
+            </div>
+          </div>
+          <div class="row unselect">
+            <div class="col-sm-auto pos-name">
+              <label class="switch">
+                <input type="checkbox" class="check-input" id="coolantTempOpenCircuitAlarmEnb">
+                <span class="slider"></span>
+              </label>
+              <label class="form-check-label">Оптимизация имен переменных и функций</label>
+            </div>
+          </div>
+          <div class="row unselect">
+            <div class="col-sm-auto pos-name">
+              <label class="switch">
+                <input type="checkbox" class="check-input" id="coolantTempOpenCircuitAlarmEnb">
+                <span class="slider"></span>
+              </label>
+              <label class="form-check-label">Оптимизировать перенос строки</label>
+            </div>
+          </div>
+          <div class="row unselect">
+            <div class="col-sm-auto pos-name">
+              <label class="switch">
+                <input type="checkbox" class="check-input" id="coolantTempOpenCircuitAlarmEnb">
+                <span class="slider"></span>
+              </label>
+              <label class="form-check-label">Оптимизировать пробелы</label>
+            </div>
+          </div>
+          <br>
+          <h5><i class="fa-solid fa-arrows-spin"></i> Сборщик</h5>
+          <div class="row unselect">
+            <div class="col-sm-auto pos-name">
+              <label class="switch">
+                <input type="checkbox" class="check-input" id="coolantTempOpenCircuitAlarmEnb">
+                <span class="slider"></span>
+              </label>
+              <label class="form-check-label">Активировать</label>
+            </div>
+          </div>
+          <br>
+          <h5><i class="fa-solid fa-upload"></i> Загрузка</h5>
+          <div class="row unselect">
+            <div class="col-sm-auto pos-name">
+              <label class="switch">
+                <input type="checkbox" class="check-input" id="coolantTempOpenCircuitAlarmEnb">
+                <span class="slider"></span>
+              </label>
+              <label class="form-check-label">Автоматическое определение устройства</label>
+            </div>
+          </div>
         </div>
         <!------------------------------------------------------------------------------------------------------------->
         <div id="firmwarePage" class="content-data hidden electron">
@@ -752,6 +840,7 @@
     <script type="text/javascript" src="js/sidebar.js"></script>
     <script type="text/javascript" src="js/window-buttons.js"></script>
     <script type="text/javascript" src="js/progressStep.js"></script>
+    <script type="text/javascript" src="js/lua-cli.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
     <!--------------------------------------------------------------------------------------------------------------->
     <script>
