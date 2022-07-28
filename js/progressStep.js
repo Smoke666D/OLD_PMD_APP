@@ -1,5 +1,3 @@
-let progressStep = new ProgressStep( 'progressStep-container' );
-
 function ProgressCircle ( id ) {
   let body  = document.getElementById( id );
   let state = 'empty';
@@ -115,3 +113,4 @@ function ProgressStep ( id ) {
   init();
   return;
 }
+module.exports.ProgressStep = ProgressStep;

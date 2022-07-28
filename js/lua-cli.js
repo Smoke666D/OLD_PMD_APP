@@ -1,5 +1,3 @@
-let luacli = new LuaCli( "lua-cli" );
-
 function LuaCli ( id ) {
   let cli = document.getElementById( id );
   this.add = function ( text ) {
@@ -13,3 +11,4 @@ function LuaCli ( id ) {
     return;
   }
 }
+module.exports.LuaCli = LuaCli;
