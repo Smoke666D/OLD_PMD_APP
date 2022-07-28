@@ -1,31 +1,72 @@
-const LuaCli = require('./lua-cli.js').LuaCli;
-const ProgressStep = require('./ProgressStep.js').ProgressStep;
+const fs           = require( 'fs' );
+const { dialog }   = require( 'electron' ).remote;
+const LuaCli       = require( './lua-cli.js' ).LuaCli;
+const ProgressStep = require( './ProgressStep.js' ).ProgressStep;
 /*-----------------------------------------------------------------------------------*/
 let luacli       = new LuaCli( 'lua-cli' );
 let progressStep = new ProgressStep( 'progressStep-container' );
 /*-----------------------------------------------------------------------------------*/
 let luaproc = new LuaProcess( luacli, progressStep );
 /*-----------------------------------------------------------------------------------*/
-function luaopen () {
-  return true;
+let luaPath = '';
+let lua = '';
+/*-----------------------------------------------------------------------------------*/
+async function luaopen () {
+  return new Promise( function ( resolve ) {
+    let res  = false;
+    let path = dialog.showOpenDialog( { 
+      title:      'Открыть lua',
+      filters:    [{ name: 'lua', extensions: ['lua']}],
+      properties: ['openFile'] 
+    }).then( function ( result ) {
+      if ( result.filePaths[0] != undefined ) {
+        luaPath = result.filePaths[0];
+        luacli.add( 'Openning ' + luaPath );
+        fs.readFile( luaPath, 'utf8', function ( error, data ) {
+          if ( error ) {
+            resolve( false );    
+          }
+          lua = data;
+          resolve( true );
+        });
+      } else {
+        resolve( false );
+      }
+    }).catch( function ( error ) {
+      resolve( false );
+    });
+  });
 }
-function lualink () {
-  return true;
+async function lualink () {
+  return new Promise( function ( resolve ) {
+    
+    resolve( true );
+  });
 }
-function luacheck () {
-  return true;
+async function luacheck () {
+  return new Promise( function ( resolve ) {
+    resolve( true );
+  });
 }
-function luamin () {
-  return true;
+async function luamin () {
+  return new Promise( function ( resolve ) {
+    resolve( true );
+  });
 }
-function luamake () {
-  return true;
+async function luamake () {
+  return new Promise( function ( resolve ) {
+    resolve( true );
+  });
 }
-function pdmconnect () {
-  return true;
+async function pdmconnect () {
+  return new Promise( function ( resolve ) {
+    resolve( true );
+  });
 }
-function pdmload () {
-  return true;
+async function pdmload () {
+  return new Promise( function ( resolve ) {
+    resolve( true );
+  });
 }
 /*-----------------------------------------------------------------------------------*/
 const luaStages = [
@@ -50,24 +91,29 @@ function LuaProcess ( icli, iprogress ) {
   let cli      = icli;
   let progress = iprogress;
 
-  this.start = function () {
-    luaStages.forEach( function ( stage, i ) {
-      procStage( stage.callback, ( i == ( luaStages.length - 1 ) ) );
-    });
-  }
-  function procStage ( callback, isEnd ) {
-    let res = false;
-    progress.setLoading();
-    res = callback();
-    if ( res == true ) {
-      progress.setSeccess();
-      if ( isEnd == false ) {
-        progress.next();
-      }
-    } else {
-      progress.setError();
+  this.start = async function () {
+    let res = true;
+    for ( var i=0; i<luaStages.length && res==true; i++ ) {
+      res = await procStage( luaStages[i].callback, ( i == ( luaStages.length - 1 ) ) );
     }
-    return res;
+    return;
+  }
+  async function procStage ( callback, isEnd ) {
+    return new Promise( function ( resolve ) {
+      progress.setLoading();
+      callback().then( function ( result ) {
+        if ( result == true ) {
+          progress.setSeccess();
+          if ( isEnd == false ) {
+            progress.next();
+          }
+          resolve( true );
+        } else {
+          progress.setError();
+          resolve( false );
+        } 
+      });
+    });
   }
   return;
 }
