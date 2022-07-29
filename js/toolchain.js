@@ -22,15 +22,15 @@ function Toolchain () {
             name += '.py';
           }
           if ( toolsList.includes( name ) ) {
-            resolve( true );
+            resolve( null );
           } else {
-            resolve( false );
+            resolve( "Script doesn't exist in the filesystem" );
           }
         } else {
-          resolve( true );
+          resolve( "Skip" );
         }
       } else {
-        resolve( false );
+        resolve( "Script doesn't exist in the settings" );
       }
     });
   }

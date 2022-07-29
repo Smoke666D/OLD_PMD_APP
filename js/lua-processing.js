@@ -42,12 +42,15 @@ async function luaopen () {
 }
 async function lualink () {
   return new Promise( async function ( resolve ) {
-    let res = await toolchain.run( 'lualink' );
-    if ( res == true ) {
-      luacli.add( 'Linking lua script...')
-    } else {
-      luacli.add( 'Error with the lualink!' );
-    }
+    let res = true;
+    luacli.add( 'Linking lua script...')
+    let error = await toolchain.run( 'lualink' );
+    if ( error == 'skip' ) {
+      luacli.add( error );
+    } else if ( error != null ) {
+      res = false;
+      luacli.add( 'Error with the lualink: ' + error );
+    } 
     resolve( res );
   });
 }
