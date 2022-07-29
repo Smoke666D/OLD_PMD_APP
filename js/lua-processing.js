@@ -24,7 +24,7 @@ async function luaopen () {
     }).then( function ( result ) {
       if ( result.filePaths[0] != undefined ) {
         luaPath = result.filePaths[0];
-        luacli.add( 'Openning ' + luaPath );
+        luacli.newLine( 'Openning ' + luaPath );
         fs.readFile( luaPath, 'utf8', function ( error, data ) {
           if ( error ) {
             resolve( false );    
@@ -40,62 +40,54 @@ async function luaopen () {
     });
   });
 }
-async function lualink () {
+
+async function runTool ( name ) {
   return new Promise( async function ( resolve ) {
     let res = true;
-    luacli.add( 'Linking lua script...')
-    let error = await toolchain.run( 'lualink' );
+    luacli.newLine( 'Run ' + name + '...' );
+    let error = await toolchain.run( name );
     if ( error == 'skip' ) {
-      luacli.add( error );
+      luacli.add( error, 'text-warning' );
     } else if ( error != null ) {
       res = false;
-      luacli.add( 'Error with the lualink: ' + error );
-    } 
+      luacli.add( 'fail', 'text-danger' );
+      luacli.newLine( 'Error with the ' + name + ': ' + error );
+    } else {
+      luacli.add( 'done' );
+    }
     resolve( res );
+  });
+}
+
+async function lualink () {
+  return new Promise( async function ( resolve ) {
+    resolve( await runTool( 'lualink' ) );
   });
 }
 async function luacheck () {
   return new Promise( async function ( resolve ) {
-    let res = await toolchain.run( 'luacheck' );
-    if ( res == true ) {
-      luacli.add( 'Checking lua script...')
-    } else {
-      luacli.add( 'Error with the luacheck!' );
-    }
-    resolve( res );
+    resolve( await runTool( 'luacheck' ) );
   });
 }
 async function luamin () {
   return new Promise( async function ( resolve ) {
-    let res = await toolchain.run( 'luamin' );
-    if ( res == true ) {
-      luacli.add( 'Minify lua script...')
-    } else {
-      luacli.add( 'Error with the luamin!' );
-    }
-    resolve( res );
+    resolve( await runTool( 'luamin' ) );
   });
 }
 async function luamake () {
   return new Promise( async function ( resolve ) {
-    let res = await toolchain.run( 'luamake' );
-    if ( res == true ) {
-      luacli.add( 'Make lua script...')
-    } else {
-      luacli.add( 'Error with the luamake!' );
-    }
-    resolve( res );
+    resolve( await runTool( 'luamake' ) );
   });
 }
 async function pdmconnect () {
   return new Promise( async function ( resolve ) {
-    luacli.add( 'Try to connect to the PDM via USB...')
+    luacli.newLine( 'Try to connect to the PDM via USB...')
     resolve( true );
   });
 }
 async function pdmload () {
   return new Promise( async function ( resolve ) {
-    luacli.add( 'Loading the lua script to the PDM...')
+    luacli.newLine( 'Loading the lua script to the PDM...')
     resolve( true );
   });
 }

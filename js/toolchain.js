@@ -27,7 +27,7 @@ function Toolchain () {
             resolve( "Script doesn't exist in the filesystem" );
           }
         } else {
-          resolve( "Skip" );
+          resolve( "skip" );
         }
       } else {
         resolve( "Script doesn't exist in the settings" );
