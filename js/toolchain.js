@@ -1,6 +1,6 @@
 const fs       = require( 'fs' );
 const Settings = require( './settings.js' ).Settings;
-const common   = require( './common.js' );
+const spawn    = require("child_process").spawn;
 function Toolchain () {
   let self       = this;
   let path       = '';
@@ -21,7 +21,8 @@ function Toolchain () {
           if ( ! name.endsWith( '.py' ) ) {
             name += '.py';
           }
-          if ( toolsList.includes( name ) ) {
+          if ( toolsList.includes( path + name ) ) {
+            await runPython( name )
             resolve( null );
           } else {
             resolve( "Script doesn't exist in the filesystem" );
@@ -33,6 +34,19 @@ function Toolchain () {
         resolve( "Script doesn't exist in the settings" );
       }
     });
+  }
+  this.clean = function () {
+    return;
+  }
+  async function runPython ( name ) {
+    return new Promise( function ( resolve ) {
+      workspace = makeTempFolder();
+      console.log( name )
+      //const pythonProcess = spawn( 'python', ["path/to/script.py", arg1, arg2] );
+    });
+  }
+  async function makeTempFolder () {
+    return null;
   }
   async function init () {
     await settings.init();
