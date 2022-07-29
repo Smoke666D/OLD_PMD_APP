@@ -2,6 +2,7 @@
 UTIL\index_make.html
 UTIL\index.html
 *.pyc
+temp
 #******************** Output ********************
 release-builds
 *.ewa

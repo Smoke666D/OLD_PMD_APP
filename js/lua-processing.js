@@ -45,7 +45,7 @@ async function runTool ( name ) {
   return new Promise( async function ( resolve ) {
     let res = true;
     luacli.newLine( 'Run ' + name + '...' );
-    let error = await toolchain.run( name );
+    let error = await toolchain.run( name, luaPath );
     if ( error == 'skip' ) {
       luacli.add( error, 'text-warning' );
     } else if ( error != null ) {

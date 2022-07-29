@@ -7,8 +7,9 @@ function Toolchain () {
   let toolsList  = [];
   let settings   = new Settings ();
   const pathFile = 'settings.json';
-  this.run = async function ( name ) {
-    return new Promise( function ( resolve ) {
+  const pathTemp = 'temp';
+  this.run = async function ( name, source ) {
+    return new Promise( async function ( resolve ) {
       let exist = false;
       for ( var key in settings.data ) {
         if ( name == key ) {
@@ -17,12 +18,14 @@ function Toolchain () {
         }
       }
       if ( exist == true ) {
-        if ( settings.data[name].enb == true ) {
+        let options = settings.data[name];
+        if ( options.enb == true ) {
           if ( ! name.endsWith( '.py' ) ) {
             name += '.py';
           }
-          if ( toolsList.includes( path + name ) ) {
-            await runPython( name )
+          if ( toolsList.includes( name ) ) {
+            let message = await runPython( ( path + name ), options, source )
+            console.log( message )
             resolve( null );
           } else {
             resolve( "Script doesn't exist in the filesystem" );
@@ -38,15 +41,39 @@ function Toolchain () {
   this.clean = function () {
     return;
   }
-  async function runPython ( name ) {
-    return new Promise( function ( resolve ) {
-      workspace = makeTempFolder();
-      console.log( name )
-      //const pythonProcess = spawn( 'python', ["path/to/script.py", arg1, arg2] );
+  async function runPython ( name, options, source ) {
+    return new Promise( async function ( resolve ) {
+      workspace = await makeTempFolder();
+      args      = [ name ];
+      options.keys.forEach( function ( key ) {
+        args.push( key.key );
+        switch ( key.id ) {
+          case 'source':
+            args.push( source );
+            break;
+          case 'out':
+            args.push( workspace );
+            break;
+          default:
+            break;    
+        }
+      });
+      const pythonProcess = spawn( options.type, args );
+      pythonProcess.stdout.on( 'data', function ( data ) {
+        resolve( data.toString() );
+      });
     });
   }
   async function makeTempFolder () {
-    return null;
+    return new Promise( function ( resolve ) {
+      let dir = __dirname + '\\' + pathTemp + '\\';
+      if ( fs.existsSync( dir ) == false ) {
+        fs.mkdirSync( dir );
+        resolve( dir );
+      } else {
+        resolve( dir );
+      }
+    });
   }
   async function init () {
     await settings.init();
