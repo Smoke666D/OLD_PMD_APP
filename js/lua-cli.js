@@ -2,7 +2,7 @@ function LuaCli ( id ) {
   let cli = document.getElementById( id );
   this.add = function ( text ) {
     let p = document.createElement( 'p' );
-    p.innerText = '>>' + text;
+    p.innerText = text;
     cli.appendChild( p );
     return;
   }
