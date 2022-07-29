@@ -3,6 +3,7 @@ const { dialog }   = require( 'electron' ).remote;
 const LuaCli       = require( './lua-cli.js' ).LuaCli;
 const ProgressStep = require( './ProgressStep.js' ).ProgressStep;
 const Toolchain    = require( './toolchain.js' ).Toolchain;
+const settings     = require( './settings.js' ).settings;
 /*-----------------------------------------------------------------------------------*/
 let luacli       = new LuaCli( 'lua-cli' );
 let progressStep = new ProgressStep( 'progressStep-container' );

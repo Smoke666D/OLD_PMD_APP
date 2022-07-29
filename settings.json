@@ -1,3 +1,25 @@
 {
-  "toolchainPath" : "C:/PROJECTS/SIDER/LUA_SCRIPTS/UTIL/"
+  "toolchainPath" : "C:/PROJECTS/SIDER/LUA_SCRIPTS/UTIL/",
+  "luacheck" : {
+    "enb" : false
+  },
+  "lualink" : {
+    "enb" : true 
+  },
+  "luamin" : {
+    "enb"       : true,
+    "names"     : true,
+    "endString" : true,
+    "spaces"    : true
+  },
+  "luamake" : {
+    "enb" : true
+  },
+  "usb" : {
+    "pid" : 1,
+    "uid" : 1
+  },
+  "loading" : {
+    "auto" : true
+  }
 }
