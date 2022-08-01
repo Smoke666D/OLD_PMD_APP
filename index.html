@@ -761,12 +761,20 @@
         <div id="toolsPage" class="content-data hidden electron">
           <h2>Настройки</h2>
           <h5><i class="fa-solid fa-screwdriver-wrench"></i> Инструментарий</h5>
+          <div class="row unselect">
+            <div class="col-sm-2 pos-name">
+              <label>Инструменты</label>
+            </div>
+            <div class="col-sm">
+              <input id="toolchainPath" class="form-control">
+            </div>
+          </div>
           <br>
           <h5><i class="fa-solid fa-clipboard-check"></i> Проверка</h5>
           <div class="row unselect">
             <div class="col-sm-auto pos-name">
               <label class="switch">
-                <input type="checkbox" class="check-input" id="coolantTempOpenCircuitAlarmEnb">
+                <input type="checkbox" class="check-input" id="luacheck_enb">
                 <span class="slider"></span>
               </label>
               <label class="form-check-label">Активировать</label>
@@ -777,7 +785,7 @@
           <div class="row unselect">
             <div class="col-sm-auto pos-name">
               <label class="switch">
-                <input type="checkbox" class="check-input" id="coolantTempOpenCircuitAlarmEnb">
+                <input type="checkbox" class="check-input" id="lualink_enb">
                 <span class="slider"></span>
               </label>
               <label class="form-check-label">Активировать</label>
@@ -787,7 +795,7 @@
             <div class="col-sm-2 pos-name">
               <label>Библиотека</label>
             </div>
-            <div class="col-sm-auto">
+            <div class="col-sm">
               <input id="libPath" class="form-control">
             </div>
           </div>
@@ -796,7 +804,7 @@
           <div class="row unselect">
             <div class="col-sm-auto pos-name">
               <label class="switch">
-                <input type="checkbox" class="check-input" id="coolantTempOpenCircuitAlarmEnb">
+                <input type="checkbox" class="check-input" id="luamin_enb">
                 <span class="slider"></span>
               </label>
               <label class="form-check-label">Активировать</label>
@@ -805,7 +813,7 @@
           <div class="row unselect">
             <div class="col-sm-auto pos-name">
               <label class="switch">
-                <input type="checkbox" class="check-input" id="coolantTempOpenCircuitAlarmEnb">
+                <input type="checkbox" class="check-input" id="luamin_names_enb">
                 <span class="slider"></span>
               </label>
               <label class="form-check-label">Оптимизация имен переменных и функций</label>
@@ -814,7 +822,7 @@
           <div class="row unselect">
             <div class="col-sm-auto pos-name">
               <label class="switch">
-                <input type="checkbox" class="check-input" id="coolantTempOpenCircuitAlarmEnb">
+                <input type="checkbox" class="check-input" id="luamin_endString_enb">
                 <span class="slider"></span>
               </label>
               <label class="form-check-label">Оптимизировать перенос строки</label>
@@ -823,7 +831,7 @@
           <div class="row unselect">
             <div class="col-sm-auto pos-name">
               <label class="switch">
-                <input type="checkbox" class="check-input" id="coolantTempOpenCircuitAlarmEnb">
+                <input type="checkbox" class="check-input" id="luamin_spaces_enb">
                 <span class="slider"></span>
               </label>
               <label class="form-check-label">Оптимизировать пробелы</label>
@@ -834,7 +842,7 @@
           <div class="row unselect">
             <div class="col-sm-auto pos-name">
               <label class="switch">
-                <input type="checkbox" class="check-input" id="coolantTempOpenCircuitAlarmEnb">
+                <input type="checkbox" class="check-input" id="luamake_enb">
                 <span class="slider"></span>
               </label>
               <label class="form-check-label">Активировать</label>
@@ -845,7 +853,7 @@
           <div class="row unselect">
             <div class="col-sm-auto pos-name">
               <label class="switch">
-                <input type="checkbox" class="check-input" id="coolantTempOpenCircuitAlarmEnb">
+                <input type="checkbox" class="check-input" id="loading_auto">
                 <span class="slider"></span>
               </label>
               <label class="form-check-label">Автоматическое определение устройства</label>

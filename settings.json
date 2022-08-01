@@ -1,6 +1,6 @@
 {
   "toolchainPath" : "C:/PROJECTS/SIDER/LUA_SCRIPTS/UTIL/",
-  "libPath"       : "C:/PROJECTS/SIDER/LUA_SCRIPTS",
+  "libPath"       : "C:/PROJECTS/SIDER/LUA_SCRIPTS/",
   "luacheck" : {
     "enb"  : false,
     "type" : "lua"
