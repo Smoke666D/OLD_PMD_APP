@@ -1,5 +1,6 @@
 {
   "toolchainPath" : "C:/PROJECTS/SIDER/LUA_SCRIPTS/UTIL/",
+  "libPath"       : "C:/PROJECTS/SIDER/LUA_SCRIPTS",
   "luacheck" : {
     "enb"  : false,
     "type" : "lua"
@@ -13,6 +14,12 @@
     },{
       "id"  : "out",
       "key" : "-o"
+    },{
+      "id"  : "linkfile",
+      "key" : "-l"
+    },{
+      "id"  : "libpath",
+      "key" : "-a"
     }]
   },
   "luamin" : {

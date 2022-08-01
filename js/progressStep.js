@@ -2,7 +2,7 @@ function ProgressCircle ( id ) {
   let body  = document.getElementById( id );
   let state = 'empty';
   let self  = this;
-  this.setSuccess = function () {
+  this.setSuccess = function () {   
     body.classList.add( "success" );
     body.innerHTML = '<i class="fa-solid fa-check"></i>';
     state = "seccess";
@@ -34,7 +34,6 @@ function ProgressCircle ( id ) {
           self.setLoading();
           break;
         default:
-          self.clean();
           break;      
       }
     }
@@ -61,40 +60,53 @@ function ProgressStep ( id ) {
   let line    = null;
   let body    = document.getElementById( id );
 
-  this.next = function () {
-    if ( current < circles.length ) {
-      current++;
-      update();
-    }
-    return;
-  }
-  this.clean = function () {
-    current = 0;
-    circles.forEach( function ( circle ) {
-      circle.clean();
+  this.next = async function () {
+    return new Promise( async function ( resolve ) {
+      if ( current < circles.length ) {
+        current++;
+        await update();
+      }
+      resolve();
     });
-    update();
+  }
+  this.clean = async function () {
+    return new Promise( async function ( resolve ) {
+      current = 0;
+      circles.forEach( function ( circle ) {
+        circle.clean();
+      });
+      await update();
+      resolve();
+    });
     return;
   }
-  this.setSeccess = function () {
-    circles[current].setState( 'success' );
-    return;
+  this.setSeccess = async function () {
+    return new Promise( async function ( resolve ) {
+      circles[current].setState( 'success' );
+      resolve();
+    });
   }
-  this.setError = function () {
-    circles[current].setState( 'error' );
-    return;
+  this.setError = async function () {
+    return new Promise( async function ( resolve ) {
+      circles[current].setState( 'error' );
+      resolve();
+    });
   }
-  this.setLoading = function () {
-    circles[current].setState( 'loading' );
-    return;
+  this.setLoading = async function () {
+    return new Promise( async function ( resolve ) {
+      circles[current].setState( 'loading' );
+      resolve();
+    });
   }
-  function update () {
-    let length = ( current / ( circles.length - 1 ) ) * 100;
-    if ( length > 0 ) {
-      length = length - 1;
-    }
-    line.style.width = length + "%";
-    return;
+  async function update () {
+    return new Promise( async function ( resolve ) {
+      let length = ( current / ( circles.length - 1 ) ) * 100;
+      if ( length > 0 ) {
+        length = length - 1;
+      }
+      line.style.width = length + "%";
+      resolve();
+    });
   }
   function init () {
     for ( var i=0; i<body.children.length; i++ ){

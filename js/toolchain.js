@@ -9,6 +9,7 @@ function Toolchain () {
   const pathFile = 'settings.json';
   const pathTemp = 'temp';
   this.run = async function ( name, source ) {
+    console.log( source )
     return new Promise( async function ( resolve ) {
       let exist = false;
       for ( var key in settings.data ) {
@@ -20,21 +21,20 @@ function Toolchain () {
       if ( exist == true ) {
         let options = settings.data[name];
         if ( options.enb == true ) {
-          if ( ! name.endsWith( '.py' ) ) {
+          if ( name.endsWith( '.py' ) == false ) {
             name += '.py';
           }
           if ( toolsList.includes( name ) ) {
             let message = await runPython( ( path + name ), options, source )
-            console.log( message )
-            resolve( null );
+            resolve( [true, null, message ] );
           } else {
-            resolve( "Script doesn't exist in the filesystem" );
+            resolve( [false, "Script doesn't exist in the filesystem", null] );
           }
         } else {
-          resolve( "skip" );
+          resolve( [true, "skip", null] );
         }
       } else {
-        resolve( "Script doesn't exist in the settings" );
+        resolve( [false, "Script doesn't exist in the settings", null] );
       }
     });
   }
@@ -43,6 +43,7 @@ function Toolchain () {
   }
   async function runPython ( name, options, source ) {
     return new Promise( async function ( resolve ) {
+      let str  = '';
       workspace = await makeTempFolder();
       args      = [ name ];
       options.keys.forEach( function ( key ) {
@@ -54,13 +55,20 @@ function Toolchain () {
           case 'out':
             args.push( workspace );
             break;
+          case 'linkfile':
+            args.push( source.substring( 0, source.lastIndexOf( '\\' ) ) + '\\luald.json' );  
+          case 'libpath':
+            args.push( settings.data.libPath );  
           default:
             break;    
         }
       });
       const pythonProcess = spawn( options.type, args );
       pythonProcess.stdout.on( 'data', function ( data ) {
-        resolve( data.toString() );
+        str = data.toString();
+      });
+      pythonProcess.on( 'close', function ( code ) {
+        resolve( str );
       });
     });
   }
