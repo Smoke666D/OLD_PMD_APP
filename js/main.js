@@ -1,5 +1,5 @@
-
-const luaproc = require('./js/lua-processing.js').luaproc;
+var connectInit = require('./js/render.js').connectPDMinit;
+const luaproc     = require('./js/lua-processing.js').luaproc;
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -32,6 +32,7 @@ document.addEventListener( "DOMContentLoaded", function( event ) {
 	*/
 	document.getElementById( 'versionSowtware' ).innerHTML   = softwareVersion;
 	windowButtonsInit();
+	connectInit();
   loadContent( 'luaPage' );
 	return;
 });

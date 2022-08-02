@@ -106,4 +106,4 @@ function Settings () {
   return;
 }
 
-module.exports.Settings = Settings;
+module.exports.settings = settings;

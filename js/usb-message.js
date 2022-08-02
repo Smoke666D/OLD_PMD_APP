@@ -255,11 +255,11 @@ function USBMessage ( buffer ) {
   this.makeDataRequest = function ( adr ) {
     makeRequest( msgCMD.USB_REPORT_CMD_READ_DATA, adr );
   }
-  this.makeStartWritingRequest = function () {
+  this.codeStartWriting = function () {
     makeRequest( msgCMD.USB_REPORT_CMD_START_WRITING, 0 );
     return;
   }
-  this.makeFinishWritingRequest = function () {
+  this.codeFinishWriting = function () {
     makeRequest( msgCMD.USB_REPORT_CMD_END_WRITING, 0 );
     return;
   }

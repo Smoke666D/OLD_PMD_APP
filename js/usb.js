@@ -8,6 +8,8 @@ const USBMessage      = require('./usb-message.js').USBMessage;
 const msgCMD          = require('./usb-message.js').msgCMD;
 const msgSTAT         = require('./usb-message.js').msgSTAT;
 const USB_DATA_SIZE   = require('./usb-message.js').USB_DATA_SIZE;
+const pdmDataAdr      = require('./pdm.js').pdmDataAdr;
+const settings        = require( './settings.js' ).settings;
 /*----------------------------------------------------------------------------*/
 const chartsLength = 3;
 const loopTimeout  = 4000;
@@ -255,29 +257,19 @@ function USBtransport () {
     var result = usbHandler.continue;
     response.init( function () {
       if ( response.status == msgSTAT.USB_OK_STAT ) {
-        if ( ( response.command == msgCMD.USB_PUT_CONFIG_CMD        ) ||
-             ( response.command == msgCMD.USB_PUT_CHART_OIL_CMD     ) ||
-             ( response.command == msgCMD.USB_PUT_CHART_COOLANT_CMD ) ||
-             ( response.command == msgCMD.USB_PUT_CHART_FUEL_CMD    ) ||
-             ( response.command == msgCMD.USB_SAVE_CONFIG_CMD       ) ||
-             ( response.command == msgCMD.USB_SAVE_CHART_CMD        ) ||
-             ( response.command == msgCMD.USB_PUT_TIME              ) ||
-             ( response.command == msgCMD.USB_PUT_FREE_DATA         ) ||
-             ( response.command == msgCMD.USB_ERASE_LOG             ) ||
-             ( response.command == msgCMD.USB_PUT_PASSWORD          ) ||
-             ( response.command == msgCMD.USB_ERASE_PASSWOR         ) ||
-             ( response.command == msgCMD.USB_AUTHORIZATION         ) ||
-             ( response.command == msgCMD.USB_ERASE_MEASUREMENT     ) ||
-             ( response.command == msgCMD.USB_PUT_EWA_CMD  ) ) {
-            result = output.isEnd();
-            if ( result == usbHandler.continue )
-            {
-              alert.setProgressBar( output.getProgress() );
-              write( output.nextMessage() );
-              //output.printState();
-            }
+        if ( ( response.command == msgCMD.USB_REPORT_CMD_START_WRITING ) ||
+             ( response.command == msgCMD.USB_REPORT_CMD_WRITE_SCRIPT  ) ||
+             ( response.command == msgCMD.USB_REPORT_CMD_END_WRITING   ) ||
+             ( response.command == msgCMD.USB_REPORT_CMD_READ_SCRIPT   ) ||
+             ( response.command == msgCMD.USB_REPORT_CMD_READ_DATA     ) ) {
+          result = output.isEnd();
+          if ( result == usbHandler.continue )
+          {
+            alert.setProgressBar( output.getProgress() );
+            write( output.nextMessage() );
+          }
         } else {
-          console.log("Error with command: " + response.command + " expected: " + msgCMD.USB_PUT_CONFIG_CMD + " or " + msgCMD.USB_PUT_CHART_CMD + " or " + msgCMD.USB_PUT_EWA_CMD );
+          //console.log("Error with command: " + response.command + " expected: " + msgCMD.USB_PUT_CONFIG_CMD + " or " + msgCMD.USB_PUT_CHART_CMD + " or " + msgCMD.USB_PUT_EWA_CMD );
           if ( alert != undefined ) {
             if ( ( alert != null ) || ( alert != undefined ) ) {
               alert.close( 0 );
@@ -296,9 +288,7 @@ function USBtransport () {
           result = usbHandler.forbidden;
         } else if ( response.status == msgSTAT.USB_STAT_UNAUTHORIZED ) {
           result = usbHandler.unauthorized;
-        } else if ( response.status == msgSTAT.USB_AUTO_MODE ) {
-          result = usbHandler.autoMode;
-        }
+        } 
         if ( alert != undefined ) {
           if ( ( alert != null ) || ( alert != undefined ) ) {
             alert.close( 0 );
@@ -335,7 +325,7 @@ function USBtransport () {
     var res     = 0;
     device      = null;
     for ( var i=0; i<devices.length; i++ ) {
-      if ( devices[i].manufacturer == "Energan" ) {
+      if ( ( devices[i].vendorId == settings.data.usb.uid ) && ( devices[i].productId == settings.data.usb.pid ) ) {
         device = new HID.HID( devices[i].path );
         res    = 1;
         success();
@@ -442,13 +432,13 @@ function USBtransport () {
         write( input.nextRequest() );
         break;
     }
-
+    return;
   }
   /*---------------------------------------------*/
   /*---------------------------------------------*/
   /*---------------------------------------------*/
 }
-function EnerganController () {
+function PdmController () {
   /*------------------ Private ------------------*/
   var self       = this;
   var transport  = null;
@@ -456,186 +446,59 @@ function EnerganController () {
   var loopActive = 0;
   var loopBusy   = 0;
   var connected  = false;
-  /*---------------------------------------------*/
-  function initWriteSequency ( adr, data, callback ) {
+  /*---------------------------------------------*/  
+  function initWriteLuaSequency ( adr, data, callback ) {
+    let total   = Math.ceil( data.length / USB_DATA_SIZE );
+    let buffer  = data;
+    let out     = '';
+    let length  = 0;
+    let address = 0;
+    let msg     = null;
+    transport.clean();
+    /*---------------------------------------------*/
+    msg = new USBMessage( [] );
+    msg.codeStartWriting();
+    transport.addToOutput( msg );
+    /*---------------------------------------------*/
+    for ( var i=0; i<total; i++ ) {
+      msg = new USBMessage( [] );
+      if ( buffer.length > USB_DATA_SIZE ) {
+        out    = buffer.substring( 0, USB_DATA_SIZE );
+        length = USB_DATA_SIZE;
+        buffer = buffer.substring( USB_DATA_SIZE );
+      } else {
+        out    = buffer;
+        length = out.length;
+      }
+      msg.codeLua( address, length, out );
+      transport.addToOutput( msg );
+      address += USB_DATA_SIZE;
+    }
+    /*---------------------------------------------*/
+    msg = new USBMessage( [] );
+    msg.codeFinishWriting();
+    transport.addToOutput( msg );
+    /*---------------------------------------------*/
+    callback();
+    return;
+  }
+  function initReadSequency ( adr, data, callback ) {
     var msg = null;
     transport.clean();
-    /*--------------- Configurations ---------------*/
-    grabInterface();
-    for ( var i=0; i<dataReg.length; i++ ) {
+    Object.keys( pdmDataAdr ).forEach( function ( key ) {
       msg = new USBMessage( [] );
-      msg.codeConfig( dataReg[i], i );
-      transport.addToOutput( msg );
-    }
-    msg = new USBMessage( [] );
-    msg.codeSaveConfigs();
-    transport.addToOutput( msg );
-    /*------------------- Charts -------------------*/
-    charts = uploadCharts();
-    for ( var i=0; i<(charts[0].size+1); i++ ) {
-      msg = new USBMessage( [] );
-      msg.codeChartOil( charts[0], i );
-      transport.addToOutput( msg );
-    }
-    for ( var i=0; i<(charts[1].size+1); i++ ) {
-      msg = new USBMessage( [] );
-      msg.codeChartCoolant( charts[1], i );
-      transport.addToOutput( msg );
-    }
-    for ( var i=0; i<(charts[2].size+1); i++ ) {
-      msg = new USBMessage( [] );
-      msg.codeChartFuel( charts[2], i );
-      transport.addToOutput( msg );
-    }
-    msg = new USBMessage( [] );
-    msg.codeSaveCharts();
-    transport.addToOutput( msg );
-    /*----------------------------------------------*/
+      msg.makeDataRequest( pdmDataAdr[key] );
+      transport.addRequest( msg );
+    });
     callback();
     return;
   }
-  function initTimeWriteSequency ( adr, data, callback ) {
-    let msg = new USBMessage([]);
-    transport.clean();
-    msg.codeTime( data );
-    transport.addToOutput( msg );
-    callback();
-    return;
-  }
-  function initWriteEWA ( adr, ewa, callback ) {
-    let msg   = null;
-    let size  = Math.ceil( ewa.length / USB_DATA_SIZE );
-    let index = 0;
-    transport.clean();
-    for ( var i=0; i<size; i++ ) {
-      msg   = new USBMessage( [] );
-      index = msg.codeEWA( ewa, index );
-      transport.addToOutput( msg );
-    }
-    callback();
-    return;
-  }
-  function initWriteFreeDataSequency ( adr, data, callback ) {
-    let msg = new USBMessage( [] );
-    transport.clean();
-    msg.codeFreeData( adr, data );
-    transport.addToOutput( msg );
-    callback();
-    return;
-  }
-  function initWriteOutputSequency ( adr, data, callback ) {
-    let msg = new USBMessage( [] );
-    transport.clean();
-    msg.codeOutput( data, adr );
-    transport.addToOutput( msg );
-    callback();
-    return;
-  }
-  function initWritePassSequency ( adr, data, callback ) {
-    let msg = new USBMessage( [] );
-    transport.clean();
-    msg.codePassword( data );
-    transport.addToOutput( msg );
-    callback();
-    return;
-  }
-  function initWriteAuthorSequency ( adr, data, callback ) {
-    let msg = new USBMessage( [] );
-    transport.clean();
-    msg.codeAuthorization( data );
-    transport.addToOutput( msg );
-    callback();
-    return;
-  }
-  function initWriteEraseLog ( adr, data, callback ) {
-    let msg = new USBMessage( [] );
-    transport.clean();
-    msg.codeLogErase();
-    transport.addToOutput( msg );
-    callback();
-    return;
-  }
-  function initWriteEraseMeasurment ( adr, data, callback ) {
-    let msg = new USBMessage( [] );
-    transport.clean();
-    msg.codeMeasurementErase();
-    transport.addToOutput( msg );
-    callback();
-    return;
-  }
-  function initReadSequency ( adr, password, callback ) {
+  function initReadLuaSequency ( adr, data, callback ) {
     var msg = null;
     transport.clean();
-    /*-------- Authorization --------*/
     msg = new USBMessage( [] );
-    msg.codeAuthorization( password );
+    msg.makeLuaRequest();
     transport.addRequest( msg );
-    /*-------- Configurations -------*/
-    for ( var i=0; i<dataReg.length; i++ ) {
-      msg = new USBMessage( [] );
-      msg.makeConfigRequest( i );
-      transport.addRequest( msg );
-    }
-    /*---------- Oil chart ----------*/
-    for ( var i=0; i<(CHART_DOTS_SIZE + 1); i++ ) {
-      msg = new USBMessage( [] )
-      msg.makeChartOilRequest( i );
-      transport.addRequest( msg );
-    }
-    /*-------- Coolant chart --------*/
-    for ( var i=0; i<(CHART_DOTS_SIZE + 1); i++ ) {
-      msg = new USBMessage( [] )
-      msg.makeChartCoolantRequest( i );
-      transport.addRequest( msg );
-    }
-    /*--------- Fuel chart ----------*/
-    for ( var i=0; i<(CHART_DOTS_SIZE + 1); i++ ) {
-      msg = new USBMessage( [] )
-      msg.makeChartFuelRequest( i );
-      transport.addRequest( msg );
-    }
-    /*---------- Free data ----------*/
-    for ( var i=0; i<freeDataValue.length; i++ ) {
-      msg = new USBMessage( [] )
-      msg.makeFreeDataRequest( i );
-      transport.addRequest( msg );
-    }
-    /*------------- Log -------------*/
-    for ( var i=0; i<logMaxSize; i++ ) {
-      msg = new USBMessage( [] )
-      msg.makeLogRequest( i );
-      transport.addRequest( msg );
-    }
-    /*------------ Time -------------*/
-    msg = new USBMessage( [] )
-    msg.makeTimeRequest();
-    transport.addRequest( msg );
-    /*----- Measurement Length ------*/
-    //msg = new USBMessage( [] );
-    //msg.makeMeasurementLengthRequest();
-    //transport.addRequest( msg );
-    /*-------------------------------*/
-    callback();
-    return;
-  }
-  function initReadOutputSequency ( adr, data, callback ) {
-    transport.clean();
-    for ( var i=0; i<outputReg.length; i++ )
-    {
-      let msg = new USBMessage( [] )
-      msg.makeOutputRequest( i );
-      transport.addRequest( msg );
-    }
-    callback();
-    return;
-  }
-  function initReadMeasurementSequency ( adr, data, callback ) {
-    transport.clean();
-    for ( var i=0; i<size; i++ ) {
-      let msg = new USBMessage( [] );
-      msg.makeMeasurementRequest( i );
-      transport.addRequest( msg );
-    }
     callback();
     return;
   }
@@ -738,31 +601,6 @@ function EnerganController () {
   this.getInput          = function () {
     return transport.getInput();
   }
-  this.sendTime          = function ( time ) {
-    this.disableLoop();
-    writeSequency( 0, time, null, false, initTimeWriteSequency );
-    return;
-  }
-  this.sendFreeData      = function ( adr, data ) {
-    this.disableLoop();
-    writeSequency( adr, data, null, false, initWriteFreeDataSequency );
-    return;
-  }
-  this.sendOutput        = function ( adr, data ) {
-    this.disableLoop();
-    writeSequency( adr, data, null, false, initWriteOutputSequency );
-    return;
-  }
-  this.sendPass          = function ( password ) {
-    this.disableLoop();
-    writeSequency( 0, password, null, false, initWritePassSequency );
-    return;
-  }
-  this.sendAuthorization = function ( password ) {
-    this.disableLoop();
-    writeSequency( 0, password, null, false, initWriteAuthorSequency );
-    return;
-  }
   this.getMode           = function ( callback ) {
 
   }
@@ -772,37 +610,26 @@ function EnerganController () {
     writeSequency( 0, 0, alert, false, initWriteSequency );
     return;
   }
-  this.eraseLog          = function ( alertIn = null ) {
-    this.disableLoop();
-    alert = alertIn;
-    writeSequency( 0, 0, alert, false, initWriteEraseLog );
-    return;
-  }
+  
   this.readOutput        = function () {
     readSequency( 0, 0, null, true, initReadOutputSequency );
     return;
   }
-  this.sendEWA           = function ( ewa, alertIn = null ) {
+  this.receive           = function ( data = null, alertIn = null ) {
     this.disableLoop();
     alert = alertIn;
-    writeSequency( 0, ewa, alert, false, initWriteEWA );
-    return;
-  }
-  this.receive           = function ( password, alertIn = null ) {
-    this.disableLoop();
-    alert = alertIn;
-    readSequency( 0, password, alert, false, initReadSequency );
+    readSequency( 0, data, alert, false, initReadSequency );
     return;
   }
   /*----------------------------------------*/
   return;
 }
 //------------------------------------------------------------------------------
-let controller = new EnerganController();
+let controller = new PdmController();
 //------------------------------------------------------------------------------
-module.exports.EnerganController = EnerganController;
-module.exports.controller        = controller;
-module.exports.Transport         = USBtransport;
+//module.exports.PdmController = PdmController;
+module.exports.controller    = controller;
+//module.exports.Transport     = USBtransport;
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

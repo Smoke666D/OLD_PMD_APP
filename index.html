@@ -109,7 +109,7 @@
       <div id="content" class="p-4 p-md-5">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <div class="container-fluid">
-            <button aria-label="Connect" onclick="connectPDM()" class="btn btn-primary" data-toggle="tooltip" title="Подключиться к PDM">
+            <button aria-label="Connect" id="connectButton" class="btn btn-primary" data-toggle="tooltip" title="Подключиться к PDM">
               <i class="fa-brands fa-usb"></i>
             </button>
             <button aria-label="Open file" onclick="loadScriptFromFile()" class="btn btn-primary" data-toggle="tooltip" title="Загрузить скрипт из файла">
@@ -235,7 +235,7 @@
         <!------------------------------------------------------------------------------------------------------------->
         <div id="scadaPage" class="content-data hidden electron">
           <div class="row">
-            <div id="cars-status" class="card col">
+            <div id="card-status" class="card col">
               <div class="card-body">
                 <p class="card-title">Cтатус</p>
                 <div class="card-icon">
@@ -246,14 +246,14 @@
                 </div>
               </div>
             </div>
-            <div class="card col">
+            <div id="card-lua" class="card col">
               <div class="card-body">
                 <p class="card-title">LUA</p>
                 <div class="card-icon">
                   <i class="fa-solid fa-moon"></i>
                 </div>
                 <div class="d-flex justify-content-center">
-                  <p id="value-mode" class="card-text">Ok</p>
+                  <p id="value-lua" class="card-text">Ok</p>
                 </div>
               </div>
             </div>
@@ -282,7 +282,7 @@
                 <div class="d-flex justify-content-center">
                   <div class="d-flex justify-content-center">
                     <div class="card-text">
-                      <p id="current-dout-1">00.00</p>
+                      <p id="value-dout-1">00.00</p>
                       <p class="units">А</p>
                     </div>
                   </div>
@@ -298,7 +298,7 @@
                 <div class="d-flex justify-content-center">
                   <div class="d-flex justify-content-center">
                     <div class="card-text">
-                      <p id="current-dout-2">00.00</p>
+                      <p id="value-dout-2">00.00</p>
                       <p class="units">А</p>
                     </div>
                   </div>
@@ -314,7 +314,7 @@
                 <div class="d-flex justify-content-center">
                   <div class="d-flex justify-content-center">
                     <div class="card-text">
-                      <p id="current-dout-3">00.00</p>
+                      <p id="value-dout-3">00.00</p>
                       <p class="units">А</p>
                     </div>
                   </div>
@@ -330,7 +330,7 @@
                 <div class="d-flex justify-content-center">
                   <div class="d-flex justify-content-center">
                     <div class="card-text">
-                      <p id="current-dout-4">00.00</p>
+                      <p id="value-dout-4">00.00</p>
                       <p class="units">А</p>
                     </div>
                   </div>
@@ -348,7 +348,7 @@
                 <div class="d-flex justify-content-center">
                   <div class="d-flex justify-content-center">
                     <div class="card-text">
-                      <p id="current-dout-5">00.00</p>
+                      <p id="value-dout-5">00.00</p>
                       <p class="units">А</p>
                     </div>
                   </div>
@@ -364,7 +364,7 @@
                 <div class="d-flex justify-content-center">
                   <div class="d-flex justify-content-center">
                     <div class="card-text">
-                      <p id="current-dout-6">00.00</p>
+                      <p id="value-dout-6">00.00</p>
                       <p class="units">А</p>
                     </div>
                   </div>
@@ -380,7 +380,7 @@
                 <div class="d-flex justify-content-center">
                   <div class="d-flex justify-content-center">
                     <div class="card-text">
-                      <p id="current-dout-7">00.00</p>
+                      <p id="value-dout-7">00.00</p>
                       <p class="units">А</p>
                     </div>
                   </div>
@@ -396,7 +396,7 @@
                 <div class="d-flex justify-content-center">
                   <div class="d-flex justify-content-center">
                     <div class="card-text">
-                      <p id="current-dout-8">00.00</p>
+                      <p id="value-dout-8">00.00</p>
                       <p class="units">А</p>
                     </div>
                   </div>
@@ -414,7 +414,7 @@
                 <div class="d-flex justify-content-center">
                   <div class="d-flex justify-content-center">
                     <div class="card-text">
-                      <p id="current-dout-9">00.00</p>
+                      <p id="value-dout-9">00.00</p>
                       <p class="units">А</p>
                     </div>
                   </div>
@@ -430,7 +430,7 @@
                 <div class="d-flex justify-content-center">
                   <div class="d-flex justify-content-center">
                     <div class="card-text">
-                      <p id="current-dout-10">00.00</p>
+                      <p id="value-dout-10">00.00</p>
                       <p class="units">А</p>
                     </div>
                   </div>
@@ -446,7 +446,7 @@
                 <div class="d-flex justify-content-center">
                   <div class="d-flex justify-content-center">
                     <div class="card-text">
-                      <p id="current-dout-11">00.00</p>
+                      <p id="value-dout-11">00.00</p>
                       <p class="units">А</p>
                     </div>
                   </div>
@@ -462,7 +462,7 @@
                 <div class="d-flex justify-content-center">
                   <div class="d-flex justify-content-center">
                     <div class="card-text">
-                      <p id="current-dout-12">00.00</p>
+                      <p id="value-dout-12">00.00</p>
                       <p class="units">А</p>
                     </div>
                   </div>
@@ -480,7 +480,7 @@
                 <div class="d-flex justify-content-center">
                   <div class="d-flex justify-content-center">
                     <div class="card-text">
-                      <p id="current-dout-13">00.00</p>
+                      <p id="value-dout-13">00.00</p>
                       <p class="units">А</p>
                     </div>
                   </div>
@@ -496,7 +496,7 @@
                 <div class="d-flex justify-content-center">
                   <div class="d-flex justify-content-center">
                     <div class="card-text">
-                      <p id="current-dout-14">00.00</p>
+                      <p id="value-dout-14">00.00</p>
                       <p class="units">А</p>
                     </div>
                   </div>
@@ -512,7 +512,7 @@
                 <div class="d-flex justify-content-center">
                   <div class="d-flex justify-content-center">
                     <div class="card-text">
-                      <p id="current-dout-15">00.00</p>
+                      <p id="value-dout-15">00.00</p>
                       <p class="units">А</p>
                     </div>
                   </div>
@@ -528,7 +528,7 @@
                 <div class="d-flex justify-content-center">
                   <div class="d-flex justify-content-center">
                     <div class="card-text">
-                      <p id="current-dout-16">00.00</p>
+                      <p id="value-dout-16">00.00</p>
                       <p class="units">А</p>
                     </div>
                   </div>
@@ -546,7 +546,7 @@
                 <div class="d-flex justify-content-center">
                   <div class="d-flex justify-content-center">
                     <div class="card-text">
-                      <p id="current-dout-17">00.00</p>
+                      <p id="value-dout-17">00.00</p>
                       <p class="units">А</p>
                     </div>
                   </div>
@@ -562,7 +562,7 @@
                 <div class="d-flex justify-content-center">
                   <div class="d-flex justify-content-center">
                     <div class="card-text">
-                      <p id="current-dout-18">00.00</p>
+                      <p id="value-dout-18">00.00</p>
                       <p class="units">А</p>
                     </div>
                   </div>
@@ -578,7 +578,7 @@
                 <div class="d-flex justify-content-center">
                   <div class="d-flex justify-content-center">
                     <div class="card-text">
-                      <p id="current-dout-19">00.00</p>
+                      <p id="value-dout-19">00.00</p>
                       <p class="units">А</p>
                     </div>
                   </div>
@@ -594,7 +594,7 @@
                 <div class="d-flex justify-content-center">
                   <div class="d-flex justify-content-center">
                     <div class="card-text">
-                      <p id="current-dout-20">00.00</p>
+                      <p id="value-dout-20">00.00</p>
                       <p class="units">А</p>
                     </div>
                   </div>
@@ -603,7 +603,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="card col">
+            <div id="card-din" class="card col">
               <div class="card-body">
                 <p class="card-title">Цифровые входы</p>
                 <div class="card-icon">
@@ -700,7 +700,7 @@
                 <div class="d-flex justify-content-center">
                   <div class="d-flex justify-content-center">
                     <div class="card-text">
-                      <p id="current-uin-1">00.00</p>
+                      <p id="value-uin-1">00.00</p>
                       <p class="units">В</p>
                     </div>
                   </div>
@@ -716,7 +716,7 @@
                 <div class="d-flex justify-content-center">
                   <div class="d-flex justify-content-center">
                     <div class="card-text">
-                      <p id="current-uin-2">00.00</p>
+                      <p id="value-uin-2">00.00</p>
                       <p class="units">В</p>
                     </div>
                   </div>
@@ -732,7 +732,7 @@
                 <div class="d-flex justify-content-center">
                   <div class="d-flex justify-content-center">
                     <div class="card-text">
-                      <p id="current-uin-3">00.00</p>
+                      <p id="value-uin-3">00.00</p>
                       <p class="units">В</p>
                     </div>
                   </div>
@@ -748,7 +748,7 @@
                 <div class="d-flex justify-content-center">
                   <div class="d-flex justify-content-center">
                     <div class="card-text">
-                      <p id="current-uin-4">00.00</p>
+                      <p id="value-uin-4">00.00</p>
                       <p class="units">В</p>
                     </div>
                   </div>
@@ -924,7 +924,7 @@
     <script type="text/javascript" src="js/main.js"></script>
     <!--------------------------------------------------------------------------------------------------------------->
     <script>
-      //require('js/render');
+      //require('./js/render');
       //require('js/usb.js');
       //require('js/dfu.js');
       //require('js/bootloader.js');

@@ -1,11 +1,10 @@
 const fs       = require( 'fs' );
-const Settings = require( './settings.js' ).Settings;
+const settings = require( './settings.js' ).settings;
 const spawn    = require("child_process").spawn;
 function Toolchain () {
   let self       = this;
   let path       = '';
   let toolsList  = [];
-  let settings   = new Settings ();
   const pathFile = 'settings.json';
   const pathTemp = 'temp';
   this.run = async function ( name, source ) {
