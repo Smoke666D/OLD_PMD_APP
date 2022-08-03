@@ -37,7 +37,11 @@ function Settings () {
       document.getElementById( 'loading_auto' ),
       document.getElementById( 'luamin_spaces_enb' ),
       document.getElementById( 'luamin_endString_enb' ),
-      document.getElementById( 'luamin_names_enb' )
+      document.getElementById( 'luamin_names_enb' ),
+      document.getElementById( 'usb-uid' ),
+      document.getElementById( 'usb-pid' ),
+      document.getElementById( 'usb-timeout' ),
+      document.getElementById( 'usb-loop' )
     ];
     domList.forEach( function ( obj ) {
       obj.addEventListener( 'change', function () {
@@ -67,6 +71,7 @@ function Settings () {
     self.data.usb.uid       = document.getElementById( 'usb-uid' ).value;
     self.data.usb.pid       = document.getElementById( 'usb-pid' ).value;
     self.data.usb.timeout   = document.getElementById( 'usb-timeout' ).value;
+    self.data.usb.loop      = document.getElementById( 'usb-loop' ).checked;
     self.data.luamin.keys.forEach( function ( key ) {
       switch ( key.id ) {
         case "spaces":
@@ -94,6 +99,7 @@ function Settings () {
     document.getElementById( 'usb-uid' ).value        = self.data.usb.uid;
     document.getElementById( 'usb-pid' ).value        = self.data.usb.pid;
     document.getElementById( 'usb-timeout' ).value    = self.data.usb.timeout;
+    document.getElementById( 'usb-loop' ).checked     = self.data.usb.loop;
     self.data.luamin.keys.forEach( function ( key ) {
       switch ( key.id ) {
         case "spaces":

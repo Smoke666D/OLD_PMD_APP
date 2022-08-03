@@ -875,9 +875,16 @@
               <input type="number" id="usb-pid" class="form-control" onkeypress="return event.charCode >= 48">
             </div>
           </div>
+          <div class="col-sm-auto pos-name">
+            <label class="switch">
+              <input type="checkbox" class="check-input" id="usb-loop">
+              <span class="slider"></span>
+            </label>
+            <label class="form-check-label">Циклический опрос</label>
+          </div>
           <div class="row unselect">
             <div class="col-sm-2 pos-name">
-              <label>Период обновления</label>
+              <label>Период опроса</label>
             </div>
             <div class="col-sm">
               <input type="number" id="usb-timeout" class="form-control" onkeypress="return event.charCode >= 48">

@@ -1,3 +1,3 @@
 {"toolchainPath":"C:/PROJECTS/SIDER/LUA_SCRIPTS/UTIL/","libPath":"C:/PROJECTS/SIDER/LUA_SCRIPTS/","luacheck":{"enb":false,"type":"lua"},"lualink":{"enb":true,"type":"python","keys":[{"id":"source","key":"-s"},{"id":"out","key":"-o"},{"id":"linkfile","key":"-l"},{"id":"libpath","key":"-a"}]},"luamin":{"enb":true,"type":"python","keys":[{"id":"source","key":"-s"},{"id":"out","key":"-o"},{"id":"spaces","key":"-sp","enb":true},{"id":"endString","key":"-n","enb":true},{"id":"names","key":"-v","enb":true}]},"luamake":{"enb":true,"type":"python","keys":[{"id":"source","key":"-s"},{"id":"out","key":"-o"}]},
-"usb":{"pid":22352,"uid":1155,"timeout":4000},
+"usb":{"pid":22352,"uid":1155,"timeout":4000,"loop":false},
 "loading":{"auto":true,"enb":false}}
