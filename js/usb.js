@@ -16,7 +16,8 @@ const usbStat = {
   "wait"  : 1,
   "write" : 2,
   "read"  : 3,
-  "dash"  : 4 };
+  "dash"  : 4,
+  "error" : 5 };
 const usbHandler = {
   "finish"       : 1,
   "error"        : 2,
@@ -587,9 +588,14 @@ function PdmController () {
   }
   this.getStatus         = function () {
     let out = usbStat.dash
-    if ( loopActive == 0 ) {
-      out = transport.getStatus();
-    }
+    if ( connected == true ) {
+      out = usbStat.dash
+      if ( loopActive == 0 ) {
+        out = transport.getStatus();
+      }
+    } else {
+      out = usbStat.error;
+    }   
     return out;
   }
   this.close             = function () {
