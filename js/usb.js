@@ -10,6 +10,7 @@ const msgSTAT         = require('./usb-message.js').msgSTAT;
 const USB_DATA_SIZE   = require('./usb-message.js').USB_DATA_SIZE;
 const pdmDataAdr      = require('./pdm.js').pdmDataAdr;
 const settings        = require('./settings.js').settings;
+const pdm             = require('./pdm.js').pdm;
 /*----------------------------------------------------------------------------*/
 const usbStat = {
   "wait"  : 1,
@@ -271,7 +272,9 @@ function USBtransport () {
           result = output.isEnd();
           if ( result == usbHandler.continue )
           {
-            alert.setProgressBar( output.getProgress() );
+            if ( alert != null ) {
+              alert.setProgressBar( output.getProgress() );
+            }
             write( output.nextMessage() );
           }
         } else {
@@ -458,9 +461,9 @@ function PdmController () {
   var loopBusy   = 0;
   var connected  = false;
   /*---------------------------------------------*/  
-  function initWriteLuaSequency ( adr, data, callback ) {
-    let total   = Math.ceil( data.length / USB_DATA_SIZE );
-    let buffer  = data;
+  function initWriteSequency ( adr, data, callback ) {
+    let buffer  = pdm.lua;
+    let total   = Math.ceil( buffer.length / USB_DATA_SIZE );
     let out     = '';
     let length  = 0;
     let address = 0;
@@ -618,9 +621,8 @@ function PdmController () {
     writeSequency( 0, 0, alert, false, initWriteSequency );
     return;
   }
-  
   this.readOutput        = function () {
-    readSequency( 0, 0, null, true, initReadOutputSequency );
+    readSequency( 0, 0, null, true, initReadSequency );
     return;
   }
   this.receive           = function ( data = null, alertIn = null ) {
@@ -636,6 +638,7 @@ function PdmController () {
 let controller = new PdmController();
 //------------------------------------------------------------------------------
 module.exports.controller = controller;
+module.exports.usbStat    = usbStat;
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

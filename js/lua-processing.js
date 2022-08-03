@@ -1,9 +1,12 @@
 const fs           = require( 'fs' );
+const { pdm } = require('./pdm.js');
 const { dialog }   = require( 'electron' ).remote;
 const LuaCli       = require( './lua-cli.js' ).LuaCli;
 const ProgressStep = require( './ProgressStep.js' ).ProgressStep;
 const Toolchain    = require( './toolchain.js' ).Toolchain;
 const settings     = require( './settings.js' ).settings;
+const connect      = require( './render.js' ).connect;
+const usb          = require( './usb.js' );
 /*-----------------------------------------------------------------------------------*/
 let luacli       = new LuaCli( 'lua-cli' );
 let progressStep = new ProgressStep( 'progressStep-container' );
@@ -17,6 +20,7 @@ let lua = '';
 async function luaopen ( data ) {
   return new Promise( function ( resolve ) {
     let res  = false;
+    luacli.newLine( 'Openning ' );
     let path = dialog.showOpenDialog( { 
       title:      'Открыть lua',
       filters:    [{ name: 'lua', extensions: ['lua']}],
@@ -24,19 +28,21 @@ async function luaopen ( data ) {
     }).then( function ( result ) {
       if ( result.filePaths[0] != undefined ) {
         luaPath = result.filePaths[0];
-        luacli.newLine( 'Openning ' + luaPath + '...' );
+        luacli.add( ' ' + luaPath + '...' );
         fs.readFile( luaPath, 'utf8', function ( error, data ) {
           if ( error ) {
             resolve( [false, ''] );    
           }
           lua = data;
-          luacli.newLine( 'Done!' );
+          luacli.add( 'Done!' );
           resolve( [true, luaPath] );
         });
       } else {
+        luacli.add( '...Fail!' );
         resolve( [false, ''] );
       }
     }).catch( function ( error ) {
+      luacli.add( '...Fail! ' + error );
       resolve( [false, ''] );
     });
   });
@@ -120,13 +126,53 @@ async function luamake ( data ) {
 async function pdmconnect ( data ) {
   return new Promise( async function ( resolve ) {
     luacli.newLine( 'Try to connect to the PDM via USB...')
-    resolve( [true, ''] );
+    let state = await connect( false );
+    let res   = false;
+    if ( state == false ) {
+      luacli.add( 'Fail!' );
+    } else {
+      luacli.add( state );
+      res = true;
+    }
+    resolve( [res, ''] );
   });
 }
+
+function awaitUSB ( callback ) {
+  setTimeout( async function () {
+    let state = usb.controller.getStatus();
+    if ( ( state == usb.usbStat.wait ) || ( state == usb.usbStat.dash ) ) {
+      callback( true )
+    } else {
+      awaitUSB( callback );
+    }
+  }, 10 );
+  return;
+}
+
 async function pdmload ( data ) {
   return new Promise( async function ( resolve ) {
     luacli.newLine( 'Loading the lua script to the PDM...')
-    resolve( [true, ''] );
+    let state = usb.controller.getStatus();
+    fs.readFile( data, 'utf8', async function ( error, data ) {
+      if ( error ) {
+        resolve( [false, ''] );    
+      }
+      pdm.lua = data;
+      if ( ( state == usb.usbStat.wait ) || ( state == usb.usbStat.dash ) ) {
+        usb.controller.send( null );
+        awaitUSB( function ( result ) {
+          if ( result == true ) {
+            luacli.add( 'Done!' );
+            resolve( [true, ''] );
+          } else {
+            luacli.add( 'Fail!' );
+            resolve( [false, ''] );
+          } 
+        });
+        
+      }
+    });
   });
 }
 /*-----------------------------------------------------------------------------------*/
@@ -162,6 +208,7 @@ function LuaProcess ( icli, iprogress ) {
   this.start = async function () {
     let res = true;
     let out = '';
+    progress.clean();
     for ( var i=0; i<luaStages.length && res==true; i++ ) {
       [res, out] = await procStage( luaStages[i].callback, ( i == ( luaStages.length - 1 ) ), prevOut );
       if ( out != '' ) {

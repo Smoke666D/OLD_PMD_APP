@@ -4,7 +4,9 @@ const render  = require('./render.js');
 
 
 let settings = new Settings ( function () { 
-  render.dashLoop(); 
+  if ( settings.data.usb.loop ) {
+    render.dashLoop(); 
+  }
   return;
 });
 

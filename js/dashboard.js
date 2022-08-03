@@ -375,7 +375,6 @@ function Dashboard () {
   this.update = function () {
     updateCards();
     updateValues();
-    console.log( 'her' )
     return;
   }
   function updateCards () {

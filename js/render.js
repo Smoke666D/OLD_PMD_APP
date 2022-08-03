@@ -126,23 +126,32 @@ function autoModeCallback () {
 }
 function connectUpdate () {
   let state = usb.controller.getStatus();
+  let alert = new Alert( "alert-warning", triIco, "ghe", 0, 0 );
   if ( ( state == 1 ) || ( state == 4 ) ) {
     let alert = new Alert( "alert-warning", triIco, "Загрузка", 0, 1 );
     usb.controller.receive( null, alert );
   }
   return;
 }
-function connect () {
-  if ( usb.controller.isConnected() == false ) {
-    let res = usb.controller.init( parsingFullMessages, outCallback, errorCalback, unauthorizedCallback, forbiddenCallback, autoModeCallback );
-    if ( res == 1 ) {
-      setTimeout( function () {
-        setSuccessConnection();
-        connectUpdate();
-      }, 400 );
+function connect ( readAtStart = true ) {
+  return new Promise( async function ( resolve ) {
+    if ( usb.controller.isConnected() == false ) {
+      let res = usb.controller.init( parsingFullMessages, outCallback, errorCalback, unauthorizedCallback, forbiddenCallback, autoModeCallback );
+      if ( res == 1 ) {
+        setTimeout( function () {
+          setSuccessConnection();
+          if ( readAtStart ) {
+            connectUpdate();
+          }
+          resolve( 'Done!' );
+        }, 400 );
+      } else {
+        resolve( false );
+      }
+    } else {
+      resolve( 'already open' );
     }
-  }
-  return;
+  });
 }
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
