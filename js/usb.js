@@ -39,10 +39,16 @@ function MessageUnit ( data, adr ) {
 /*----------------------------------------------------------------------------*/
 function MessageArray () {
   /*------------------ Private ------------------*/
-  var self     = this;
   var sequence = [];
   var counter  = 0;
   /*------------------- Pablic ------------------*/
+  this.print = function () {
+    sequence.forEach( function ( item ) {
+      console.log( item );
+    })
+    console.log( counter );
+    return;
+  }
   this.getCurrentAdr = function () {
     if ( sequence.len == 0 ) {
       return 0xFFFF;
@@ -101,6 +107,10 @@ function InputMessageArray () {
   var response = new MessageArray();
   var request  = new MessageArray();
   /*------------------- Pablic ------------------*/
+  this.printRequests = function () {
+    request.print();
+    return;
+  }
   this.getCurrentAdr = function () {
     return response.getCurrentAdr();
   }
@@ -320,6 +330,10 @@ function USBtransport () {
   /*---------------------------------------------*/
   /*------------------- Pablic ------------------*/
   /*---------------------------------------------*/
+  this.printRequests = function () {
+    input.printRequests();
+    return;
+  }
   this.scan        = function ( success, fail ) {
     var devices = HID.devices();
     var res     = 0;
@@ -627,9 +641,7 @@ function PdmController () {
 //------------------------------------------------------------------------------
 let controller = new PdmController();
 //------------------------------------------------------------------------------
-//module.exports.PdmController = PdmController;
-module.exports.controller    = controller;
-//module.exports.Transport     = USBtransport;
+module.exports.controller = controller;
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
