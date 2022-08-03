@@ -11,10 +11,6 @@ const USB_DATA_SIZE   = require('./usb-message.js').USB_DATA_SIZE;
 const pdmDataAdr      = require('./pdm.js').pdmDataAdr;
 const settings        = require( './settings.js' ).settings;
 /*----------------------------------------------------------------------------*/
-const chartsLength = 3;
-const loopTimeout  = 4000;
-var   charts       = [];
-/*----------------------------------------------------------------------------*/
 const usbStat = {
   "wait"  : 1,
   "write" : 2,
@@ -603,7 +599,7 @@ function PdmController () {
     return;
   }
   this.getLoopTimeout    = function () {
-    return loopTimeout;
+    return settings.data.usb.timeout;
   }
   this.loop              = function () {
     if ( ( loopActive > 0 ) && ( loopBusy == 0 ) ) {
@@ -614,9 +610,6 @@ function PdmController () {
   }
   this.getInput          = function () {
     return transport.getInput();
-  }
-  this.getMode           = function ( callback ) {
-
   }
   this.send              = function ( alertIn = null ) {
     this.disableLoop();

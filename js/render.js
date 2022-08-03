@@ -1,16 +1,11 @@
-const remote = require('electron').remote;
-var HID      = require('node-hid');
-var usb      = require('./usb.js');
-var alerts   = require('./alerts.js');
-var Alert    = require('./alerts.js').Alert;
-var pdm      = require('./pdm.js');
-
-//const USBMessage              = require('./usb-message.js').USBMessage;
-//const USB_DATA_SIZE           = require('./usb-message.js').USB_DATA_SIZE;
-//const USB_CHART_HEADER_LENGTH = require('./usb-message.js').USB_CHART_HEADER_LENGTH;
-//const USB_DATA_BYTE           = require('./usb-message.js').USB_DATA_BYTE;
-const msgType                 = require('./usb-message.js').msgType;
-const dashboard               = require('./dashboard.js').dashboard;
+const remote    = require('electron').remote;
+var HID         = require('node-hid');
+var usb         = require('./usb.js');
+var alerts      = require('./alerts.js');
+var Alert       = require('./alerts.js').Alert;
+var pdm         = require('./pdm.js');
+const msgType   = require('./usb-message.js').msgType;
+const dashboard = require('./dashboard.js').dashboard;
 
 var loopCounter = 0;
 var loopTimeout = 100;

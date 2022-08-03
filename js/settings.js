@@ -66,6 +66,7 @@ function Settings () {
     self.data.loading.enb   = document.getElementById( 'loading_auto' ).checked;
     self.data.usb.uid       = document.getElementById( 'usb-uid' ).value;
     self.data.usb.pid       = document.getElementById( 'usb-pid' ).value;
+    self.data.usb.timeout   = document.getElementById( 'usb-timeout' ).value;
     self.data.luamin.keys.forEach( function ( key ) {
       switch ( key.id ) {
         case "spaces":
@@ -92,6 +93,7 @@ function Settings () {
     document.getElementById( 'loading_auto' ).checked = self.data.loading.enb;
     document.getElementById( 'usb-uid' ).value        = self.data.usb.uid;
     document.getElementById( 'usb-pid' ).value        = self.data.usb.pid;
+    document.getElementById( 'usb-timeout' ).value    = self.data.usb.timeout;
     self.data.luamin.keys.forEach( function ( key ) {
       switch ( key.id ) {
         case "spaces":

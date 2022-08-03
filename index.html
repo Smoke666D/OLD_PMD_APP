@@ -875,6 +875,14 @@
               <input type="number" id="usb-pid" class="form-control" onkeypress="return event.charCode >= 48">
             </div>
           </div>
+          <div class="row unselect">
+            <div class="col-sm-2 pos-name">
+              <label>Период обновления</label>
+            </div>
+            <div class="col-sm">
+              <input type="number" id="usb-timeout" class="form-control" onkeypress="return event.charCode >= 48">
+            </div>
+          </div>
         </div>
         <!------------------------------------------------------------------------------------------------------------->
         <div id="firmwarePage" class="content-data hidden electron">
@@ -938,13 +946,6 @@
     <script type="text/javascript" src="js/sidebar.js"></script>
     <script type="text/javascript" src="js/window-buttons.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
-    <!--------------------------------------------------------------------------------------------------------------->
-    <script>
-      //require('./js/render');
-      //require('js/usb.js');
-      //require('js/dfu.js');
-      //require('js/bootloader.js');
-    </script>
     <!--------------------------------------------------------------------------------------------------------------->
   </body>
 </html>
