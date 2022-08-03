@@ -64,6 +64,8 @@ function Settings () {
     self.data.luamin.enb    = document.getElementById( 'luamin_enb' ).checked;
     self.data.luamake.enb   = document.getElementById( 'luamake_enb' ).checked;
     self.data.loading.enb   = document.getElementById( 'loading_auto' ).checked;
+    self.data.usb.uid       = document.getElementById( 'usb-uid' ).value;
+    self.data.usb.pid       = document.getElementById( 'usb-pid' ).value;
     self.data.luamin.keys.forEach( function ( key ) {
       switch ( key.id ) {
         case "spaces":
@@ -88,6 +90,8 @@ function Settings () {
     document.getElementById( 'luamin_enb' ).checked   = self.data.luamin.enb;
     document.getElementById( 'luamake_enb' ).checked  = self.data.luamake.enb;
     document.getElementById( 'loading_auto' ).checked = self.data.loading.enb;
+    document.getElementById( 'usb-uid' ).value        = self.data.usb.uid;
+    document.getElementById( 'usb-pid' ).value        = self.data.usb.pid;
     self.data.luamin.keys.forEach( function ( key ) {
       switch ( key.id ) {
         case "spaces":

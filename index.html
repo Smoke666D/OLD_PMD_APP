@@ -859,6 +859,22 @@
               <label class="form-check-label">Автоматическое определение устройства</label>
             </div>
           </div>
+          <div class="row unselect">
+            <div class="col-sm-2 pos-name">
+              <label>UID</label>
+            </div>
+            <div class="col-sm">
+              <input type="number" id="usb-uid" class="form-control" onkeypress="return event.charCode >= 48">
+            </div>
+          </div>
+          <div class="row unselect">
+            <div class="col-sm-2 pos-name">
+              <label>PID</label>
+            </div>
+            <div class="col-sm">
+              <input type="number" id="usb-pid" class="form-control" onkeypress="return event.charCode >= 48">
+            </div>
+          </div>
         </div>
         <!------------------------------------------------------------------------------------------------------------->
         <div id="firmwarePage" class="content-data hidden electron">
