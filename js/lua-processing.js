@@ -142,9 +142,13 @@ function awaitUSB ( callback ) {
   setTimeout( async function () {
     let state = usb.controller.getStatus();
     if ( ( state == usb.usbStat.wait ) || ( state == usb.usbStat.dash ) ) {
-      callback( true )
+      callback( true );
     } else {
-      awaitUSB( callback );
+      if ( usb.controller.isConnected() == true ) {
+        awaitUSB( callback );
+      } else {
+        callback( false );
+      }
     }
   }, 10 );
   return;
