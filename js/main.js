@@ -1,7 +1,6 @@
 var connectInit = require('./js/render.js').connectPDMinit;
-const dashLoop  = require('./js/render.js').dashLoop;
 const luaproc   = require('./js/lua-processing.js').luaproc;
-const settings  = require( './settings.js' ).settings;
+const settings  = require( './js/settings.js' ).settings;
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -21,13 +20,7 @@ function processingScript () {
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-if ( settings.data.usb.loop ) {
-	dashLoop();
-}
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-document.addEventListener( "DOMContentLoaded", function( event ) {
+document.addEventListener( "DOMContentLoaded", async function( event ) {
   /*
 	$( function () {
 		$( '[data-toggle="tooltip"]' ).tooltip( {

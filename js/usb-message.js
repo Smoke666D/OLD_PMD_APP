@@ -45,14 +45,6 @@ function USBMessage ( buffer ) {
   this.data    = [];     /* Data of message      */
   this.buffer  = buffer; /* Copy input buffer    */
   /*---------------------------------------------*/
-  function byteToFloat ( data ) {
-    var buf  = new ArrayBuffer( 4 );
-    var view = new DataView( buf );
-    data.forEach( function ( byte, i ) {
-      view.setUint8( i, byte );
-    });
-    return view.getFloat32( 0 );
-  }
   function byteToUint16 ( byte0, byte1 ) {
     return ( byte0 & 0xFF ) | ( ( byte1 & 0xFF ) << 8 );
   }
@@ -233,9 +225,12 @@ function USBMessage ( buffer ) {
   function parseLua () {
 
   }
-  function parseData ( reg ) {
-    reg = byteToFloat( self.data );
-    return;
+  function parseData () {
+    let out = [];
+    for ( var i=0; i<self.length; i++ ) {
+      out.push( self.data[i] );
+    }
+    return out;
   }
   /*--------------------------------------------------------------------------*/
   this.init = function ( callback ) {

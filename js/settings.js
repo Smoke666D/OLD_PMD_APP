@@ -1,8 +1,14 @@
 const fs = require( 'fs' );
+const render  = require('./render.js');
 
-let settings = new Settings ();
 
-function Settings () {
+
+let settings = new Settings ( function () { 
+  render.dashLoop(); 
+  return;
+});
+
+function Settings ( callback ) {
   const pathFile = 'settings.json';
   let   self     = this;
   let   domList  = [];
@@ -14,8 +20,9 @@ function Settings () {
       fs.readFile( pathFile, 'utf-8', async function ( error, data ) {
         if ( error == null ) {
           self.data  = JSON.parse( data );
-          this.ready = true;
           writeToDom();
+          this.ready = true;
+          callback();
           resolve();
         } else {
           readFromDom();

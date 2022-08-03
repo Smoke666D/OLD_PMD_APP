@@ -9,7 +9,7 @@ const msgCMD          = require('./usb-message.js').msgCMD;
 const msgSTAT         = require('./usb-message.js').msgSTAT;
 const USB_DATA_SIZE   = require('./usb-message.js').USB_DATA_SIZE;
 const pdmDataAdr      = require('./pdm.js').pdmDataAdr;
-const settings        = require( './settings.js' ).settings;
+const settings        = require('./settings.js').settings;
 /*----------------------------------------------------------------------------*/
 const usbStat = {
   "wait"  : 1,
@@ -314,11 +314,12 @@ function USBtransport () {
         }
         write( input.nextRequest() );
         result = usbHandler.continue;
-      }
-      if ( ( result == usbHandler.error ) || ( result == usbHandler.unauthorized ) ) {
+      } else if ( ( result == usbHandler.error ) || ( result == usbHandler.unauthorized ) ) {
         if ( ( alert != null ) || ( alert != undefined ) ) {
           alert.close( 0 );
         }
+      } else {
+        //console.log( result )
       }
     });
     return result;

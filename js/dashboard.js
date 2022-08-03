@@ -346,26 +346,56 @@ const values = [
   },
 ];
 /*----------------------------------------------------------------------------*/
+function byteToFloat ( data ) {
+  let out = 0;
+  if ( data.length == 4 ) {
+    var buf  = new ArrayBuffer( 4 );
+    var view = new DataView( buf );
+    for ( var i=0; i<4; i++ ) {
+      view.setUint8( i, data[3-i] );
+    }
+    out = view.getFloat32( 0 );
+  }
+  return out;
+}
+/*----------------------------------------------------------------------------*/
+function mergeBytes ( data ) {
+  let index = '';
+  if ( data.length > 0 ) {
+    data.forEach( function ( val ) {
+      index = val.toString();
+    });
+  } else {
+    index = '0';
+  }
+  return parseInt( index );
+}
+/*----------------------------------------------------------------------------*/
 function Dashboard () {
   this.update = function () {
     updateCards();
     updateValues();
+    console.log( 'her' )
     return;
   }
   function updateCards () {
     cards.forEach( function ( card ) {
       if ( card.type != null ) {
-        let obj  = document.getElementByID( card.id );
-        let data = pdm.data[card.adr];
+        let obj  = document.getElementById( card.id );
+        let data = mergeBytes( pdm.data[card.adr] );
         if ( 'shif' in Object.keys( card ) ) {
           data = ( data >> card.shif ) & 0x1;
         }
         switch ( card.type ) {
           case 'class':
             card.dic.forEach( function ( cl ) {
-              obj.classList.remove( cl );
+              if ( obj.classList.value.indexOf( cl ) > 0 ) {
+                obj.classList.remove( cl );
+              }
             });
-            obj.classList.add( card.dic[data] );
+            if ( card.dic[data].length > 0 ) {
+              obj.classList.add( card.dic[data] );
+            }
             break;
         } 
       }
@@ -378,13 +408,13 @@ function Dashboard () {
       let data = pdm.data[value.adr];
       switch ( value.type ) {
         case 'float':
-          obj.innerText = data.toFixed( 2 );
+          obj.innerText = byteToFloat( data ).toFixed( 2 );
           break;
         case 'bool':
-          obj.innerText = value.dic[ ( data >> value.shif ) & 0x01 ];
+          obj.innerText = value.dic[ ( mergeBytes( data ) >> value.shif ) & 0x01 ];
           break;
         case 'string':
-          obj.innerText = value.dic[data];
+          obj.innerText = value.dic[mergeBytes( data )];
           break;
       }
     });

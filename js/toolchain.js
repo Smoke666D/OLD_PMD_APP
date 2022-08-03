@@ -8,7 +8,6 @@ function Toolchain () {
   const pathFile = 'settings.json';
   const pathTemp = 'temp';
   this.run = async function ( name, source ) {
-    console.log( source )
     return new Promise( async function ( resolve ) {
       let exist = false;
       for ( var key in settings.data ) {

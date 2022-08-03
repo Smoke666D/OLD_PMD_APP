@@ -3,7 +3,7 @@ var HID         = require('node-hid');
 var usb         = require('./usb.js');
 var alerts      = require('./alerts.js');
 var Alert       = require('./alerts.js').Alert;
-var pdm         = require('./pdm.js');
+var pdm         = require('./pdm.js').pdm;
 const msgType   = require('./usb-message.js').msgType;
 const dashboard = require('./dashboard.js').dashboard;
 
@@ -70,7 +70,7 @@ function parsingFullMessages () {
   pdm.lua    = '';
   for ( var i=0; i<buffer.length; i++ ) {
     buffer[i].init( function() {
-      let out = buffer[i].parse( dataReg );
+      let out = buffer[i].parse();
       switch ( out[0] ) {
         case msgType.lua:
           pdm.lua += out[1];
