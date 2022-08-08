@@ -233,6 +233,7 @@ function USBtransport () {
   this.errorCounter  = 0;
   /*------------------ Private ------------------*/
   function write ( data ) {
+    console.log( data )
     if ( device != null ) {
       try {
         device.write( data );
@@ -489,6 +490,9 @@ function PdmController () {
       transport.addToOutput( msg );
       address += USB_DATA_SIZE;
     }
+    msg = new USBMessage( [] );
+    msg.codeTerminator( address + 1 );
+    transport.addToOutput( msg );
     /*---------------------------------------------*/
     msg = new USBMessage( [] );
     msg.codeFinishWriting();

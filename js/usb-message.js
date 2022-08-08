@@ -263,8 +263,11 @@ function USBMessage ( buffer ) {
     for ( var i=0; i<length; i++ ) {
       data.push( script[i].charCodeAt() & 0xFF );
     }
-    makeResponse( msgCMD.USB_REPORT_CMD_WRITE_SCRIPT, adr, data, data.length );
+    makeResponse( msgCMD.USB_REPORT_CMD_WRITE_SCRIPT, adr, data, length );
     return;
+  }
+  this.codeTerminator = function ( adr ) {
+    makeResponse( msgCMD.USB_REPORT_CMD_WRITE_SCRIPT, adr, [ 0 ], 1 );
   }
   this.parse = function () {
     var output = 0;
