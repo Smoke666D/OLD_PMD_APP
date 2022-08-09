@@ -24,7 +24,11 @@ function Toolchain () {
           }
           if ( toolsList.includes( name ) ) {
             let message = await runPython( ( path + name ), options, source )
-            resolve( [true, null, message ] );
+            if ( message != "Fail" ) {
+              resolve( [true, null, message ] );
+            } else {
+              resolve( [false, "Python script error", null ] );
+            }
           } else {
             resolve( [false, "Script doesn't exist in the filesystem", null] );
           }
@@ -79,12 +83,17 @@ function Toolchain () {
             break;    
         }
       });
+      console.log( args )
       const pythonProcess = spawn( options.type, args );
       pythonProcess.stdout.on( 'data', function ( data ) {
         str = data.toString();
       });
       pythonProcess.on( 'close', function ( code ) {
-        resolve( str );
+        if ( code == 0 ){
+          resolve( str );
+        } else {
+          resolve( 'Fail' );
+        }
       });
     });
   }
