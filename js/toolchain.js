@@ -39,6 +39,24 @@ function Toolchain () {
   this.clean = function () {
     return;
   }
+  this.init = function () {
+    return new Promise( async function ( resolve ) {
+      await settings.init();
+      path = settings.data.toolchainPath;
+      fs.readdir( path, function ( error, list ) {
+        if ( error == null ) {
+          list.forEach( function ( item ) {
+            if ( ( item.endsWith( '.py' ) ) && ( item.startsWith( 'lua' ) ) ) {
+              toolsList.push( item );
+            }
+          });
+          resolve( true );
+        } else {
+          resolve( false );
+        }
+      });
+    });
+  }
   async function runPython ( name, options, source ) {
     return new Promise( async function ( resolve ) {
       let str  = '';
@@ -81,21 +99,7 @@ function Toolchain () {
       }
     });
   }
-  async function init () {
-    await settings.init();
-    path = settings.data.toolchainPath;
-    fs.readdir( path, function ( error, list ) {
-      if ( error == null ) {
-        list.forEach( function ( item ) {
-          if ( ( item.endsWith( '.py' ) ) && ( item.startsWith( 'lua' ) ) ) {
-            toolsList.push( item );
-          }
-        });
-      }
-    });
-    return;
-  }
-  init();
+  self.init();
   return;
 }
 module.exports.Toolchain = Toolchain;

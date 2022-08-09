@@ -47,7 +47,6 @@ async function luaopen ( data ) {
     });
   });
 }
-
 async function runTool ( name, path ) {
   return new Promise( async function ( resolve ) {
     let res = true;
@@ -137,7 +136,6 @@ async function pdmconnect ( data ) {
     resolve( [res, ''] );
   });
 }
-
 function awaitUSB ( callback ) {
   setTimeout( async function () {
     let state = usb.controller.getStatus();
@@ -153,7 +151,6 @@ function awaitUSB ( callback ) {
   }, 10 );
   return;
 }
-
 async function pdmload ( data ) {
   return new Promise( async function ( resolve ) {
     luacli.newLine( 'Loading the lua script to the PDM...')
@@ -213,6 +210,7 @@ function LuaProcess ( icli, iprogress ) {
     let res = true;
     let out = '';
     progress.clean();
+    toolchain.init();
     for ( var i=0; i<luaStages.length && res==true; i++ ) {
       [res, out] = await procStage( luaStages[i].callback, ( i == ( luaStages.length - 1 ) ), prevOut );
       if ( out != '' ) {
