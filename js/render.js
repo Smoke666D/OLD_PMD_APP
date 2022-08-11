@@ -6,6 +6,7 @@ var Alert       = require('./alerts.js').Alert;
 var pdm         = require('./pdm.js').pdm;
 const msgType   = require('./usb-message.js').msgType;
 const dashboard = require('./dashboard.js').dashboard;
+const settings  = require('./settings.js').settings;
 
 var loopCounter = 0;
 var loopTimeout = 100;

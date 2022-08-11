@@ -586,7 +586,8 @@ function PdmController () {
     return;
   }
   this.resetLoopBusy     = function () {
-    loopBusy = 0;
+    loopActive = 1;
+    loopBusy   = 0;
     return;
   }
   this.getStatus         = function () {
@@ -615,9 +616,13 @@ function PdmController () {
     return settings.data.usb.timeout;
   }
   this.loop              = function () {
+    console.log( 'active = ' + loopActive + ' busy = ' + loopBusy)
     if ( ( loopActive > 0 ) && ( loopBusy == 0 ) ) {
-      loopBusy = 1;
-      this.readOutput();
+      if ( settings.data.usb.loop == true ) {
+        console.log( 'her' );
+        loopBusy = 1;
+        this.readOutput();
+      }
     }
     return;
   }

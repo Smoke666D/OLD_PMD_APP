@@ -165,9 +165,11 @@ async function pdmload ( data ) {
         awaitUSB( function ( result ) {
           if ( result == true ) {
             luacli.add( 'Done!' );
+            usb.controller.resetLoopBusy();
             resolve( [true, ''] );
           } else {
             luacli.add( 'Fail!' );
+            usb.controller.resetLoopBusy();
             resolve( [false, ''] );
           } 
         });

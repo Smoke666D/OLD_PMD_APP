@@ -398,9 +398,10 @@ function mergeBytes ( data ) {
 }
 /*----------------------------------------------------------------------------*/
 function Dashboard () {
-  this.update = function () {
+  this.update = function ( callback ) {
     updateCards();
     updateValues();
+    callback();
     return;
   }
   function updateCards () {
