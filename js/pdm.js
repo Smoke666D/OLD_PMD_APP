@@ -29,8 +29,10 @@ const pdmDataAdr = {
   "DATA_ADR_VOLTAGE_3"   : 27,
   "DATA_ADR_DIN"         : 28,
   "DATA_ADR_DOUT"        : 29,
-  "DATA_ADR_STATUS"      : 30,
-  "DATA_ADR_LUA"         : 31
+  "DATA_ADR_LUA_STATUS"  : 30,
+  "DATA_ADR_LUA_ERROR"   : 31,
+  "DATA_ADR_LUA_TIME"          : 32,
+  "DATA_ADR_LUA_ERROR_COUNTER" : 33
 };
 
 function PDM () {

@@ -6,12 +6,12 @@ const cardDic = [ '', 'bg-success' ];
 const cards = [
   {
     'id'   : 'card-status',
-    'adr'  : pdmAdr.DATA_ADR_STATUS,
+    'adr'  : pdmAdr.DATA_ADR_LUA_STATUS,
     'type' : 'class',
     'dic'  : [ '' ]
   },{
     'id'   : 'card-lua',
-    'adr'  : pdmAdr.DATA_ADR_LUA,
+    'adr'  : pdmAdr.DATA_ADR_LUA_ERROR,
     'type' : 'class',
     'dic'  : [ '' ]
   },{
@@ -163,12 +163,12 @@ const cards = [
 const values = [
   {
     'id'   : 'value-status',
-    'adr'  : pdmAdr.DATA_ADR_STATUS,
+    'adr'  : pdmAdr.DATA_ADR_LUA_STATUS,
     'type' : 'string',
     'dic'  : [ 'ok' ]
   },{
     'id'   : 'value-lua',
-    'adr'  : pdmAdr.DATA_ADR_LUA,
+    'adr'  : pdmAdr.DATA_ADR_LUA_ERROR,
     'type' : 'string',
     'dic'  : [ 'ok' ]
   },{
@@ -373,7 +373,7 @@ function mergeBytes ( data ) {
 /*----------------------------------------------------------------------------*/
 function Dashboard () {
   this.update = function () {
-    updateCards();
+    //updateCards();
     updateValues();
     return;
   }

@@ -67,7 +67,13 @@ function Toolchain () {
       workspace = await makeTempFolder();
       args      = [ name ];
       options.keys.forEach( function ( key ) {
-        args.push( key.key );
+        if ( ( 'enb' in key ) == true ) {
+          if ( key.enb == true ) {
+            args.push( key.key );
+          }
+        } else {
+          args.push( key.key );
+        }
         switch ( key.id ) {
           case 'source':
             args.push( source );
@@ -83,12 +89,11 @@ function Toolchain () {
             break;    
         }
       });
-      console.log( args )
       const pythonProcess = spawn( options.type, args );
       pythonProcess.stdout.on( 'data', function ( data ) {
         str = data.toString();
       });
-      pythonProcess.on( 'close', function ( code ) {
+      pythonProcess.on( 'close', function ( code, mes ) {
         if ( code == 0 ){
           resolve( str );
         } else {
