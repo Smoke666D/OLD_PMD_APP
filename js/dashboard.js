@@ -15,14 +15,17 @@ const cards = [
     'id'   : 'card-runTime',
     'adr'  : null,
     'type' : null,
+    'dic'  : []
   },{
     'id'   : 'card-errorCounter',
     'adr'  : null,
     'type' : null,
+    'dic'  : []
   },{
     'id'   : 'card-battery',
     'adr'  : null,
-    'type' : null
+    'type' : null,
+    'dic'  : []
   },{
     'id'   : 'card-dout-1',
     'adr'  : pdmAdr.DATA_ADR_DOUT,
@@ -146,23 +149,28 @@ const cards = [
   },{
     'id'   : 'card-din',
     'adr'  : null,
-    'type' : null
+    'type' : null,
+    'dic'  : []
   },{
     'id'   : 'card-uin-1',
     'adr'  : null,
-    'type' : null
+    'type' : null,
+    'dic'  : []
   },{
     'id'   : 'card-uin-2',
     'adr'  : null,
-    'type' : null
+    'type' : null,
+    'dic'  : []
   },{
     'id'   : 'card-uin-3',
     'adr'  : null,
-    'type' : null
+    'type' : null,
+    'dic'  : []
   },{
     'id'   : 'card-uin-4',
     'adr'  : null,
-    'type' : null
+    'type' : null,
+    'dic'  : []
   },
 ]
 const values = [
@@ -174,7 +182,7 @@ const values = [
   },{
     'id'   : 'value-runTime',
     'adr'  : pdmAdr.DATA_ADR_LUA_TIME,
-    'type' : 'uint32',
+    'type' : 'time',
   },{
     'id'   : 'value-errorCounter',
     'adr'  : pdmAdr.DATA_ADR_LUA_ERROR_COUNTER,
@@ -391,7 +399,7 @@ function mergeBytes ( data ) {
 /*----------------------------------------------------------------------------*/
 function Dashboard () {
   this.update = function () {
-    //updateCards();
+    updateCards();
     updateValues();
     return;
   }
@@ -410,8 +418,10 @@ function Dashboard () {
                 obj.classList.remove( cl );
               }
             });
-            if ( card.dic[data].length > 0 ) {
-              obj.classList.add( card.dic[data] );
+            if ( card.dic.length >= data ) {
+              if ( card.dic[data] != '' ) {
+                obj.classList.add( card.dic[data] );
+              }
             }
             break;
         } 
@@ -438,7 +448,10 @@ function Dashboard () {
           break;
         case 'uint32':
           obj.innerText = bytesToUint32( data ).toString();
-          break;    
+          break;
+        case 'time':
+          obj.innerText = ( bytesToUint32( data ) * 10 ).toString();
+          break;
       }
     });
     return;

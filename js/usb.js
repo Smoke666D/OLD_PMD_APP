@@ -233,7 +233,6 @@ function USBtransport () {
   this.errorCounter  = 0;
   /*------------------ Private ------------------*/
   function write ( data ) {
-    console.log( data )
     if ( device != null ) {
       try {
         device.write( data );
