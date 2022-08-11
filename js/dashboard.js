@@ -1,19 +1,24 @@
 var pdm    = require('./pdm.js').pdm;
 var pdmAdr = require('./pdm.js').pdmDataAdr;
 
+const statusDic     = ['Init', 'Run'       , 'Error'    , 'Stop'       , 'Restart' ];
+const statusCardDic = [''    , 'bg-success', 'bg-danger',  'bg-warning', ''        ]; 
 const boolDic = [ '✕', '✓' ];
 const cardDic = [ '', 'bg-success' ];
 const cards = [
   {
-    'id'   : 'card-status',
+    'id'   : 'card-lua',
     'adr'  : pdmAdr.DATA_ADR_LUA_STATUS,
     'type' : 'class',
-    'dic'  : [ '' ]
+    'dic'  : statusCardDic
   },{
-    'id'   : 'card-lua',
-    'adr'  : pdmAdr.DATA_ADR_LUA_ERROR,
-    'type' : 'class',
-    'dic'  : [ '' ]
+    'id'   : 'card-runTime',
+    'adr'  : null,
+    'type' : null,
+  },{
+    'id'   : 'card-errorCounter',
+    'adr'  : null,
+    'type' : null,
   },{
     'id'   : 'card-battery',
     'adr'  : null,
@@ -162,15 +167,18 @@ const cards = [
 ]
 const values = [
   {
-    'id'   : 'value-status',
+    'id'   : 'value-lua',
     'adr'  : pdmAdr.DATA_ADR_LUA_STATUS,
     'type' : 'string',
-    'dic'  : [ 'ok' ]
+    'dic'  : statusDic
   },{
-    'id'   : 'value-lua',
-    'adr'  : pdmAdr.DATA_ADR_LUA_ERROR,
-    'type' : 'string',
-    'dic'  : [ 'ok' ]
+    'id'   : 'value-runTime',
+    'adr'  : pdmAdr.DATA_ADR_LUA_TIME,
+    'type' : 'uint32',
+  },{
+    'id'   : 'value-errorCounter',
+    'adr'  : pdmAdr.DATA_ADR_LUA_ERROR_COUNTER,
+    'type' : 'uint8',
   },{
     'id'   : 'value-battery',
     'adr'  : pdmAdr.DATA_ADR_VOLTAGE_BAT,
@@ -359,6 +367,16 @@ function byteToFloat ( data ) {
   return out;
 }
 /*----------------------------------------------------------------------------*/
+function bytesToUint32 ( data ) {
+  let out = 0;
+  if ( data.length == 4 ) {
+    for ( var i=0; i<4; i++ ) {
+      out += data[i] << ( i * 8 );
+    }
+  }
+  return out;
+}
+/*----------------------------------------------------------------------------*/
 function mergeBytes ( data ) {
   let index = '';
   if ( data.length > 0 ) {
@@ -415,6 +433,12 @@ function Dashboard () {
         case 'string':
           obj.innerText = value.dic[mergeBytes( data )];
           break;
+        case 'uint8':
+          obj.innerText = data[0].toString();
+          break;
+        case 'uint32':
+          obj.innerText = bytesToUint32( data ).toString();
+          break;    
       }
     });
     return;

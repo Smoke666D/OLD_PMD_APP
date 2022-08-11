@@ -229,17 +229,6 @@
         <!------------------------------------------------------------------------------------------------------------->
         <div id="scadaPage" class="content-data hidden electron">
           <div class="row">
-            <div id="card-status" class="card col">
-              <div class="card-body">
-                <p class="card-title">Cтатус</p>
-                <div class="card-icon">
-                  <i class="fa-solid fa-info"></i>
-                </div>
-                <div class="d-flex justify-content-center">
-                  <p id="value-status" class="card-text">NaN</p>
-                </div>
-              </div>
-            </div>
             <div id="card-lua" class="card col">
               <div class="card-body">
                 <p class="card-title">LUA</p>
@@ -251,20 +240,37 @@
                 </div>
               </div>
             </div>
-            <div id="card-battery" class="card col">
+            
+            <div id="card-runTime" class="card col">
               <div class="card-body">
-                <p class="card-title">Аккумулятор</p>
+                <p class="card-title">Время исполнения</p>
                 <div class="card-icon">
-                  <i class="fa-solid fa-car-battery"></i>
+                  <i class="fa-solid fa-clock"></i>
                 </div>
                 <div class="d-flex justify-content-center">
                   <div class="card-text">
-                    <p id="value-battery">14.4</p>
-                    <p class="units">В</p>
+                    <p id="value-runTime" >0</p>
+                    <p class="units">мс</p>
                   </div>
                 </div>
               </div>
             </div>
+
+            <div id="card-errorCounter" class="card col">
+              <div class="card-body">
+                <p class="card-title">Счетчик ошибок</p>
+                <div class="card-icon">
+                  <i class="fa-solid fa-bug"></i>
+                </div>
+                <div class="d-flex justify-content-center">
+                  <div class="card-text">
+                    <p id="value-errorCounter">0</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
           </div>
           <div class="row">
             <div id="card-dout-1" class="card col">
@@ -745,6 +751,22 @@
                       <p id="value-uin-4">00.00</p>
                       <p class="units">В</p>
                     </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div id="card-battery" class="card col">
+              <div class="card-body">
+                <p class="card-title">Аккумулятор</p>
+                <div class="card-icon">
+                  <i class="fa-solid fa-car-battery"></i>
+                </div>
+                <div class="d-flex justify-content-center">
+                  <div class="card-text">
+                    <p id="value-battery">14.4</p>
+                    <p class="units">В</p>
                   </div>
                 </div>
               </div>
