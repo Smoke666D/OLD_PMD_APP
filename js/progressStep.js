@@ -1,3 +1,4 @@
+const styleAwaitTime = 250;
 function ProgressCircle ( id ) {
   let body  = document.getElementById( id );
   let state = 'empty';
@@ -12,6 +13,12 @@ function ProgressCircle ( id ) {
     body.classList.add( "error" );
     body.innerHTML = '<i class="fa-solid fa-xmark"></i>';
     state = "error";
+    return;
+  }
+  this.setWarning = function () {
+    body.classList.add( "warning" );
+    body.innerHTML = '<i class="fa-solid fa-question"></i>';
+    state = "warning";
     return;
   }
   this.setLoading = function () {
@@ -30,6 +37,9 @@ function ProgressCircle ( id ) {
         case 'error':
           self.setError();
           break;
+        case 'warning':
+          self.setWarning();
+          break;  
         case 'loading':
           self.setLoading();
           break;
@@ -43,6 +53,7 @@ function ProgressCircle ( id ) {
     body.classList.remove( "success" );
     body.classList.remove( "error" );
     body.classList.remove( "loading" );
+    body.classList.remove( "warning" );
     body.innerHTML = '';
     state = "empty";
     return;
@@ -83,19 +94,33 @@ function ProgressStep ( id ) {
   this.setSeccess = async function () {
     return new Promise( async function ( resolve ) {
       circles[current].setState( 'success' );
-      resolve();
+      setTimeout( function () {
+        resolve();
+      }, styleAwaitTime );
     });
   }
   this.setError = async function () {
     return new Promise( async function ( resolve ) {
       circles[current].setState( 'error' );
-      resolve();
+      setTimeout( function () {
+        resolve();
+      }, styleAwaitTime );
+    });
+  }
+  this.setWarning = async function () {
+    return new Promise( async function ( resolve ) {
+      circles[current].setState( 'warning' );
+      setTimeout( function () {
+        resolve();
+      }, styleAwaitTime );
     });
   }
   this.setLoading = async function () {
     return new Promise( async function ( resolve ) {
       circles[current].setState( 'loading' );
-      resolve();
+      setTimeout( function () {
+        resolve();
+      }, styleAwaitTime );
     });
   }
   async function update () {

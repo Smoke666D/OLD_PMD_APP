@@ -31,25 +31,25 @@ async function luaopen ( data ) {
         luacli.add( ' ' + luaPath + '...' );
         fs.readFile( luaPath, 'utf8', function ( error, data ) {
           if ( error ) {
-            resolve( [false, ''] );    
+            resolve( ['error', ''] );    
           }
           lua = data;
           luacli.add( 'Done!' );
-          resolve( [true, luaPath] );
+          resolve( ['ok', luaPath] );
         });
       } else {
         luacli.add( '...Fail!' );
-        resolve( [false, ''] );
+        resolve( ['error', ''] );
       }
     }).catch( function ( error ) {
       luacli.add( '...Fail! ' + error );
-      resolve( [false, ''] );
+      resolve( ['error', ''] );
     });
   });
 }
 async function runTool ( name, path ) {
   return new Promise( async function ( resolve ) {
-    let res = true;
+    let res = 'ok';
     let err = '';
     let mes = '';
     let out = '';
@@ -61,15 +61,43 @@ async function runTool ( name, path ) {
       luacli.add( 'fail', 'text-danger' );
       luacli.newLine( 'Error with the ' + name + ': ' + err );
     } else {
-      [res, out] = await parsingPythonMessage( mes );
+      if ( name == 'luacheck' ) {
+        [res, out] = await parsingCheckerMessage( mes );
+      } else {
+        [res, out] = await parsingPythonMessage( mes );
+      }
     }
     resolve( [res, out] );
+  });
+}
+async function parsingCheckerMessage ( str ) {
+  return new Promise( async function ( resolve ) {
+    let color    = null;
+    let done     = 'ok';
+    let text     = 'DONE';
+    let outPath  = '';
+    let total    = str.substring( str.indexOf( 'Total:' ) );
+    let warnings = parseInt( total.substring( 7, total.indexOf( 'warnings' ) ) );
+    let errors   = parseInt( total.substring( ( total.indexOf( '/' ) + 2 ), total.indexOf( 'errors' ) ) );
+    luacli.newLine( str );
+    if ( errors > 0 ) {
+      color = 'text-danger';
+      done  = false;
+      text  = 'ERROR';
+      done  = 'error';
+    } else if ( warnings > 0 ) {
+      color = 'text-warning';
+      text  = 'WARNING';
+      done  = 'warning';
+    }
+    luacli.newLine( text, color );
+    resolve( [done, outPath] );
   });
 }
 async function parsingPythonMessage ( message ) {
   return new Promise( async function ( resolve ) {
     if ( message != null ) {
-      let done    = true;
+      let done    = 'ok';
       let outPath = '';
       let lines   = message.split('\n');
       for ( var i=0; i<lines.length; i++ ) {
@@ -77,7 +105,7 @@ async function parsingPythonMessage ( message ) {
           let color = null;
           if ( lines[i].includes( '[ERROR]' ) ) {
             color = 'text-danger';
-            done  = false;
+            done  = 'error';
           } else if ( lines[i].includes( '[WARNING]' ) ) {
             color = 'text-warning';
           }
@@ -98,7 +126,7 @@ async function parsingPythonMessage ( message ) {
       }
       resolve( [done, outPath] );
     } else {  
-      resolve( [false, outPath] );
+      resolve( ['error', outPath] );
     }
   });
 }
@@ -126,12 +154,12 @@ async function pdmconnect ( data ) {
   return new Promise( async function ( resolve ) {
     luacli.newLine( 'Try to connect to the PDM via USB...')
     let state = await connect( false );
-    let res   = false;
+    let res   = 'error';
     if ( state == false ) {
       luacli.add( 'Fail!' );
     } else {
       luacli.add( state );
-      res = true;
+      res = 'ok';
     }
     resolve( [res, ''] );
   });
@@ -157,7 +185,7 @@ async function pdmload ( data ) {
     let state = usb.controller.getStatus();
     fs.readFile( data, 'utf8', async function ( error, data ) {
       if ( error ) {
-        resolve( [false, ''] );    
+        resolve( ['error', ''] );    
       }
       pdm.lua = data;
       if ( ( state == usb.usbStat.wait ) || ( state == usb.usbStat.dash ) ) {
@@ -166,11 +194,11 @@ async function pdmload ( data ) {
           if ( result == true ) {
             luacli.add( 'Done!' );
             usb.controller.resetLoopBusy();
-            resolve( [true, ''] );
+            resolve( ['ok', ''] );
           } else {
             luacli.add( 'Fail!' );
             usb.controller.resetLoopBusy();
-            resolve( [false, ''] );
+            resolve( ['error', ''] );
           } 
         });
         
@@ -209,14 +237,18 @@ function LuaProcess ( icli, iprogress ) {
   let prevOut  = '';
 
   this.start = async function () {
-    let res = true;
+    let res = 'ok';
     let out = '';
     progress.clean();
     toolchain.init();
-    for ( var i=0; i<luaStages.length && res==true; i++ ) {
+    for ( var i=0; i<luaStages.length; i++ ) {
       [res, out] = await procStage( luaStages[i].callback, ( i == ( luaStages.length - 1 ) ), prevOut );
       if ( out != '' ) {
         prevOut = out;
+      }
+      if ( ( res !='ok' ) && ( res != 'warning' ) ) {
+        luacli.newLine( 'Finish with error', 'text-danger' );
+        break;
       }
     }
     return;
@@ -227,8 +259,14 @@ function LuaProcess ( icli, iprogress ) {
       let out    = '';
       await progress.setLoading();
       [result, out] = await callback( input );
-      if ( result == true ) {
+      if ( result == 'ok' ) {
         await progress.setSeccess();
+        if ( isEnd == false ) {
+          await progress.next();
+        }
+        resolve( [result, out] );
+      } else if ( result == 'warning') {
+        await progress.setWarning();
         if ( isEnd == false ) {
           await progress.next();
         }

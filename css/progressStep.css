@@ -53,6 +53,11 @@
         border-color: var(--success);}
         .progress-container .circle.success i {
           color: #fff;}
+      .progress-container .circle.warning {
+        background-color: var(--warning);
+        border-color: var(--warning);}
+        .progress-container .circle.warning i {
+          color: #fff;}
       .progress-container .circle.error {
         background-color: var(--danger);
         border-color: var(--danger);}

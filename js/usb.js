@@ -235,6 +235,7 @@ function USBtransport () {
   function write ( data ) {
     if ( device != null ) {
       try {
+        console.log( data );
         device.write( data );
       } catch (e) {
         if ( ( alert != null ) || ( alert != undefined ) ) {
@@ -616,10 +617,8 @@ function PdmController () {
     return settings.data.usb.timeout;
   }
   this.loop              = function () {
-    console.log( 'active = ' + loopActive + ' busy = ' + loopBusy)
     if ( ( loopActive > 0 ) && ( loopBusy == 0 ) ) {
       if ( settings.data.usb.loop == true ) {
-        console.log( 'her' );
         loopBusy = 1;
         this.readOutput();
       }

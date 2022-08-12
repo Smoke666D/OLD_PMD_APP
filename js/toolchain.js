@@ -19,24 +19,40 @@ function Toolchain () {
       if ( exist == true ) {
         let options = settings.data[name];
         if ( options.enb == true ) {
-          if ( name.endsWith( '.py' ) == false ) {
-            name += '.py';
+          if ( options.type == 'python' ) {
+            if ( name.endsWith( '.py' ) == false ) {
+              name += '.py';
+            }
+          } else if ( options.type == 'exe' ) {
+            if ( name.endsWith( '.exe' ) == false ) {
+              name += '.exe';
+            }
           }
           if ( toolsList.includes( name ) ) {
-            let message = await runPython( ( path + name ), options, source )
-            if ( message != "Fail" ) {
-              resolve( [true, null, message ] );
-            } else {
-              resolve( [false, "Python script error", null ] );
+            if ( options.type == 'python' ) {
+              let message = await runPython( ( path + name ), options, source );
+              if ( message != "Fail" ) {
+                resolve( ['ok', null, message ] );
+              } else {
+                resolve( ['error', "Python script error", null ] );
+              }
+            } else if ( options.type == 'exe' ) {
+              let message = await runExe( ( path + name ), options, source );
+              if ( ( message != "Fail" ) || ( err > 0 ) ) {
+                resolve( ['ok', null, message ] );
+              } else {
+                resolve( ['error', "Exe program error", null ] );
+              }
             }
+            
           } else {
-            resolve( [false, "Script doesn't exist in the filesystem", null] );
+            resolve( ['error', "Script doesn't exist in the filesystem", null] );
           }
         } else {
-          resolve( [true, "skip", null] );
+          resolve( ['warning', "skip", null] );
         }
       } else {
-        resolve( [false, "Script doesn't exist in the settings", null] );
+        resolve( ['error', "Script doesn't exist in the settings", null] );
       }
     });
   }
@@ -50,7 +66,7 @@ function Toolchain () {
       fs.readdir( path, function ( error, list ) {
         if ( error == null ) {
           list.forEach( function ( item ) {
-            if ( ( item.endsWith( '.py' ) ) && ( item.startsWith( 'lua' ) ) ) {
+            if ( ( item.startsWith( 'lua' ) ) && ( item.endsWith( '.py'  ) || item.endsWith( '.exe' ) ) ) {
               toolsList.push( item );
             }
           });
@@ -58,6 +74,36 @@ function Toolchain () {
         } else {
           resolve( false );
         }
+      });
+    });
+  }
+  async function runExe ( name, options, source ) {
+    return new Promise( async function ( resolve ) {
+      let str   = '';
+      workspace = await makeTempFolder();
+      args      = [];
+      options.keys.forEach( function ( key ) {
+        if ( ( 'enb' in key ) == true ) {
+          if ( key.enb == true ) {
+            args.push( key.key );
+          }
+        } else {
+          args.push( key.key );
+        }
+        switch ( key.id ) {
+          case 'source':
+            args.push( source );
+            break;
+          default:
+            break;    
+        } 
+      });
+      const exeProcess = spawn( name, args );
+      exeProcess.stdout.on( 'data', function ( data ) {
+        str = data.toString();
+      });
+      exeProcess.on( 'close', function ( code, mes ) {
+        resolve( str );
       });
     });
   }
