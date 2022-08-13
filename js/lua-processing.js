@@ -17,6 +17,7 @@ let luaproc = new LuaProcess( luacli, progressStep );
 /*-----------------------------------------------------------------------------------*/
 let luaPath = '';
 let lua = '';
+let scriptFirstLine = 0;
 /*-----------------------------------------------------------------------------------*/
 async function luaopen ( data ) {
   return new Promise( function ( resolve ) {
@@ -32,19 +33,19 @@ async function luaopen ( data ) {
         luacli.add( ' ' + luaPath + '...' );
         fs.readFile( luaPath, 'utf8', function ( error, data ) {
           if ( error ) {
-            resolve( ['error', ''] );    
+            resolve( ['error', '', null] );    
           }
           lua = data;
           luacli.add( 'Done!' );
-          resolve( ['ok', luaPath] );
+          resolve( ['ok', luaPath, null] );
         });
       } else {
         luacli.add( '...Fail!' );
-        resolve( ['error', ''] );
+        resolve( ['error', '', null] );
       }
     }).catch( function ( error ) {
       luacli.add( '...Fail! ' + error );
-      resolve( ['error', ''] );
+      resolve( ['error', '', null] );
     });
   });
 }
@@ -63,12 +64,12 @@ async function runTool ( name, path ) {
       luacli.newLine( 'Error with the ' + name + ': ' + err );
     } else {
       if ( name == 'luacheck' ) {
-        [res, out] = await parsingCheckerMessage( mes );
+        [res, out, append] = await parsingCheckerMessage( mes );
       } else {
-        [res, out] = await parsingPythonMessage( mes );
+        [res, out, append] = await parsingPythonMessage( mes );
       }
     }
-    resolve( [res, out] );
+    resolve( [res, out, append] );
   });
 }
 async function parsingCheckerMessage ( str ) {
@@ -80,7 +81,24 @@ async function parsingCheckerMessage ( str ) {
     let total    = str.substring( str.indexOf( 'Total:' ) );
     let warnings = parseInt( total.substring( 7, total.indexOf( 'warnings' ) ) );
     let errors   = parseInt( total.substring( ( total.indexOf( '/' ) + 2 ), total.indexOf( 'errors' ) ) );
-    luacli.newLine( str );
+
+    console.log( scriptFirstLine );
+    let lines   = str.split('\n');
+    for ( var i=0; i<lines.length; i++ ) {
+      let start = lines[i].substring( lines[i].indexOf( 'lua:' ) + 4 )
+      let ln = parseInt( start.substring( 0, start.indexOf( ':' ) ) );
+      if ( isNaN( ln ) == false ) {
+        if ( ln > scriptFirstLine ) {
+          luacli.newLine( lines[i] );
+        }
+      } else {
+        luacli.newLine( lines[i] );
+      }
+      
+    }
+
+
+    
     if ( errors > 0 ) {
       color = 'text-danger';
       done  = false;
@@ -92,7 +110,7 @@ async function parsingCheckerMessage ( str ) {
       done  = 'warning';
     }
     luacli.newLine( text, color );
-    resolve( [done, outPath] );
+    resolve( [done, outPath, null] );
   });
 }
 async function parsingPythonMessage ( message ) {
@@ -100,6 +118,7 @@ async function parsingPythonMessage ( message ) {
     if ( message != null ) {
       let done    = 'ok';
       let outPath = '';
+      let append  = '';
       let lines   = message.split('\n');
       for ( var i=0; i<lines.length; i++ ) {
         if ( lines[i].length > 0 ) {
@@ -119,15 +138,16 @@ async function parsingPythonMessage ( message ) {
           }
 
           if ( text.startsWith( 'DONE' ) ) {
-            outPath = text.substring( 6 );
+            outPath = text.substring( 6, text.indexOf( '(' ) );
+            append  = text.substring( text.indexOf( '(' ) + 1, text.indexOf( ')' ) )
           }
 
           luacli.newLine( text, color );
         }
       }
-      resolve( [done, outPath] );
+      resolve( [done, outPath, append] );
     } else {  
-      resolve( ['error', outPath] );
+      resolve( ['error', outPath, append] );
     }
   });
 }
@@ -162,7 +182,7 @@ async function pdmconnect ( data ) {
       luacli.add( state );
       res = 'ok';
     }
-    resolve( [res, ''] );
+    resolve( [res, '', null] );
   });
 }
 function awaitUSB ( callback ) {
@@ -186,7 +206,7 @@ async function pdmload ( data ) {
     let state = usb.controller.getStatus();
     fs.readFile( data, 'utf8', async function ( error, data ) {
       if ( error ) {
-        resolve( ['error', ''] );    
+        resolve( ['error', '', null] );    
       }
       pdm.lua = data;
       if ( ( state == usb.usbStat.wait ) || ( state == usb.usbStat.dash ) ) {
@@ -195,11 +215,11 @@ async function pdmload ( data ) {
           if ( result == true ) {
             luacli.add( 'Done!' );
             usb.controller.resetLoopBusy();
-            resolve( ['ok', ''] );
+            resolve( ['ok', '', null] );
           } else {
             luacli.add( 'Fail!' );
             usb.controller.resetLoopBusy();
-            resolve( ['error', ''] );
+            resolve( ['error', '', null] );
           } 
         });
         
@@ -238,12 +258,16 @@ function LuaProcess ( icli, iprogress ) {
   let prevOut  = '';
 
   this.start = async function () {
-    let res = 'ok';
-    let out = '';
+    let res    = 'ok';
+    let out    = '';
+    let append = null;
     progress.clean();
     toolchain.init();
     for ( var i=0; i<luaStages.length; i++ ) {
-      [res, out] = await procStage( luaStages[i].callback, ( i == ( luaStages.length - 1 ) ), prevOut );
+      [res, out, append] = await procStage( luaStages[i].callback, ( i == ( luaStages.length - 1 ) ), prevOut );
+      if ( luaStages[i].name == "lualink" ) {
+        scriptFirstLine = parseInt( append ) + 1;
+      }
       if ( out != '' ) {
         prevOut = out;
       }
@@ -258,23 +282,24 @@ function LuaProcess ( icli, iprogress ) {
     return new Promise( async function ( resolve ) {
       let result = false;
       let out    = '';
+      let append = null;
       await progress.setLoading();
-      [result, out] = await callback( input );
+      [result, out, append] = await callback( input );
       if ( result == 'ok' ) {
         await progress.setSeccess();
         if ( isEnd == false ) {
           await progress.next();
         }
-        resolve( [result, out] );
+        resolve( [result, out, append] );
       } else if ( result == 'warning') {
         await progress.setWarning();
         if ( isEnd == false ) {
           await progress.next();
         }
-        resolve( [result, out] );
+        resolve( [result, out, append] );
       } else {
         await progress.setError();
-        resolve( [result, out] );
+        resolve( [result, out, append] );
       }
     });
   }
