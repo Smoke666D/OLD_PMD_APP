@@ -235,7 +235,6 @@ function USBtransport () {
   function write ( data ) {
     if ( device != null ) {
       try {
-        console.log( data );
         device.write( data );
       } catch (e) {
         if ( ( alert != null ) || ( alert != undefined ) ) {
@@ -525,7 +524,7 @@ function PdmController () {
     if ( ( loopBusy > 0 ) && ( transport.getStatus != usbStat.wait ) ) {
       setTimeout( function () {
         console.log( "Await loop reset ");
-          awaitLoopBusyReset( callback );
+        awaitLoopBusyReset( callback );
       }, 100 );
     } else {
       callback();

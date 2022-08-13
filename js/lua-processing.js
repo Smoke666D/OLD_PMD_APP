@@ -1,3 +1,4 @@
+const { Console } = require('console');
 const fs           = require( 'fs' );
 const { pdm } = require('./pdm.js');
 const { dialog }   = require( 'electron' ).remote;

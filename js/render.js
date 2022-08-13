@@ -68,7 +68,6 @@ function connectPDMinit () {
 function parsingFullMessages () {
   var dashFl = false;
   var buffer = usb.controller.getInput();
-  pdm.lua    = '';
   for ( var i=0; i<buffer.length; i++ ) {
     buffer[i].init( function() {
       let out = buffer[i].parse();
