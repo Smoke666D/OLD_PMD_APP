@@ -151,6 +151,12 @@ function Toolchain () {
         }
       });
       const pythonProcess = spawn( options.type, args );
+
+      let callStr = options.type + ' ';
+      args.forEach( function ( arg ) {
+        callStr += arg + ' ';
+      });
+
       pythonProcess.stdout.on( 'data', function ( data ) {
         str = data.toString();
       });
