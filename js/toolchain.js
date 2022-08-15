@@ -5,6 +5,7 @@ function Toolchain () {
   let self       = this;
   let path       = '';
   let toolsList  = [];
+  let except     = [];
   const pathFile = 'settings.json';
   const pathTemp = 'temp';
   this.run = async function ( name, source ) {
@@ -70,7 +71,15 @@ function Toolchain () {
               toolsList.push( item );
             }
           });
-          resolve( true );
+          fs.readFile( ( settings.data.toolchainPath + "exceptionsNames.json" ), 'utf-8', async function ( error, data ) { 
+            if ( error ) {
+              resolve( false );
+            } else {
+              let list = JSON.parse( data );
+              except = list.exceptions;
+              resolve( true );
+            }
+          });
         } else {
           resolve( false );
         }
@@ -96,16 +105,9 @@ function Toolchain () {
             args.push( source );
             break;
           case 'globals':
-            fs.readFile( ( settings.data.toolchainPath + "exceptionsNames.json" ), 'utf-8', async function ( error, data ) { 
-              if ( error ) {
-                resolve( 'Fail' );
-              } else {
-                list = JSON.parse( data );
-                list.exceptions.forEach( function ( glob ) {
-                  args.push( glob );
-                });
-              }
-            }); 
+            except.forEach( function ( item ) {
+              args.push( item );
+            }) 
             break;  
           default:
             break;    
