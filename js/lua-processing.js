@@ -55,6 +55,7 @@ async function runTool ( name, path ) {
     let err = '';
     let mes = '';
     let out = '';
+    let append = null;
     luacli.newLine( 'Run ' + name + '...' );
     [res, err, mes] = await toolchain.run( name, path );
     if ( err == 'skip' ) {
@@ -169,8 +170,10 @@ async function pdmconnect ( data ) {
 }
 function awaitUSB ( callback ) {
   setTimeout( async function () {
-    let state = usb.controller.getStatus();
-    if ( ( state == usb.usbStat.wait ) || ( state == usb.usbStat.dash ) ) {
+    let state  = usb.controller.getStatus();
+    let finish = usb.controller.getFinish();
+    if ( ( ( state == usb.usbStat.wait ) || ( state == usb.usbStat.dash ) ) && ( finish == true ) ) {
+      usb.controller.resetLoopBusy();
       callback( true );
     } else {
       if ( usb.controller.isConnected() == true ) {
@@ -192,6 +195,7 @@ async function pdmload ( data ) {
       }
       pdm.lua = data;
       if ( ( state == usb.usbStat.wait ) || ( state == usb.usbStat.dash ) ) {
+        usb.controller.resetFinish();
         usb.controller.send( null );
         awaitUSB( function ( result ) {
           if ( result == true ) {

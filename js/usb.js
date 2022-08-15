@@ -235,6 +235,9 @@ function USBtransport () {
   function write ( data ) {
     if ( device != null ) {
       try {
+        if ( data[1] != 5) {
+          console.log( data )
+        }
         device.write( data );
       } catch (e) {
         if ( ( alert != null ) || ( alert != undefined ) ) {
@@ -409,6 +412,9 @@ function USBtransport () {
   this.getStatus   = function () {
     return status;
   }
+  this.getLoopBusy = function () {
+    return loopBusy;
+  }
   this.clean       = function () {
     output.clean();
     input.clean();
@@ -461,6 +467,7 @@ function PdmController () {
   var loopActive = 0;
   var loopBusy   = 0;
   var connected  = false;
+  var finsh      = false;
   /*---------------------------------------------*/  
   function initWriteSequency ( adr, data, callback ) {
     let buffer  = pdm.lua;
@@ -601,6 +608,22 @@ function PdmController () {
       out = usbStat.error;
     }   
     return out;
+  }
+  this.getLoopBusy       = function () {
+    return loopBusy;
+  }
+  this.getLoopActive     = function () {
+    return loopActive;
+  }
+  this.getFinish        = function () {
+    return finish;
+  }
+  this.setFinish        = function () {
+    finish = true;
+  }
+  this.resetFinish      = function () {
+    finish = false;
+    return;
   }
   this.close             = function () {
     self.disableLoop();

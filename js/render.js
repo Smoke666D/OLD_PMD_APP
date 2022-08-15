@@ -99,6 +99,7 @@ function parsingFullMessages () {
 }
 function outCallback () {
   let alert = new Alert( "alert-success", alerts.okIco, "Данные успешно переданы", 1 );
+  usb.controller.setFinish();
   usb.controller.enableLoop();
   return;
 }
