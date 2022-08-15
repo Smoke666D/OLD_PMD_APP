@@ -80,8 +80,7 @@ async function parsingCheckerMessage ( str ) {
     let outPath  = '';
     let total    = str.substring( str.indexOf( 'Total:' ) );
     let warnings = parseInt( total.substring( 7, total.indexOf( 'warnings' ) ) );
-    let errors   = parseInt( total.substring( ( total.indexOf( '/' ) + 2 ), total.indexOf( 'errors' ) ) );
-
+    let errors   = parseInt( total.substring( ( total.indexOf( '/' ) + 2 ), total.indexOf( 'error' ) ) );
     console.log( scriptFirstLine );
     let lines   = str.split('\n');
     for ( var i=0; i<lines.length; i++ ) {
@@ -93,16 +92,12 @@ async function parsingCheckerMessage ( str ) {
           let end   = lines[i].substring( lines[i].indexOf( 'lua:' ) + 4 );
           let oldln = parseInt( end.substring( 0, end.indexOf( ':' ) ) );
           end = end.substring( end.indexOf( ':' ) );
-          console.log( start + ( oldln - scriptFirstLine ) + end )
           luacli.newLine( start + ( oldln - scriptFirstLine ) + end );
         }
       } else if ( lines[i].length > 2 ) {
         luacli.newLine( lines[i] );
       }
     }
-
-
-    
     if ( errors > 0 ) {
       color = 'text-danger';
       done  = false;
