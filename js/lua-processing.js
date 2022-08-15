@@ -89,12 +89,16 @@ async function parsingCheckerMessage ( str ) {
       let ln = parseInt( start.substring( 0, start.indexOf( ':' ) ) );
       if ( isNaN( ln ) == false ) {
         if ( ln > scriptFirstLine ) {
-          luacli.newLine( lines[i] );
+          let start = lines[i].substring( 0, lines[i].indexOf( 'lua:' ) + 4 );
+          let end   = lines[i].substring( lines[i].indexOf( 'lua:' ) + 4 );
+          let oldln = parseInt( end.substring( 0, end.indexOf( ':' ) ) );
+          end = end.substring( end.indexOf( ':' ) );
+          console.log( start + ( oldln - scriptFirstLine ) + end )
+          luacli.newLine( start + ( oldln - scriptFirstLine ) + end );
         }
-      } else {
+      } else if ( lines[i].length > 2 ) {
         luacli.newLine( lines[i] );
       }
-      
     }
 
 
@@ -141,7 +145,6 @@ async function parsingPythonMessage ( message ) {
             outPath = text.substring( 6, text.indexOf( '(' ) );
             append  = text.substring( text.indexOf( '(' ) + 1, text.indexOf( ')' ) )
           }
-
           luacli.newLine( text, color );
         }
       }
