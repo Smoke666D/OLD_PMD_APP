@@ -82,6 +82,7 @@ function Toolchain () {
       let str   = '';
       workspace = await makeTempFolder();
       args      = [];
+      args.push( settings.data.libPath );
       options.keys.forEach( function ( key ) {
         if ( ( 'enb' in key ) == true ) {
           if ( key.enb == true ) {

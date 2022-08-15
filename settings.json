@@ -1,12 +1,12 @@
 {"toolchainPath":"C:/PROJECTS/SIDER/LUA_SCRIPTS/UTIL/",
-"libPath":"C:/PROJECTS/SIDER/LUA_SCRIPTS/",
+"libPath":"C:/PROJECTS/SIDER/LUA_SCRIPTS/lib",
 "luacheck":{
   "enb":true,
   "type":"exe",
   "keys":[
     {
       "id":"source",
-      "key":"src"
+      "key":"-s"
     },{
       "id": "noMaxLength",
       "key": "--no-max-line-length"

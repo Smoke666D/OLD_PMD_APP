@@ -81,7 +81,9 @@ async function parsingCheckerMessage ( str ) {
     let total    = str.substring( str.indexOf( 'Total:' ) );
     let warnings = parseInt( total.substring( 7, total.indexOf( 'warnings' ) ) );
     let errors   = parseInt( total.substring( ( total.indexOf( '/' ) + 2 ), total.indexOf( 'error' ) ) );
-    console.log( scriptFirstLine );
+    
+    luacli.newLine( str );
+    /*
     let lines   = str.split('\n');
     for ( var i=0; i<lines.length; i++ ) {
       let start = lines[i].substring( lines[i].indexOf( 'lua:' ) + 4 )
@@ -98,6 +100,7 @@ async function parsingCheckerMessage ( str ) {
         luacli.newLine( lines[i] );
       }
     }
+    */
     if ( errors > 0 ) {
       color = 'text-danger';
       done  = false;
@@ -149,14 +152,14 @@ async function parsingPythonMessage ( message ) {
     }
   });
 }
-async function lualink ( data ) {
-  return new Promise( async function ( resolve ) {
-    resolve( await runTool( 'lualink', data ) );
-  });
-}
 async function luacheck ( data ) {
   return new Promise( async function ( resolve ) {
     resolve( await runTool( 'luacheck', data ) );
+  });
+}
+async function lualink ( data ) {
+  return new Promise( async function ( resolve ) {
+    resolve( await runTool( 'lualink', data ) );
   });
 }
 async function luamin ( data ) {
@@ -227,20 +230,28 @@ async function pdmload ( data ) {
 }
 /*-----------------------------------------------------------------------------------*/
 const luaStages = [
-  { "name" : "luaopen",
-    "callback" : luaopen },
-  { "name" : "lualink",
-    "callback" : lualink },
-  { "name" : "luacheck",
-    "callback" : luacheck },
-  { "name" : "luamin",
-    "callback" : luamin },
-  { "name" : "luamake",
-    "callback" : luamake },
-  { "name" : "pdmconnect",
-    "callback" : pdmconnect },
-  { "name" : "pdmload",
-    "callback" : pdmload }
+  { 
+    "name" : "luaopen",
+    "callback" : luaopen 
+  },{ 
+    "name" : "luacheck",
+    "callback" : luacheck 
+  },{ 
+    "name" : "lualink",
+    "callback" : lualink 
+  },{ 
+    "name" : "luamin",
+    "callback" : luamin 
+  },{ 
+    "name" : "luamake",
+    "callback" : luamake 
+  },{ 
+    "name" : "pdmconnect",
+    "callback" : pdmconnect 
+  },{ 
+    "name" : "pdmload",
+    "callback" : pdmload 
+  }
 ];
 
 function skip () {
