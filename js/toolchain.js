@@ -94,6 +94,18 @@ function Toolchain () {
           case 'source':
             args.push( source );
             break;
+          case 'globals':
+            fs.readFile( ( settings.data.toolchainPath + "exceptionsNames.json" ), 'utf-8', async function ( error, data ) { 
+              if ( error ) {
+                resolve( 'Fail' );
+              } else {
+                list = JSON.parse( data );
+                list.exceptions.forEach( function ( glob ) {
+                  args.push( glob );
+                });
+              }
+            }); 
+            break;  
           default:
             break;    
         } 
