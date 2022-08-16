@@ -3,6 +3,8 @@ var pdmAdr = require('./pdm.js').pdmDataAdr;
 
 const statusDic     = ['Init', 'Run'       , 'Error'    , 'Stop'       , 'Restart' ];
 const statusCardDic = [''    , 'bg-success', 'bg-danger',  'bg-warning', ''        ]; 
+const doutStatusDic     = ['Off', 'Process'   , 'On'        , 'Error'    , 'Error'    , 'Restart'];
+const doutStatusCardDic = [''   , 'bg-warning', 'bg-success', 'bg-danger', 'bg-danger', 'bg-info'];
 const boolDic = [ '✕', '✓' ];
 const cardDic = [ '', 'bg-success' ];
 const cards = [
@@ -28,124 +30,124 @@ const cards = [
     'dic'  : []
   },{
     'id'   : 'card-dout-1',
-    'adr'  : pdmAdr.DATA_ADR_DOUT,
+    'adr'  : pdmAdr.DATA_ADR_DOUT_0,
     'type' : 'class',
     'shif' : 0,
-    'dic'  : cardDic
+    'dic'  : doutStatusCardDic
   },{
     'id'   : 'card-dout-2',
-    'adr'  : pdmAdr.DATA_ADR_DOUT,
+    'adr'  : pdmAdr.DATA_ADR_DOUT_1,
     'type' : 'class',
-    'shif' : 1,
-    'dic'  : cardDic
+    'shif' : 0,
+    'dic'  : doutStatusCardDic
   },{
     'id'   : 'card-dout-3',
-    'adr'  : pdmAdr.DATA_ADR_DOUT,
+    'adr'  : pdmAdr.DATA_ADR_DOUT_2,
     'type' : 'class',
-    'shif' : 2,
-    'dic'  : cardDic
+    'shif' : 0,
+    'dic'  : doutStatusCardDic
   },{
     'id'   : 'card-dout-4',
-    'adr'  : pdmAdr.DATA_ADR_DOUT,
+    'adr'  : pdmAdr.DATA_ADR_DOUT_3,
     'type' : 'class',
-    'shif' : 3,
-    'dic'  : cardDic
+    'shif' : 0,
+    'dic'  : doutStatusCardDic
   },{
     'id'   : 'card-dout-5',
-    'adr'  : pdmAdr.DATA_ADR_DOUT,
+    'adr'  : pdmAdr.DATA_ADR_DOUT_4,
     'type' : 'class',
-    'shif' : 4,
-    'dic'  : cardDic
+    'shif' : 0,
+    'dic'  : doutStatusCardDic
   },{
     'id'   : 'card-dout-6',
-    'adr'  : pdmAdr.DATA_ADR_DOUT,
+    'adr'  : pdmAdr.DATA_ADR_DOUT_5,
     'type' : 'class',
-    'shif' : 5,
-    'dic'  : cardDic
+    'shif' : 0,
+    'dic'  : doutStatusCardDic
   },{
     'id'   : 'card-dout-7',
-    'adr'  : pdmAdr.DATA_ADR_DOUT,
+    'adr'  : pdmAdr.DATA_ADR_DOUT_6,
     'type' : 'class',
-    'shif' : 6,
-    'dic'  : cardDic
+    'shif' : 0,
+    'dic'  : doutStatusCardDic
   },{
     'id'   : 'card-dout-8',
-    'adr'  : pdmAdr.DATA_ADR_DOUT,
+    'adr'  : pdmAdr.DATA_ADR_DOUT_7,
     'type' : 'class',
-    'shif' : 7,
-    'dic'  : cardDic
+    'shif' : 0,
+    'dic'  : doutStatusCardDic
   },{
     'id'   : 'card-dout-9',
-    'adr'  : pdmAdr.DATA_ADR_DOUT,
+    'adr'  : pdmAdr.DATA_ADR_DOUT_8,
     'type' : 'class',
-    'shif' : 8,
-    'dic'  : cardDic
+    'shif' : 0,
+    'dic'  : doutStatusCardDic
   },{
     'id'   : 'card-dout-10',
-    'adr'  : pdmAdr.DATA_ADR_DOUT,
+    'adr'  : pdmAdr.DATA_ADR_DOUT_9,
     'type' : 'class',
-    'shif' : 9,
-    'dic'  : cardDic
+    'shif' : 0,
+    'dic'  : doutStatusCardDic
   },{
     'id'   : 'card-dout-11',
-    'adr'  : pdmAdr.DATA_ADR_DOUT,
+    'adr'  : pdmAdr.DATA_ADR_DOUT_10,
     'type' : 'class',
-    'shif' : 10,
-    'dic'  : cardDic
+    'shif' : 0,
+    'dic'  : doutStatusCardDic
   },{
     'id'   : 'card-dout-12',
-    'adr'  : pdmAdr.DATA_ADR_DOUT,
+    'adr'  : pdmAdr.DATA_ADR_DOUT_11,
     'type' : 'class',
-    'shif' : 11,
-    'dic'  : cardDic
+    'shif' : 0,
+    'dic'  : doutStatusCardDic
   },{
     'id'   : 'card-dout-13',
-    'adr'  : pdmAdr.DATA_ADR_DOUT,
+    'adr'  : pdmAdr.DATA_ADR_DOUT_12,
     'type' : 'class',
-    'shif' : 12,
-    'dic'  : cardDic
+    'shif' : 0,
+    'dic'  : doutStatusCardDic
   },{
     'id'   : 'card-dout-14',
-    'adr'  : pdmAdr.DATA_ADR_DOUT,
+    'adr'  : pdmAdr.DATA_ADR_DOUT_13,
     'type' : 'class',
-    'shif' : 13,
-    'dic'  : cardDic
+    'shif' : 0,
+    'dic'  : doutStatusCardDic
   },{
     'id'   : 'card-dout-15',
-    'adr'  : pdmAdr.DATA_ADR_DOUT,
+    'adr'  : pdmAdr.DATA_ADR_DOUT_14,
     'type' : 'class',
-    'shif' : 14,
-    'dic'  : cardDic
+    'shif' : 0,
+    'dic'  : doutStatusCardDic
   },{
     'id'   : 'card-dout-16',
-    'adr'  : pdmAdr.DATA_ADR_DOUT,
+    'adr'  : pdmAdr.DATA_ADR_DOUT_15,
     'type' : 'class',
-    'shif' : 15,
-    'dic'  : cardDic
+    'shif' : 0,
+    'dic'  : doutStatusCardDic
   },{
     'id'   : 'card-dout-17',
-    'adr'  : pdmAdr.DATA_ADR_DOUT,
+    'adr'  : pdmAdr.DATA_ADR_DOUT_16,
     'type' : 'class',
-    'shif' : 16,
-    'dic'  : cardDic
+    'shif' : 0,
+    'dic'  : doutStatusCardDic
   },{
     'id'   : 'card-dout-18',
-    'adr'  : pdmAdr.DATA_ADR_DOUT,
+    'adr'  : pdmAdr.DATA_ADR_DOUT_17,
     'type' : 'class',
-    'shif' : 17,
-    'dic'  : cardDic
+    'shif' : 0,
+    'dic'  : doutStatusCardDic
   },{
     'id'   : 'card-dout-19',
-    'adr'  : pdmAdr.DATA_ADR_DOUT,
+    'adr'  : pdmAdr.DATA_ADR_DOUT_18,
     'type' : 'class',
-    'shif' : 18,
-    'dic'  : cardDic
+    'shif' : 0,
+    'dic'  : doutStatusCardDic
   },{
     'id'   : 'card-dout-20',
-    'adr'  : pdmAdr.DATA_ADR_DOUT,
+    'adr'  : pdmAdr.DATA_ADR_DOUT_19,
     'type' : 'class',
-    'shif' : 19,
-    'dic'  : cardDic
+    'shif' : 0,
+    'dic'  : doutStatusCardDic
   },{
     'id'   : 'card-din',
     'adr'  : null,

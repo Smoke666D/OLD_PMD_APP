@@ -23,6 +23,7 @@
   --danger: #dc3545;
   --light: #f8f9fa;
   --dark: #343a40;
+  --minor: #808080;
   --breakpoint-xs: 0;
   --breakpoint-sm: 576px;
   --breakpoint-md: 768px;
@@ -4046,6 +4047,24 @@ input[type="button"].btn-block {
   height: 100%;
   align-items: center;
 }
+.card.bg-success .card-icon i {
+  color: var(--textMenuColor)!important;}
+.card.bg-success .card-icon svg {
+  color: var(--textMenuColor)!important;}
+.card.bg-success p {
+  color: var(--textMenuColor)!important;}  
+.card.bg-danger .card-icon i {
+  color: var(--textMenuColor)!important;}
+.card.bg-danger .card-icon svg {
+  color: var(--textMenuColor)!important;}
+.card.bg-danger p {
+  color: var(--textMenuColor)!important;} 
+.card.bg-info .card-icon i {
+  color: var(--textMenuColor)!important;}
+.card.bg-info .card-icon svg {
+  color: var(--textMenuColor)!important;}
+.card.bg-info p {
+  color: var(--textMenuColor)!important;} 
 .card-icon {
   position: absolute;
   display: flex;
@@ -4053,8 +4072,7 @@ input[type="button"].btn-block {
   top: 10px;
   right: 10px;
   height: 40px;
-  width: 40px;
-  fill: #808080;}
+  width: 40px;}
   .card-icon p {
     font-size: 2.5em;}
   .card-icon i {
