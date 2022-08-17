@@ -195,12 +195,14 @@ async function pdmload ( data ) {
       }
       pdm.lua = data;
       if ( ( state == usb.usbStat.wait ) || ( state == usb.usbStat.dash ) ) {
+        let start = Date.now();
         usb.controller.resetFinish();
         usb.controller.send( null );
         awaitUSB( function ( result ) {
           if ( result == true ) {
             luacli.add( 'Done!' );
             usb.controller.resetLoopBusy();
+            //console.log( ( Date.now() - start ) / 1000 + ' sec' );
             resolve( ['ok', '', null] );
           } else {
             luacli.add( 'Fail!' );

@@ -2,7 +2,7 @@
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-const msgSIZE = 14;
+const msgSIZE = 40;
 const msgCMD  = {
   "USB_REPORT_CMD_START_WRITING" : 1,
   "USB_REPORT_CMD_WRITE_SCRIPT"  : 2,
@@ -27,10 +27,8 @@ const USB_CMD_BYTE  = 1;
 const USB_STAT_BYTE = 2;
 const USB_ADR0_BYTE = 3;
 const USB_ADR1_BYTE = 4;
-const USB_ADR2_BYTE = 5;
-const USB_ADR3_BYTE = 6;
-const USB_LEN0_BYTE = 7;
-const USB_DATA_BYTE = 8;
+const USB_LEN0_BYTE = 5;
+const USB_DATA_BYTE = 6;
 const USB_DATA_SIZE = msgSIZE - USB_DATA_BYTE;
 const USB_CHART_HEADER_LENGTH = 54;
 /*----------------------------------------------------------------------------*/
@@ -106,8 +104,6 @@ function USBMessage ( buffer ) {
     buffer[USB_STAT_BYTE] = self.status;
     buffer[USB_ADR0_BYTE] = self.adr & 0xFF;
     buffer[USB_ADR1_BYTE] = ( self.adr >> 8  ) & 0xFF;
-    buffer[USB_ADR2_BYTE] = ( self.adr >> 16 ) & 0xFF;
-    buffer[USB_ADR3_BYTE] = ( self.adr >> 24 ) & 0xFF;
     buffer[USB_LEN0_BYTE] = self.length & 0xFF;
     self.data = [];
     callback();
@@ -165,7 +161,7 @@ function USBMessage ( buffer ) {
     return;
   }
   function parsingAddressByte () {
-    self.adr = byteToUint32( self.buffer[USB_ADR0_BYTE], self.buffer[USB_ADR1_BYTE], self.buffer[USB_ADR2_BYTE], self.buffer[USB_ADR3_BYTE] );
+    self.adr = byteToUint16( self.buffer[USB_ADR0_BYTE], self.buffer[USB_ADR1_BYTE] );
     return;
   }
   function parsingLengthByte () {

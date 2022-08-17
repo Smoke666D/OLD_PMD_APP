@@ -468,6 +468,7 @@ function PdmController () {
   var loopBusy   = 0;
   var connected  = false;
   var finsh      = false;
+  var loopTime   = 0;
   /*---------------------------------------------*/  
   function initWriteSequency ( adr, data, callback ) {
     let buffer  = pdm.lua;
@@ -640,6 +641,8 @@ function PdmController () {
   }
   this.loop              = function () {
     if ( ( loopActive > 0 ) && ( loopBusy == 0 ) ) {
+      //console.log( 'loop time: ' + ( ( Date.now() - loopTime ) / 1000 ) + ' sec' );
+      loopTime = Date.now();
       if ( settings.data.usb.loop == true ) {
         loopBusy = 1;
         this.readOutput();
