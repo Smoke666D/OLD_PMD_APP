@@ -210,6 +210,11 @@ async function pdmload ( data ) {
   return new Promise( async function ( resolve ) {
     luacli.newLine( 'Loading the lua script to the PDM...')
     let state = usb.controller.getStatus();
+    if ( data.indexOf( '.luac.' ) > -1 ) {
+      pdm.isCompil = true;
+    } else {
+      pdm.isCompil = false;
+    }
     fs.readFile( data, 'utf8', async function ( error, data ) {
       if ( error ) {
         resolve( ['error', '', null] );    

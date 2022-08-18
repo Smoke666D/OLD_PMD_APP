@@ -497,9 +497,11 @@ function PdmController () {
       transport.addToOutput( msg );
       address += USB_DATA_SIZE;
     }
-    //msg = new USBMessage( [] );
-    //msg.codeTerminator( pdm.lua.length );
-    //transport.addToOutput( msg );
+    if ( pdm.isCompil == false ) {
+      msg = new USBMessage( [] );
+      msg.codeTerminator( pdm.lua.length );
+      transport.addToOutput( msg );
+    }
     /*---------------------------------------------*/
     msg = new USBMessage( [] );
     msg.codeFinishWriting();

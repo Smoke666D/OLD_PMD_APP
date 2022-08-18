@@ -124,7 +124,6 @@ function Toolchain () {
         str = data.toString();
       });
       exeProcess.on( 'close', function ( code, mes ) {
-        console.log( code + ' ' + mes );
         if ( ( str.length == 0 ) && ( code == 0 ) ) {
           resolve( 'DONE: ' + workspace + source.substring( ( source.lastIndexOf( '\\' ) + 1 ), source.lastIndexOf( '.' ) ) + '.luac.lua')
         } else {

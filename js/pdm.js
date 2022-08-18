@@ -55,9 +55,10 @@ const pdmDataAdr = {
 };
 
 function PDM () {
-  var self  = this;
-  this.lua  = '';
-  this.data = [];
+  var self    = this;
+  this.lua    = '';
+  this.isCompil = false;
+  this.data   = [];
   function init () {
     Object.keys( pdmDataAdr ).forEach( function () {
       self.data.push( 0 );
