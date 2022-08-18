@@ -76,8 +76,10 @@ function ProgressStep ( id ) {
       if ( current < circles.length ) {
         current++;
         await update();
+        resolve();
+      } else {
+        resolve();
       }
-      resolve();
     });
   }
   this.clean = async function () {

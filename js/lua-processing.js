@@ -66,6 +66,8 @@ async function runTool ( name, path ) {
     } else {
       if ( name == 'luacheck' ) {
         [res, out, append] = await parsingCheckerMessage( mes );
+      } else if ( name == 'luac' ) {
+        [res, out, append] = await parsingCompilMessage( mes );
       } else {
         [res, out, append] = await parsingPythonMessage( mes );
       }
@@ -95,6 +97,20 @@ async function parsingCheckerMessage ( str ) {
     }
     luacli.newLine( text, color );
     resolve( [done, outPath, null] );
+  });
+}
+async function parsingCompilMessage ( str ) {
+  return new Promise( async function ( resolve ) {
+    if ( str.length == 0 ) {
+      luacli.add( 'FAIL', 'text-danger' );
+      resolve( ['error', '', null] );
+    } else if ( str.indexOf( 'DONE' ) != -1 ) {
+      luacli.add( 'DONE' );
+      resolve( ['ok', str.substring( str.indexOf( 'DONE: ' ) + 6 ), null] );
+    } else {
+      luacli.newLine( str, 'text-danger' );
+      resolve( ['error', '', null] );
+    }
   });
 }
 async function parsingPythonMessage ( message ) {
@@ -152,6 +168,11 @@ async function luamin ( data ) {
 async function luamake ( data ) {
   return new Promise( async function ( resolve ) {
     resolve( await runTool( 'luamake', data ) );
+  });
+}
+async function luac ( data ) {
+  return new Promise( async function ( resolve ) {
+    resolve( await runTool( 'luac', data ) );
   });
 }
 async function pdmconnect ( data ) {
@@ -233,6 +254,9 @@ const luaStages = [
     "name" : "luamake",
     "callback" : luamake 
   },{ 
+    "name" : "luac",
+    "callback" : luac 
+  },{ 
     "name" : "pdmconnect",
     "callback" : pdmconnect 
   },{ 
@@ -258,12 +282,10 @@ function LuaProcess ( icli, iprogress ) {
     let out    = '';
     let append = null;
     progress.clean();
+    luacli.clean();
     toolchain.init();
     for ( var i=0; i<luaStages.length; i++ ) {
       [res, out, append] = await procStage( luaStages[i].callback, ( i == ( luaStages.length - 1 ) ), prevOut );
-      if ( luaStages[i].name == "lualink" ) {
-        scriptFirstLine = parseInt( append ) + 1;
-      }
       if ( out != '' ) {
         prevOut = out;
       }

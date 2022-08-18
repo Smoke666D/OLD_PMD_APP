@@ -91,16 +91,20 @@ function Toolchain () {
       let str   = '';
       workspace = await makeTempFolder();
       args      = [];
-      args.push( settings.data.libPath );
       options.keys.forEach( function ( key ) {
         if ( ( 'enb' in key ) == true ) {
-          if ( key.enb == true ) {
+          if ( ( key.enb == true ) && ( key.key.length > 0 ) ) {
             args.push( key.key );
           }
         } else {
-          args.push( key.key );
+          if ( key.key.length > 0 ) {
+            args.push( key.key );
+          }
         }
         switch ( key.id ) {
+          case 'lib':
+            args.push( settings.data.libPath );
+            break;
           case 'source':
             args.push( source );
             break;
@@ -108,7 +112,9 @@ function Toolchain () {
             except.forEach( function ( item ) {
               args.push( item );
             }) 
-            break;  
+            break; 
+          case 'out':
+            args.push( workspace + source.substring( ( source.lastIndexOf( '\\' ) + 1 ), source.lastIndexOf( '.' ) ) + '.luac.lua' );  
           default:
             break;    
         } 
@@ -118,7 +124,12 @@ function Toolchain () {
         str = data.toString();
       });
       exeProcess.on( 'close', function ( code, mes ) {
-        resolve( str );
+        console.log( code + ' ' + mes );
+        if ( ( str.length == 0 ) && ( code == 0 ) ) {
+          resolve( 'DONE: ' + workspace + source.substring( ( source.lastIndexOf( '\\' ) + 1 ), source.lastIndexOf( '.' ) ) + '.luac.lua')
+        } else {
+          resolve( str );
+        }
       });
     });
   }

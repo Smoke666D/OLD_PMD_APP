@@ -43,14 +43,15 @@ function Settings ( callback ) {
       document.getElementById( 'lualink_enb' ),
       document.getElementById( 'luamin_enb' ),
       document.getElementById( 'luamake_enb' ),
-      document.getElementById( 'loading_auto' ),
       document.getElementById( 'luamin_spaces_enb' ),
       document.getElementById( 'luamin_endString_enb' ),
       document.getElementById( 'luamin_names_enb' ),
+      document.getElementById( 'luaс_enb' ),
       document.getElementById( 'usb-uid' ),
       document.getElementById( 'usb-pid' ),
       document.getElementById( 'usb-timeout' ),
-      document.getElementById( 'usb-loop' )
+      document.getElementById( 'usb-loop' ),
+      document.getElementById( 'loading_auto' )
     ];
     domList.forEach( function ( obj ) {
       obj.addEventListener( 'change', function () {
@@ -76,6 +77,7 @@ function Settings ( callback ) {
     self.data.lualink.enb   = document.getElementById( 'lualink_enb' ).checked;
     self.data.luamin.enb    = document.getElementById( 'luamin_enb' ).checked;
     self.data.luamake.enb   = document.getElementById( 'luamake_enb' ).checked;
+    self.data.luac.enb      = document.getElementById( 'luaс_enb' ).checked;
     self.data.loading.enb   = document.getElementById( 'loading_auto' ).checked;
     self.data.usb.uid       = document.getElementById( 'usb-uid' ).value;
     self.data.usb.pid       = document.getElementById( 'usb-pid' ).value;
@@ -104,6 +106,7 @@ function Settings ( callback ) {
     document.getElementById( 'lualink_enb' ).checked  = self.data.lualink.enb;
     document.getElementById( 'luamin_enb' ).checked   = self.data.luamin.enb;
     document.getElementById( 'luamake_enb' ).checked  = self.data.luamake.enb;
+    document.getElementById( 'luaс_enb' ).checked     = self.data.luac.enb;
     document.getElementById( 'loading_auto' ).checked = self.data.loading.enb;
     document.getElementById( 'usb-uid' ).value        = self.data.usb.uid;
     document.getElementById( 'usb-pid' ).value        = self.data.usb.pid;
