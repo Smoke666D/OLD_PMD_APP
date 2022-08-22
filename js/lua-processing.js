@@ -215,7 +215,7 @@ async function pdmload ( data ) {
     } else {
       pdm.isCompil = false;
     }
-    fs.readFile( data, 'utf8', async function ( error, data ) {
+    fs.readFile( data, null, async function ( error, data ) {
       if ( error ) {
         resolve( ['error', '', null] );    
       }

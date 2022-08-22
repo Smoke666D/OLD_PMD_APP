@@ -486,11 +486,11 @@ function PdmController () {
     for ( var i=0; i<total; i++ ) {
       msg = new USBMessage( [] );
       if ( buffer.length > USB_DATA_SIZE ) {
-        out    = buffer.substring( 0, USB_DATA_SIZE );
+        out    = buffer.subarray( 0, USB_DATA_SIZE );
+        buffer = buffer.subarray( USB_DATA_SIZE );
         length = USB_DATA_SIZE;
-        buffer = buffer.substring( USB_DATA_SIZE );
       } else {
-        out    = buffer;
+        out    = buffer.subarray( 0 );
         length = out.length;
       }
       msg.codeLua( address, length, out );

@@ -257,7 +257,7 @@ function USBMessage ( buffer ) {
   this.codeLua = function( adr, length, script ) {
     let data = [];
     for ( var i=0; i<length; i++ ) {
-      data.push( script[i].charCodeAt() & 0xFF );
+      data.push( script[i] & 0xFF );
     }
     makeResponse( msgCMD.USB_REPORT_CMD_WRITE_SCRIPT, adr, data, length );
     return;
