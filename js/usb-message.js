@@ -254,6 +254,14 @@ function USBMessage ( buffer ) {
     makeRequest( msgCMD.USB_REPORT_CMD_END_WRITING, 0 );
     return;
   }
+  this.codeLuaLength = function ( adr, length ) {
+    let data = [];
+    for ( var i=0; i<4; i++ ) {
+      data.push( ( Math.abs( length ) >> ( i * 8 ) ) & 0xFF );
+    }
+    makeResponse( msgCMD.USB_REPORT_CMD_WRITE_SCRIPT, adr, data, 4 );
+    return;
+  }
   this.codeLua = function( adr, length, script ) {
     let data = [];
     for ( var i=0; i<length; i++ ) {

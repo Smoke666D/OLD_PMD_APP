@@ -217,7 +217,12 @@ async function pdmload ( data ) {
     }
     fs.readFile( data, null, async function ( error, data ) {
       if ( error ) {
-        resolve( ['error', '', null] );    
+        luacli.newLine( 'Error on file open' );
+        resolve( ['error', '', null] );
+      }
+      if ( data.length > settings.data.maxLuaLength ) {
+        luacli.newLine( 'Too big size of file' );
+        resolve( ['error', '', null] );
       }
       pdm.lua = data;
       if ( ( state == usb.usbStat.wait ) || ( state == usb.usbStat.dash ) ) {

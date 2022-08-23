@@ -475,7 +475,7 @@ function PdmController () {
     let total   = Math.ceil( buffer.length / USB_DATA_SIZE );
     let out     = '';
     let length  = 0;
-    let address = 0;
+    let address = 4;
     let msg     = null;
     transport.clean();
     /*---------------------------------------------*/
@@ -483,6 +483,9 @@ function PdmController () {
     msg.codeStartWriting();
     transport.addToOutput( msg );
     /*---------------------------------------------*/
+    msg = new USBMessage( [] );
+    msg.codeLuaLength( 0, pdm.lua.length );
+    transport.addToOutput( msg );
     for ( var i=0; i<total; i++ ) {
       msg = new USBMessage( [] );
       if ( buffer.length > USB_DATA_SIZE ) {
