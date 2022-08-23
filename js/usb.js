@@ -502,7 +502,7 @@ function PdmController () {
     }
     if ( pdm.isCompil == false ) {
       msg = new USBMessage( [] );
-      msg.codeTerminator( pdm.lua.length );
+      msg.codeTerminator( pdm.lua.length + 4 );
       transport.addToOutput( msg );
     }
     /*---------------------------------------------*/
