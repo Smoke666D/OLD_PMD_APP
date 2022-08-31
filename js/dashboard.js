@@ -655,12 +655,6 @@ const values = [
     'type'   : 'bool',
     'dic'    : boolDic
   },{
-    'id'     : 'value-din-12',
-    'adr'    : 11,
-    'source' : 'din',
-    'type'   : 'bool',
-    'dic'    : boolDic
-  },{
     'id'     : 'value-uin-1',
     'adr'    : 0,
     'source' : 'voltage',

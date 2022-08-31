@@ -1,7 +1,6 @@
+const IDlength   = 12;
 const pdmDataAdr = {
-  "DATA_ADR_UNIQUE_0"         : 0,
-  "DATA_ADR_UNIQUE_1"         : 4,
-  "DATA_ADR_UNIQUE_2"         : 8,
+  "DATA_ADR_UNIQUE"           : 0,
   "DATA_ADR_BOOTLOADER_MAJOR" : 12,
   "DATA_ADR_BOOTLOADER_MINOR" : 13,
   "DATA_ADR_BOOTLOADER_PATCH" : 14,
@@ -46,6 +45,18 @@ function bytesToUint32 ( data, adr ) {
   return out;
 }
 /*----------------------------------------------------------------------------*/
+function byteToIDstring ( data, adr ) {
+  let out = '';
+  for ( var i=0; i<IDlength; i++ ) {
+    let number =  data[adr + i].toString( 16 ).toUpperCase();
+    if ( number.length == 1 ) {
+      number = '0' + number;
+    }
+    out += number + ':';
+  }
+  return out.substring( 0, ( out.length - 1 ) );
+}
+/*----------------------------------------------------------------------------*/
 function LuaTelemetry () {
   var self = this;
   this.time    = 0;
@@ -75,9 +86,13 @@ function DoutTelemetry () {
   }
 }
 function Version () {
+  var self = this;
   this.major = 0;
   this.minor = 0;
   this.patch = 0;
+  this.getString = function () {
+    return self.major + '.' + self.minor + '.' + self.patch;
+  }
 }
 function Telemetry ( dinN, doutN, ainN ) {
   var self     = this;
@@ -120,16 +135,14 @@ function Telemetry ( dinN, doutN, ainN ) {
 }
 function System () {
   var self        = this;
-  this.uid        = 0;
+  this.uid        = '00:00:00:00:00:00:00:00:00:00:00:00';
   this.bootloader = new Version();
   this.firmware   = new Version();
   this.hardware   = new Version();
   this.lua        = new Version();
   this.length     = 12 + 4 * 3;
   this.parsing    = function ( blob ) {
-    self.uid = bytesToUint32( blob, pdmDataAdr.DATA_ADR_UNIQUE_0 );
-    self.uid = bytesToUint32( blob, pdmDataAdr.DATA_ADR_UNIQUE_1 );
-    self.uid = bytesToUint32( blob, pdmDataAdr.DATA_ADR_UNIQUE_2 );
+    self.uid              = byteToIDstring( blob, pdmDataAdr.DATA_ADR_UNIQUE );
     self.bootloader.major = blob[pdmDataAdr.DATA_ADR_BOOTLOADER_MAJOR];
     self.bootloader.minor = blob[pdmDataAdr.DATA_ADR_BOOTLOADER_MINOR];
     self.bootloader.patch = blob[pdmDataAdr.DATA_ADR_BOOTLOADER_PATCH];

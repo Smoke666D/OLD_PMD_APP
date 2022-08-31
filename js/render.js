@@ -67,6 +67,11 @@ function connectPDMinit () {
 }
 
 function updateInterface ( callback ) {
+  document.getElementById('versionController').innerText = pdm.system.hardware.getString();
+  document.getElementById('versionFirmware').innerText   = pdm.system.firmware.getString();
+  document.getElementById('versionBootloader').innerText = pdm.system.bootloader.getString();
+  document.getElementById('versionLua').innerText        = pdm.system.lua.getString();
+  document.getElementById('uniqueNumber').innerText      = pdm.system.uid;
   callback();
   return;
 }
