@@ -135,11 +135,11 @@ function InputMessageArray () {
       }
       response.addMessage( message );
       length += USB_DATA_SIZE;
-      if ( length >= message.length ) {
+      //if ( length >= message.length ) {
         result = usbHandler.finish;
-      } else {
-        result = usbHandler.continue;
-      }
+      //} else {
+      //  result = usbHandler.continue;
+      //}
     } else {
       if ( message.status == msgSTAT.USB_BAD_REQ_STAT ) {
         result = usbHandler.error;
@@ -235,9 +235,6 @@ function USBtransport () {
   function write ( data ) {
     if ( device != null ) {
       try {
-        if ( data[1] != 5) {
-          console.log( data )
-        }
         device.write( data );
       } catch (e) {
         if ( ( alert != null ) || ( alert != undefined ) ) {
@@ -516,11 +513,33 @@ function PdmController () {
   function initReadSequency ( adr, data, callback ) {
     var msg = null;
     transport.clean();
-    Object.keys( pdmDataAdr ).forEach( function ( key ) {
+    msg = new USBMessage( [] );
+    msg.codeUpdateTelemetry();
+    transport.addRequest( msg );
+    for ( var i=0; i<Math.ceil( pdm.system.length / USB_DATA_SIZE ); i++ ) {
       msg = new USBMessage( [] );
-      msg.makeDataRequest( pdmDataAdr[key] );
+      msg.makeDataRequest( i * USB_DATA_SIZE );
       transport.addRequest( msg );
-    });
+    }
+    for ( var i=0; i<Math.ceil( pdm.telemetry.length / USB_DATA_SIZE ); i++ ) {
+      msg = new USBMessage( [] );
+      msg.makeTelemetryRequest( i * USB_DATA_SIZE );
+      transport.addRequest( msg );
+    }
+    callback();
+    return;
+  }
+  function initTelemetrySequency ( adr, data, callback ) {
+    var msg = null;
+    transport.clean();
+    msg = new USBMessage( [] );
+    msg.codeUpdateTelemetry();
+    transport.addRequest( msg );
+    for ( var i=0; i<Math.ceil( pdm.telemetry.length / USB_DATA_SIZE ); i++ ) {
+      msg = new USBMessage( [] );
+      msg.makeTelemetryRequest( i * USB_DATA_SIZE );
+      transport.addRequest( msg );
+    }
     callback();
     return;
   }
@@ -646,11 +665,11 @@ function PdmController () {
   }
   this.loop              = function () {
     if ( ( loopActive > 0 ) && ( loopBusy == 0 ) ) {
-      //console.log( 'loop time: ' + ( ( Date.now() - loopTime ) / 1000 ) + ' sec' );
+      console.log( 'loop time: ' + ( ( Date.now() - loopTime ) / 1000 ) + ' sec' );
       loopTime = Date.now();
       if ( settings.data.usb.loop == true ) {
         loopBusy = 1;
-        this.readOutput();
+        this.readTelemetry();
       }
     }
     return;
@@ -666,6 +685,10 @@ function PdmController () {
   }
   this.readOutput        = function () {
     readSequency( 0, 0, null, true, initReadSequency );
+    return;
+  }
+  this.readTelemetry     = function () {
+    readSequency( 0, 0, null, true, initTelemetrySequency );
     return;
   }
   this.receive           = function ( data = null, alertIn = null ) {

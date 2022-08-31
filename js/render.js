@@ -65,34 +65,54 @@ function connectPDMinit () {
   });
   return;
 }
+
+function updateInterface ( callback ) {
+  callback();
+  return;
+}
+
 function parsingFullMessages () {
   var dashFl = false;
+  var dataFl = false;
   var buffer = usb.controller.getInput();
   for ( var i=0; i<buffer.length; i++ ) {
-    buffer[i].init( function() {
-      let out = buffer[i].parse();
+    buffer[i].init( function ( input ) {
+      let out = input.parse();
       switch ( out[0] ) {
         case msgType.lua:
           pdm.lua += out[1];
           break;
         case msgType.data:
-          pdm.data[buffer[i].adr] = out[1];
+          for ( var i=0; i<out[1].length; i++ ) {
+            pdm.sysBlob.push( out[1][i] );
+          }
+          dataFl = true;
+          break;
+        case msgType.telemetry:
+          for ( var i=0; i<out[1].length; i++ ) {
+            pdm.telemetryBlob.push( out[1][i] );
+          }
           dashFl = true;
           break;
       }
       return;
     });
   }
-  if ( dashFl == false ) {
-    updateInterface( function () {
-      let alert = new Alert( "alert-success", alerts.okIco, "Данные успешно обновленны" );
-      usb.controller.enableLoop();
-      return;
+  if ( dataFl == true ) {
+    pdm.setSystem( function () {
+      updateInterface( function () {
+        let alert = new Alert( "alert-success", alerts.okIco, "Данные успешно обновленны" );
+        usb.controller.enableLoop();
+        return;
+      });
     });
-  } else {
-    dashboard.update( function () {
-      usb.controller.resetLoopBusy();
-      return;
+  }
+  if ( dashFl == true ) {
+    pdm.setTelemetry( function () {
+      dashboard.update( function () {
+        usb.controller.resetLoopBusy();
+        return;
+      });
     });
   }
   return;

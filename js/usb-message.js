@@ -4,11 +4,13 @@
 /*----------------------------------------------------------------------------*/
 const msgSIZE = 40;
 const msgCMD  = {
-  "USB_REPORT_CMD_START_WRITING" : 1,
-  "USB_REPORT_CMD_WRITE_SCRIPT"  : 2,
-  "USB_REPORT_CMD_END_WRITING"   : 3,
-  "USB_REPORT_CMD_READ_SCRIPT"   : 4,
-  "USB_REPORT_CMD_READ_DATA"     : 5
+  "USB_REPORT_CMD_START_WRITING"    : 1,
+  "USB_REPORT_CMD_WRITE_SCRIPT"     : 2,
+  "USB_REPORT_CMD_END_WRITING"      : 3,
+  "USB_REPORT_CMD_READ_SCRIPT"      : 4,
+  "USB_REPORT_CMD_READ_DATA"        : 5,
+  "USB_REPORT_CMD_READ_TELEMETRY"   : 6,
+  "USB_REPORT_CMD_UPDATE_TELEMETRY" : 7
 };
 const msgSTAT = {
   "USB_OK_STAT"           : 1,
@@ -19,8 +21,9 @@ const msgSTAT = {
   "USB_INTERNAL"          : 6
 };
 const msgType = {
-  "lua"  : 1,
-  "data" : 2
+  "lua"       : 1,
+  "data"      : 2,
+  "telemetry" : 3
 }
 const USB_DIR_BYTE  = 0;
 const USB_CMD_BYTE  = 1;
@@ -125,6 +128,12 @@ function USBMessage ( buffer ) {
         break;
       case msgCMD.USB_REPORT_CMD_READ_DATA:
         self.command = msgCMD.USB_REPORT_CMD_READ_DATA;
+        break;
+      case msgCMD.USB_REPORT_CMD_READ_TELEMETRY:
+        self.command = msgCMD.USB_REPORT_CMD_READ_TELEMETRY;
+        break;
+      case msgCMD.USB_REPORT_CMD_UPDATE_TELEMETRY:
+        self.command = msgCMD.USB_REPORT_CMD_UPDATE_TELEMETRY;
         break;
       default:
         self.command = 0;
@@ -236,7 +245,7 @@ function USBMessage ( buffer ) {
     parsingLengthByte();   /* Parsing length bytes */
     parsingDataBytes();    /* Parsing data bytes */
     /*--------------------------------------------------------*/
-    callback();
+    callback( self );
     return;
   }
   this.makeLuaRequest = function () {
@@ -246,8 +255,15 @@ function USBMessage ( buffer ) {
   this.makeDataRequest = function ( adr ) {
     makeRequest( msgCMD.USB_REPORT_CMD_READ_DATA, adr );
   }
+  this.makeTelemetryRequest = function ( adr ) {
+    makeRequest( msgCMD.USB_REPORT_CMD_READ_TELEMETRY, adr );
+  }
   this.codeStartWriting = function () {
     makeRequest( msgCMD.USB_REPORT_CMD_START_WRITING, 0 );
+    return;
+  }
+  this.codeUpdateTelemetry = function () {
+    makeRequest( msgCMD.USB_REPORT_CMD_UPDATE_TELEMETRY, 0 );
     return;
   }
   this.codeFinishWriting = function () {
@@ -285,6 +301,9 @@ function USBMessage ( buffer ) {
         output = parseData();
         type   = msgType.data;
         break;
+      case msgCMD.USB_REPORT_CMD_READ_TELEMETRY:
+        output = parseData();
+        type   = msgType.telemetry;
     }
     return [type, output];
   }

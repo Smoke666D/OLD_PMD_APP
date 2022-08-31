@@ -1,6 +1,7 @@
 var pdm    = require('./pdm.js').pdm;
 var pdmAdr = require('./pdm.js').pdmDataAdr;
 
+const doutErrorDic  = ["нет", "уставка", "перегр.", "обрыв"];
 const statusDic     = ['Init', 'Run'       , 'Error'    , 'Stop'       , 'Restart' ];
 const statusCardDic = [''    , 'bg-success', 'bg-danger',  'bg-warning', ''        ]; 
 const doutStatusDic     = ['Off', 'Process'   , 'On'        , 'Error'    , 'Error'    , 'Restart'];
@@ -9,359 +10,681 @@ const boolDic = [ '✕', '✓' ];
 const cardDic = [ '', 'bg-success' ];
 const cards = [
   {
-    'id'   : 'card-lua',
-    'adr'  : pdmAdr.DATA_ADR_LUA_STATUS,
-    'type' : 'class',
-    'dic'  : statusCardDic
+    'id'     : 'card-lua',
+    'adr'    : 0,
+    'source' : 'lua',
+    'type'   : 'class',
+    'dic'    : statusCardDic
   },{
-    'id'   : 'card-runTime',
-    'adr'  : null,
-    'type' : null,
-    'dic'  : []
+    'id'     : 'card-runTime',
+    'adr'    : null,
+    'source' : null,
+    'type'   : null,
+    'dic'    : []
   },{
-    'id'   : 'card-errorCounter',
-    'adr'  : null,
-    'type' : null,
-    'dic'  : []
+    'id'     : 'card-errorCounter',
+    'adr'    : null,
+    'source' : null,
+    'type'   : null,
+    'dic'    : []
   },{
-    'id'   : 'card-battery',
-    'adr'  : null,
-    'type' : null,
-    'dic'  : []
+    'id'     : 'card-battery',
+    'adr'    : null,
+    'source' : null,
+    'type'   : null,
+    'dic'    : []
   },{
-    'id'   : 'card-dout-1',
-    'adr'  : pdmAdr.DATA_ADR_DOUT_0,
-    'type' : 'class',
-    'shif' : 0,
-    'dic'  : doutStatusCardDic
+    'id'     : 'card-dout-1',
+    'adr'    : 0,
+    'source' : 'dout',
+    'type'   : 'class',
+    'shif'   : 0,
+    'dic'    : doutStatusCardDic
   },{
-    'id'   : 'card-dout-2',
-    'adr'  : pdmAdr.DATA_ADR_DOUT_1,
-    'type' : 'class',
-    'shif' : 0,
-    'dic'  : doutStatusCardDic
+    'id'     : 'card-dout-2',
+    'adr'    : 1,
+    'source' : 'dout',
+    'type'   : 'class',
+    'shif'   : 0,
+    'dic'    : doutStatusCardDic
   },{
-    'id'   : 'card-dout-3',
-    'adr'  : pdmAdr.DATA_ADR_DOUT_2,
-    'type' : 'class',
-    'shif' : 0,
-    'dic'  : doutStatusCardDic
+    'id'     : 'card-dout-3',
+    'adr'    : 2,
+    'source' : 'dout',
+    'type'   : 'class',
+    'shif'   : 0,
+    'dic'    : doutStatusCardDic
   },{
-    'id'   : 'card-dout-4',
-    'adr'  : pdmAdr.DATA_ADR_DOUT_3,
-    'type' : 'class',
-    'shif' : 0,
-    'dic'  : doutStatusCardDic
+    'id'     : 'card-dout-4',
+    'adr'    : 3,
+    'source' : 'dout',
+    'type'   : 'class',
+    'shif'   : 0,
+    'dic'    : doutStatusCardDic
   },{
-    'id'   : 'card-dout-5',
-    'adr'  : pdmAdr.DATA_ADR_DOUT_4,
-    'type' : 'class',
-    'shif' : 0,
-    'dic'  : doutStatusCardDic
+    'id'     : 'card-dout-5',
+    'adr'    : 4,
+    'source' : 'dout',
+    'type'   : 'class',
+    'shif'   : 0,
+    'dic'    : doutStatusCardDic
   },{
-    'id'   : 'card-dout-6',
-    'adr'  : pdmAdr.DATA_ADR_DOUT_5,
-    'type' : 'class',
-    'shif' : 0,
-    'dic'  : doutStatusCardDic
+    'id'     : 'card-dout-6',
+    'adr'    : 5,
+    'source' : 'dout',
+    'type'   : 'class',
+    'shif'   : 0,
+    'dic'    : doutStatusCardDic
   },{
-    'id'   : 'card-dout-7',
-    'adr'  : pdmAdr.DATA_ADR_DOUT_6,
-    'type' : 'class',
-    'shif' : 0,
-    'dic'  : doutStatusCardDic
+    'id'     : 'card-dout-7',
+    'adr'    : 6,
+    'source' : 'dout',
+    'type'   : 'class',
+    'shif'   : 0,
+    'dic'    : doutStatusCardDic
   },{
-    'id'   : 'card-dout-8',
-    'adr'  : pdmAdr.DATA_ADR_DOUT_7,
-    'type' : 'class',
-    'shif' : 0,
-    'dic'  : doutStatusCardDic
+    'id'     : 'card-dout-8',
+    'adr'    : 7,
+    'source' : 'dout',
+    'type'   : 'class',
+    'shif'   : 0,
+    'dic'    : doutStatusCardDic
   },{
-    'id'   : 'card-dout-9',
-    'adr'  : pdmAdr.DATA_ADR_DOUT_8,
-    'type' : 'class',
-    'shif' : 0,
-    'dic'  : doutStatusCardDic
+    'id'     : 'card-dout-9',
+    'adr'    : 8,
+    'source' : 'dout',
+    'type'   : 'class',
+    'shif'   : 0,
+    'dic'    : doutStatusCardDic
   },{
-    'id'   : 'card-dout-10',
-    'adr'  : pdmAdr.DATA_ADR_DOUT_9,
-    'type' : 'class',
-    'shif' : 0,
-    'dic'  : doutStatusCardDic
+    'id'     : 'card-dout-10',
+    'adr'    : 9,
+    'source' : 'dout',
+    'type'   : 'class',
+    'shif'   : 0,
+    'dic'    : doutStatusCardDic
   },{
-    'id'   : 'card-dout-11',
-    'adr'  : pdmAdr.DATA_ADR_DOUT_10,
-    'type' : 'class',
-    'shif' : 0,
-    'dic'  : doutStatusCardDic
+    'id'     : 'card-dout-11',
+    'adr'    : 10,
+    'source' : 'dout',
+    'type'   : 'class',
+    'shif'   : 0,
+    'dic'    : doutStatusCardDic
   },{
-    'id'   : 'card-dout-12',
-    'adr'  : pdmAdr.DATA_ADR_DOUT_11,
-    'type' : 'class',
-    'shif' : 0,
-    'dic'  : doutStatusCardDic
+    'id'     : 'card-dout-12',
+    'adr'    : 11,
+    'source' : 'dout',
+    'type'   : 'class',
+    'shif'   : 0,
+    'dic'    : doutStatusCardDic
   },{
-    'id'   : 'card-dout-13',
-    'adr'  : pdmAdr.DATA_ADR_DOUT_12,
-    'type' : 'class',
-    'shif' : 0,
-    'dic'  : doutStatusCardDic
+    'id'     : 'card-dout-13',
+    'adr'    : 12,
+    'source' : 'dout',
+    'type'   : 'class',
+    'shif'   : 0,
+    'dic'    : doutStatusCardDic
   },{
-    'id'   : 'card-dout-14',
-    'adr'  : pdmAdr.DATA_ADR_DOUT_13,
-    'type' : 'class',
-    'shif' : 0,
-    'dic'  : doutStatusCardDic
+    'id'     : 'card-dout-14',
+    'adr'    : 13,
+    'source' : 'dout',
+    'type'   : 'class',
+    'shif'   : 0,
+    'dic'    : doutStatusCardDic
   },{
-    'id'   : 'card-dout-15',
-    'adr'  : pdmAdr.DATA_ADR_DOUT_14,
-    'type' : 'class',
-    'shif' : 0,
-    'dic'  : doutStatusCardDic
+    'id'     : 'card-dout-15',
+    'adr'    : 14,
+    'source' : 'dout',
+    'type'   : 'class',
+    'shif'   : 0,
+    'dic'    : doutStatusCardDic
   },{
-    'id'   : 'card-dout-16',
-    'adr'  : pdmAdr.DATA_ADR_DOUT_15,
-    'type' : 'class',
-    'shif' : 0,
-    'dic'  : doutStatusCardDic
+    'id'     : 'card-dout-16',
+    'adr'    : 15,
+    'source' : 'dout',
+    'type'   : 'class',
+    'shif'   : 0,
+    'dic'    : doutStatusCardDic
   },{
-    'id'   : 'card-dout-17',
-    'adr'  : pdmAdr.DATA_ADR_DOUT_16,
-    'type' : 'class',
-    'shif' : 0,
-    'dic'  : doutStatusCardDic
+    'id'     : 'card-dout-17',
+    'adr'    : 16,
+    'source' : 'dout',
+    'type'   : 'class',
+    'shif'   : 0,
+    'dic'    : doutStatusCardDic
   },{
-    'id'   : 'card-dout-18',
-    'adr'  : pdmAdr.DATA_ADR_DOUT_17,
-    'type' : 'class',
-    'shif' : 0,
-    'dic'  : doutStatusCardDic
+    'id'     : 'card-dout-18',
+    'adr'    : 17,
+    'source' : 'dout',
+    'type'   : 'class',
+    'shif'   : 0,
+    'dic'    : doutStatusCardDic
   },{
-    'id'   : 'card-dout-19',
-    'adr'  : pdmAdr.DATA_ADR_DOUT_18,
-    'type' : 'class',
-    'shif' : 0,
-    'dic'  : doutStatusCardDic
+    'id'     : 'card-dout-19',
+    'adr'    : 18,
+    'source' : 'dout',
+    'type'   : 'class',
+    'shif'   : 0,
+    'dic'    : doutStatusCardDic
   },{
-    'id'   : 'card-dout-20',
-    'adr'  : pdmAdr.DATA_ADR_DOUT_19,
-    'type' : 'class',
-    'shif' : 0,
-    'dic'  : doutStatusCardDic
+    'id'     : 'card-dout-20',
+    'adr'    : 19,
+    'source' : 'dout',
+    'type'   : 'class',
+    'shif'   : 0,
+    'dic'    : doutStatusCardDic
   },{
-    'id'   : 'card-din',
-    'adr'  : null,
-    'type' : null,
-    'dic'  : []
+    'id'     : 'card-din',
+    'adr'    : null,
+    'source' : null,
+    'type'   : null,
+    'dic'    : []
   },{
-    'id'   : 'card-uin-1',
-    'adr'  : null,
-    'type' : null,
-    'dic'  : []
+    'id'     : 'card-uin-1',
+    'adr'    : null,
+    'source' : null,
+    'type'   : null,
+    'dic'    : []
   },{
-    'id'   : 'card-uin-2',
-    'adr'  : null,
-    'type' : null,
-    'dic'  : []
+    'id'     : 'card-uin-2',
+    'adr'    : null,
+    'source' : null,
+    'type'   : null,
+    'dic'    : []
   },{
-    'id'   : 'card-uin-3',
-    'adr'  : null,
-    'type' : null,
-    'dic'  : []
+    'id'     : 'card-uin-3',
+    'adr'    : null,
+    'source' : null,
+    'type'   : null,
+    'dic'    : []
   },{
-    'id'   : 'card-uin-4',
-    'adr'  : null,
-    'type' : null,
-    'dic'  : []
+    'id'     : 'card-uin-4',
+    'adr'    : null,
+    'source' : null,
+    'type'   : null,
+    'dic'    : []
   },
 ]
 const values = [
   {
-    'id'   : 'value-lua',
-    'adr'  : pdmAdr.DATA_ADR_LUA_STATUS,
-    'type' : 'string',
-    'dic'  : statusDic
+    'id'     : 'value-lua',
+    'adr'    : 0,
+    'source' : 'luaStatus',
+    'type'   : 'string',
+    'dic'    : statusDic
   },{
-    'id'   : 'value-runTime',
-    'adr'  : pdmAdr.DATA_ADR_LUA_TIME,
-    'type' : 'time',
+    'id'     : 'value-runTime',
+    'adr'    : 0,
+    'source' : 'luaTime',
+    'type'   : 'time',
   },{
-    'id'   : 'value-errorCounter',
-    'adr'  : pdmAdr.DATA_ADR_LUA_ERROR_COUNTER,
-    'type' : 'uint8',
+    'id'     : 'value-errorCounter',
+    'adr'    : 0,
+    'source' : 'errorCounter',
+    'type'   : 'uint8',
   },{
-    'id'   : 'value-battery',
-    'adr'  : pdmAdr.DATA_ADR_VOLTAGE_BAT,
-    'type' : 'float'
+    'id'     : 'value-battery',
+    'adr'    : 0,
+    'source' : 'battery',
+    'type'   : 'float',
+    'accur'  : 2
   },{
-    'id'   : 'value-dout-1',
-    'adr'  : pdmAdr.DATA_ADR_CURRENT_0,
-    'type' : 'float'
+    'id'     : 'value-dout-1',
+    'adr'    : 0,
+    'source' : 'current',
+    'type'   : 'float',
+    'accur'  : 1
+  },{
+    'id'     : 'value-dout-2',
+    'adr'    : 1,
+    'source' : 'current',
+    'type'   : 'float',
+    'accur'  : 1
+  },{
+    'id'     : 'value-dout-3',
+    'adr'    : 2,
+    'source' : 'current',
+    'type'   : 'float',
+    'accur'  : 1
   }, {
-    'id'   : 'value-dout-2',
-    'adr'  : pdmAdr.DATA_ADR_CURRENT_1,
-    'type' : 'float'
+    'id'     : 'value-dout-4',
+    'adr'    : 3,
+    'source' : 'current',
+    'type'   : 'float',
+    'accur'  : 1
   },{
-    'id'   : 'value-dout-3',
-    'adr'  : pdmAdr.DATA_ADR_CURRENT_2,
-    'type' : 'float'
-  }, {
-    'id'   : 'value-dout-4',
-    'adr'  : pdmAdr.DATA_ADR_CURRENT_3,
-    'type' : 'float'
+    'id'     : 'value-dout-5',
+    'adr'    : 4,
+    'source' : 'current',
+    'type'   : 'float',
+    'accur'  : 1
   },{
-    'id'   : 'value-dout-5',
-    'adr'  : pdmAdr.DATA_ADR_CURRENT_4,
-    'type' : 'float'
+    'id'     : 'value-dout-6',
+    'adr'    : 5,
+    'source' : 'current',
+    'type'   : 'float',
+    'accur'  : 1
   },{
-    'id'   : 'value-dout-6',
-    'adr'  : pdmAdr.DATA_ADR_CURRENT_5,
-    'type' : 'float'
+    'id'     : 'value-dout-7',
+    'adr'    : 6,
+    'source' : 'current',
+    'type'   : 'float',
+    'accur'  : 1
   },{
-    'id'   : 'value-dout-7',
-    'adr'  : pdmAdr.DATA_ADR_CURRENT_6,
-    'type' : 'float'
+    'id'     : 'value-dout-8',
+    'adr'    : 7,
+    'source' : 'current',
+    'type'   : 'float',
+    'accur'  : 1
   },{
-    'id'   : 'value-dout-8',
-    'adr'  : pdmAdr.DATA_ADR_CURRENT_7,
-    'type' : 'float'
+    'id'     : 'value-dout-9',
+    'adr'    : 8,
+    'source' : 'current',
+    'type'   : 'float',
+    'accur'  : 1
   },{
-    'id'   : 'value-dout-9',
-    'adr'  : pdmAdr.DATA_ADR_CURRENT_8,
-    'type' : 'float'
+    'id'     : 'value-dout-10',
+    'adr'    : 9,
+    'source' : 'current',
+    'type'   : 'float',
+    'accur'  : 1
   },{
-    'id'   : 'value-dout-10',
-    'adr'  : pdmAdr.DATA_ADR_CURRENT_9,
-    'type' : 'float'
+    'id'     : 'value-dout-11',
+    'adr'    : 10,
+    'source' : 'current',
+    'type'   : 'float',
+    'accur'  : 1
   },{
-    'id'   : 'value-dout-11',
-    'adr'  : pdmAdr.DATA_ADR_CURRENT_10,
-    'type' : 'float'
+    'id'     : 'value-dout-12',
+    'adr'    : 11,
+    'source' : 'current',
+    'type'   : 'float',
+    'accur'  : 1
   },{
-    'id'   : 'value-dout-12',
-    'adr'  : pdmAdr.DATA_ADR_CURRENT_11,
-    'type' : 'float'
+    'id'     : 'value-dout-13',
+    'adr'    : 12,
+    'source' : 'current',
+    'type'   : 'float',
+    'accur'  : 1
   },{
-    'id'   : 'value-dout-13',
-    'adr'  : pdmAdr.DATA_ADR_CURRENT_12,
-    'type' : 'float'
+    'id'     : 'value-dout-14',
+    'adr'    : 13,
+    'source' : 'current',
+    'type'   : 'float',
+    'accur'  : 1
   },{
-    'id'   : 'value-dout-14',
-    'adr'  : pdmAdr.DATA_ADR_CURRENT_13,
-    'type' : 'float'
+    'id'     : 'value-dout-15',
+    'adr'    : 14,
+    'source' : 'current',
+    'type'   : 'float',
+    'accur'  : 1
   },{
-    'id'   : 'value-dout-15',
-    'adr'  : pdmAdr.DATA_ADR_CURRENT_14,
-    'type' : 'float'
+    'id'     : 'value-dout-16',
+    'adr'    : 15,
+    'source' : 'current',
+    'type'   : 'float',
+    'accur'  : 1
   },{
-    'id'   : 'value-dout-16',
-    'adr'  : pdmAdr.DATA_ADR_CURRENT_15,
-    'type' : 'float'
+    'id'     : 'value-dout-17',
+    'adr'    : 16,
+    'source' : 'current',
+    'type'   : 'float',
+    'accur'  : 1
   },{
-    'id'   : 'value-dout-17',
-    'adr'  : pdmAdr.DATA_ADR_CURRENT_16,
-    'type' : 'float'
+    'id'     : 'value-dout-18',
+    'adr'    : 17,
+    'source' : 'current',
+    'type'   : 'float',
+    'accur'  : 1
   },{
-    'id'   : 'value-dout-18',
-    'adr'  : pdmAdr.DATA_ADR_CURRENT_17,
-    'type' : 'float'
+    'id'     : 'value-dout-19',
+    'adr'    : 18,
+    'source' : 'current',
+    'type'   : 'float',
+    'accur'  : 1
   },{
-    'id'   : 'value-dout-19',
-    'adr'  : pdmAdr.DATA_ADR_CURRENT_18,
-    'type' : 'float'
+    'id'     : 'value-dout-20',
+    'adr'    : 19,
+    'source' : 'current',
+    'type'   : 'float',
+    'accur'  : 1
   },{
-    'id'   : 'value-dout-20',
-    'adr'  : pdmAdr.DATA_ADR_CURRENT_19,
-    'type' : 'float'
+    'id'     : 'max-dout-1',
+    'adr'    : 0,
+    'source' : 'max',
+    'type'   : 'float',
+    'accur'  : 1
   },{
-    'id'   : 'value-din-1',
-    'adr'  : pdmAdr.DATA_ADR_DIN,
-    'type' : 'bool',
-    'shif' : 0,
-    'dic'  : boolDic
+    'id'     : 'max-dout-2',
+    'adr'    : 1,
+    'source' : 'max',
+    'type'   : 'float',
+    'accur'  : 1
   },{
-    'id'   : 'value-din-2',
-    'adr'  : pdmAdr.DATA_ADR_DIN,
-    'type' : 'bool',
-    'shif' : 1,
-    'dic'  : boolDic
+    'id'     : 'max-dout-3',
+    'adr'    : 2,
+    'source' : 'max',
+    'type'   : 'float',
+    'accur'  : 1
   },{
-    'id'   : 'value-din-3',
-    'adr'  : pdmAdr.DATA_ADR_DIN,
-    'type' : 'bool',
-    'shif' : 2,
-    'dic'  : boolDic
+    'id'     : 'max-dout-4',
+    'adr'    : 3,
+    'source' : 'max',
+    'type'   : 'float',
+    'accur'  : 1
   },{
-    'id'   : 'value-din-4',
-    'adr'  : pdmAdr.DATA_ADR_DIN,
-    'type' : 'bool',
-    'shif' : 3,
-    'dic'  : boolDic
+    'id'     : 'max-dout-5',
+    'adr'    : 4,
+    'source' : 'max',
+    'type'   : 'float',
+    'accur'  : 1
   },{
-    'id'   : 'value-din-5',
-    'adr'  : pdmAdr.DATA_ADR_DIN,
-    'type' : 'bool',
-    'shif' : 4,
-    'dic'  : boolDic
+    'id'     : 'max-dout-6',
+    'adr'    : 5,
+    'source' : 'max',
+    'type'   : 'float',
+    'accur'  : 1
   },{
-    'id'   : 'value-din-6',
-    'adr'  : pdmAdr.DATA_ADR_DIN,
-    'type' : 'bool',
-    'shif' : 5,
-    'dic'  : boolDic
+    'id'     : 'max-dout-7',
+    'adr'    : 6,
+    'source' : 'max',
+    'type'   : 'float',
+    'accur'  : 1
   },{
-    'id'   : 'value-din-7',
-    'adr'  : pdmAdr.DATA_ADR_DIN,
-    'type' : 'bool',
-    'shif' : 6,
-    'dic'  : boolDic
+    'id'     : 'max-dout-8',
+    'adr'    : 7,
+    'source' : 'max',
+    'type'   : 'float',
+    'accur'  : 1
   },{
-    'id'   : 'value-din-8',
-    'adr'  : pdmAdr.DATA_ADR_DIN,
-    'type' : 'bool',
-    'shif' : 7,
-    'dic'  : boolDic
+    'id'     : 'max-dout-9',
+    'adr'    : 8,
+    'source' : 'max',
+    'type'   : 'float',
+    'accur'  : 1
   },{
-    'id'   : 'value-din-9',
-    'adr'  : pdmAdr.DATA_ADR_DIN,
-    'type' : 'bool',
-    'shif' : 8,
-    'dic'  : boolDic
+    'id'     : 'max-dout-10',
+    'adr'    : 9,
+    'source' : 'max',
+    'type'   : 'float',
+    'accur'  : 1
   },{
-    'id'   : 'value-din-10',
-    'adr'  : pdmAdr.DATA_ADR_DIN,
-    'type' : 'bool',
-    'shif' : 9,
-    'dic'  : boolDic
+    'id'     : 'max-dout-11',
+    'adr'    : 10,
+    'source' : 'max',
+    'type'   : 'float',
+    'accur'  : 1
   },{
-    'id'   : 'value-din-11',
-    'adr'  : pdmAdr.DATA_ADR_DIN,
-    'type' : 'bool',
-    'shif' : 10,
-    'dic'  : boolDic
+    'id'     : 'max-dout-12',
+    'adr'    : 11,
+    'source' : 'max',
+    'type'   : 'float',
+    'accur'  : 1
   },{
-    'id'   : 'value-din-12',
-    'adr'  : pdmAdr.DATA_ADR_DIN,
-    'type' : 'bool',
-    'shif' : 11,
-    'dic'  : boolDic
+    'id'     : 'max-dout-13',
+    'adr'    : 12,
+    'source' : 'max',
+    'type'   : 'float',
+    'accur'  : 1
   },{
-    'id'   : 'value-uin-1',
-    'adr'  : pdmAdr.DATA_ADR_VOLTAGE_0,
-    'type' : 'float'
+    'id'     : 'max-dout-14',
+    'adr'    : 13,
+    'source' : 'max',
+    'type'   : 'float',
+    'accur'  : 1
   },{
-    'id'   : 'value-uin-2',
-    'adr'  : pdmAdr.DATA_ADR_VOLTAGE_1,
-    'type' : 'float'
+    'id'     : 'max-dout-15',
+    'adr'    : 14,
+    'source' : 'max',
+    'type'   : 'float',
+    'accur'  : 1
   },{
-    'id'   : 'value-uin-3',
-    'adr'  : pdmAdr.DATA_ADR_VOLTAGE_2,
-    'type' : 'float'
+    'id'     : 'max-dout-16',
+    'adr'    : 15,
+    'source' : 'max',
+    'type'   : 'float',
+    'accur'  : 1
   },{
-    'id'   : 'value-uin-4',
-    'adr'  : pdmAdr.DATA_ADR_VOLTAGE_3,
-    'type' : 'float'
-  },
+    'id'     : 'max-dout-17',
+    'adr'    : 16,
+    'source' : 'max',
+    'type'   : 'float',
+    'accur'  : 1
+  },{
+    'id'     : 'max-dout-18',
+    'adr'    : 17,
+    'source' : 'max',
+    'type'   : 'float',
+    'accur'  : 1
+  },{
+    'id'     : 'max-dout-19',
+    'adr'    : 18,
+    'source' : 'max',
+    'type'   : 'float',
+    'accur'  : 1
+  },{
+    'id'     : 'max-dout-20',
+    'adr'    : 19,
+    'source' : 'max',
+    'type'   : 'float',
+    'accur'  : 1
+  },{
+    'id'     : 'error-dout-1',
+    'adr'    : 0,
+    'source' : 'error',
+    'type'   : 'string',
+    'dic'    : doutErrorDic
+  },{
+    'id'     : 'error-dout-2',
+    'adr'    : 1,
+    'source' : 'error',
+    'type'   : 'string',
+    'dic'    : doutErrorDic
+  },{
+    'id'     : 'error-dout-3',
+    'adr'    : 2,
+    'source' : 'error',
+    'type'   : 'string',
+    'dic'    : doutErrorDic
+  },{
+    'id'     : 'error-dout-4',
+    'adr'    : 3,
+    'source' : 'error',
+    'type'   : 'string',
+    'dic'    : doutErrorDic
+  },{
+    'id'     : 'error-dout-5',
+    'adr'    : 4,
+    'source' : 'error',
+    'type'   : 'string',
+    'dic'    : doutErrorDic
+  },{
+    'id'     : 'error-dout-6',
+    'adr'    : 5,
+    'source' : 'error',
+    'type'   : 'string',
+    'dic'    : doutErrorDic
+  },{
+    'id'     : 'error-dout-7',
+    'adr'    : 6,
+    'source' : 'error',
+    'type'   : 'string',
+    'dic'    : doutErrorDic
+  },{
+    'id'     : 'error-dout-8',
+    'adr'    : 7,
+    'source' : 'error',
+    'type'   : 'string',
+    'dic'    : doutErrorDic
+  },{
+    'id'     : 'error-dout-9',
+    'adr'    : 8,
+    'source' : 'error',
+    'type'   : 'string',
+    'dic'    : doutErrorDic
+  },{
+    'id'     : 'error-dout-10',
+    'adr'    : 9,
+    'source' : 'error',
+    'type'   : 'string',
+    'dic'    : doutErrorDic
+  },{
+    'id'     : 'error-dout-11',
+    'adr'    : 10,
+    'source' : 'error',
+    'type'   : 'string',
+    'dic'    : doutErrorDic
+  },{
+    'id'     : 'error-dout-12',
+    'adr'    : 11,
+    'source' : 'error',
+    'type'   : 'string',
+    'dic'    : doutErrorDic
+  },{
+    'id'     : 'error-dout-13',
+    'adr'    : 12,
+    'source' : 'error',
+    'type'   : 'string',
+    'dic'    : doutErrorDic
+  },{
+    'id'     : 'error-dout-14',
+    'adr'    : 13,
+    'source' : 'error',
+    'type'   : 'string',
+    'dic'    : doutErrorDic
+  },{
+    'id'     : 'error-dout-15',
+    'adr'    : 14,
+    'source' : 'error',
+    'type'   : 'string',
+    'dic'    : doutErrorDic
+  },{
+    'id'     : 'error-dout-16',
+    'adr'    : 15,
+    'source' : 'error',
+    'type'   : 'string',
+    'dic'    : doutErrorDic
+  },{
+    'id'     : 'error-dout-17',
+    'adr'    : 16,
+    'source' : 'error',
+    'type'   : 'string',
+    'dic'    : doutErrorDic
+  },{
+    'id'     : 'error-dout-18',
+    'adr'    : 17,
+    'source' : 'error',
+    'type'   : 'string',
+    'dic'    : doutErrorDic
+  },{
+    'id'     : 'error-dout-19',
+    'adr'    : 18,
+    'source' : 'error',
+    'type'   : 'string',
+    'dic'    : doutErrorDic
+  },{
+    'id'     : 'error-dout-20',
+    'adr'    : 19,
+    'source' : 'error',
+    'type'   : 'string',
+    'dic'    : doutErrorDic
+  },{
+    'id'     : 'value-din-1',
+    'adr'    : 0,
+    'source' : 'din',
+    'type'   : 'bool',
+    'dic'    : boolDic
+  },{
+    'id'     : 'value-din-2',
+    'adr'    : 1,
+    'source' : 'din',
+    'type'   : 'bool',
+    'dic'    : boolDic
+  },{
+    'id'     : 'value-din-3',
+    'adr'    : 2,
+    'source' : 'din',
+    'type'   : 'bool',
+    'dic'    : boolDic
+  },{
+    'id'     : 'value-din-4',
+    'adr'    : 3,
+    'source' : 'din',
+    'type'   : 'bool',
+    'dic'    : boolDic
+  },{
+    'id'     : 'value-din-5',
+    'adr'    : 4,
+    'source' : 'din',
+    'type'   : 'bool',
+    'dic'    : boolDic
+  },{
+    'id'     : 'value-din-6',
+    'adr'    : 5,
+    'source' : 'din',
+    'type'   : 'bool',
+    'dic'    : boolDic
+  },{
+    'id'     : 'value-din-7',
+    'adr'    : 6,
+    'source' : 'din',
+    'type'   : 'bool',
+    'dic'    : boolDic
+  },{
+    'id'     : 'value-din-8',
+    'adr'    : 7,
+    'source' : 'din',
+    'type'   : 'bool',
+    'dic'    : boolDic
+  },{
+    'id'     : 'value-din-9',
+    'adr'    : 8,
+    'source' : 'din',
+    'type'   : 'bool',
+    'dic'    : boolDic
+  },{
+    'id'     : 'value-din-10',
+    'adr'    : 9,
+    'source' : 'din',
+    'type'   : 'bool',
+    'dic'    : boolDic
+  },{
+    'id'     : 'value-din-11',
+    'adr'    : 10,
+    'source' : 'din',
+    'type'   : 'bool',
+    'dic'    : boolDic
+  },{
+    'id'     : 'value-din-12',
+    'adr'    : 11,
+    'source' : 'din',
+    'type'   : 'bool',
+    'dic'    : boolDic
+  },{
+    'id'     : 'value-uin-1',
+    'adr'    : 0,
+    'source' : 'voltage',
+    'type'   : 'float',
+    'accur'  : 2
+  },{
+    'id'     : 'value-uin-2',
+    'adr'    : 1,
+    'source' : 'voltage',
+    'type'   : 'float',
+    'accur'  : 2
+  },{
+    'id'     : 'value-uin-3',
+    'adr'    : 2,
+    'source' : 'voltage',
+    'type'   : 'float',
+    'accur'  : 2
+  },{
+    'id'     : 'value-uin-4',
+    'adr'    : 3,
+    'source' : 'voltage',
+    'type'   : 'float',
+    'accur'  : 2
+  }
 ];
 /*----------------------------------------------------------------------------*/
 function byteToFloat ( data ) {
@@ -410,9 +733,14 @@ function Dashboard () {
     cards.forEach( function ( card ) {
       if ( card.type != null ) {
         let obj  = document.getElementById( card.id );
-        let data = mergeBytes( pdm.data[card.adr] );
-        if ( 'shif' in Object.keys( card ) ) {
-          data = ( data >> card.shif ) & 0x1;
+        let data = 0;
+        switch ( card.source ) {
+          case 'lua':
+            data = pdm.telemetry.lua.state;
+            break;
+          case 'dout':
+            data = pdm.telemetry.dout[card.adr].state;
+            break;
         }
         switch ( card.type ) {
           case 'class':
@@ -435,34 +763,60 @@ function Dashboard () {
   function updateValues () {
     values.forEach( function ( value ) {
       let obj  = document.getElementById( value.id );
-      let data = pdm.data[value.adr];
+      let data = 0;
+
+      switch ( value.source ) {
+        case 'luaStatus':
+          data = pdm.telemetry.lua.state;
+          break;
+        case 'luaTime':
+          data = pdm.telemetry.lua.time;
+          break;
+        case 'errorCounter':
+          data = pdm.telemetry.lua.counter;
+          break;
+        case 'battery':
+          data = pdm.telemetry.battery;
+          break;
+        case 'current':
+          data = pdm.telemetry.dout[value.adr].current;
+          break;
+        case 'max':
+          data = pdm.telemetry.dout[value.adr].max;
+          break;
+        case 'error':
+          data = pdm.telemetry.dout[value.adr].error;
+          break;
+        case 'din':
+          data = pdm.telemetry.din[value.adr];
+          break;
+        case 'voltage':
+          data = pdm.telemetry.voltage[value.adr];
+          break;
+      }
       switch ( value.type ) {
         case 'float':
-          obj.innerText = byteToFloat( data ).toFixed( 2 );
+          obj.innerText = data.toFixed( value.accur ).toString();
           break;
         case 'bool':
-          obj.innerText = value.dic[ ( mergeBytes( data ) >> value.shif ) & 0x01 ];
+          obj.innerText = value.dic[data];
           break;
         case 'string':
-          obj.innerText = value.dic[mergeBytes( data )];
+          obj.innerText = value.dic[data];
           break;
         case 'uint8':
-          obj.innerText = data[0].toString();
+          obj.innerText = data.toString();
           break;
         case 'uint32':
           obj.innerText = bytesToUint32( data ).toString();
           break;
         case 'time':
-          obj.innerText = ( bytesToUint32( data ) * 10 ).toString();
+          obj.innerText = ( data * 10 ).toString();
           break;
       }
     });
     return;
   }
-  function init () {
-    return;
-  }
-  init();
   return;
 }
 /*----------------------------------------------------------------------------*/

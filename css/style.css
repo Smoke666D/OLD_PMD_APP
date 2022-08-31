@@ -4011,6 +4011,20 @@ input[type="button"].btn-block {
       .card-table .row .col {
         font-size: 20px;
         text-align: center;}
+  .card-comment {
+    display: flex;
+    height: 30px;
+    margin: 0;
+    padding-left: 15px;
+    padding-right: 15px;
+    font-size: 15px;}
+    .card-comment .units {
+      padding-top: 6px;
+      padding-left: 0.25rem;
+      font-size: 10px;}
+    .card-comment:last-child {
+      margin-bottom: 0;
+}  
   .card-text {
     display: flex;
     height: 68px;
