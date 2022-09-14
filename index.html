@@ -17,6 +17,8 @@
     <link href="./node_modules/@fortawesome/fontawesome-free/css/fontawesome.css" rel="stylesheet">
     <link href="./node_modules/@fortawesome/fontawesome-free/css/brands.css" rel="stylesheet">
     <link href="./node_modules/@fortawesome/fontawesome-free/css/solid.css" rel="stylesheet">
+    <link rel="import" href="controller.html" id="controller_page_link">
+    <link rel="import" href="firmware.html" id="firmware_page_link">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/progressStep.css">
     <link rel="stylesheet" href="css/lua.css">
@@ -179,66 +181,12 @@
         </div>
         <!------------------------------------------------------------------------------------------------------------->
         <div id="devicePage" class="content-data hidden">
-          <h2>Контроллер</h2>
-          <h5>Версии</h5>
-          <div class="row">
-            <div class="col-sm-2 pos-name">
-              <label>Интерфейса:</label>
-            </div>
-            <div class="col-sm-1 pos-info">
-              <label id="versionSowtware">0.0.0</label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-2 pos-name">
-              <label>Контроллера:</label>
-            </div>
-            <div class="col-sm-1 pos-info">
-              <label id="versionController">0.0.0</label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-2 pos-name">
-              <label>Прошивки:</label>
-            </div>
-            <div class="col-sm-1 pos-info">
-              <label id="versionFirmware">0.0.0</label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-2 pos-name">
-              <label>Загрузчика:</label>
-            </div>
-            <div class="col-sm-1 pos-info">
-              <label id="versionBootloader">0.0.0</label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-2 pos-name">
-              <label>LUA:</label>
-            </div>
-            <div class="col-sm-1 pos-info">
-              <label id="versionLua">0.0.0</label>
-            </div>
-          </div>
-          <br>
-          <h5>Информация</h5>
-          <div class="row">
-            <div class="col-sm-2 pos-name">
-              <label>Устройство:</label>
-            </div>
-            <div class="col-sm-1 pos-info">
-              <label id="deviceID">PDM</label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-2 pos-name">
-              <label>Номер:</label>
-            </div>
-            <div class="col-sm-1 pos-info">
-              <label id="uniqueNumber">00:00:00:00:00:00:00:00:00:00:00:00</label>
-            </div>
-          </div>
+          <script>
+            var link = document.getElementById('controller_page_link') 
+            var controller_page = link.import.querySelector('template');                   
+            var clone = document.importNode(controller_page.content, true);            
+            document.querySelector('#devicePage').appendChild(clone);            
+          </script>
         </div>
         <!------------------------------------------------------------------------------------------------------------->
         <div id="scadaPage" class="content-data hidden electron">
@@ -1062,50 +1010,13 @@
         </div>
         <!------------------------------------------------------------------------------------------------------------->
         <div id="firmwarePage" class="content-data hidden electron">
-          <h2>Обновление прошивки</h2>
-          <div class="controll-panel">
-            <button aria-label="Connect" id="boot-connect" onclick="" class="btn btn-primary">
-              <svg viewBox="0 0 640 512"><path fill="currentColor" d="M641.5 256c0 3.1-1.7 6.1-4.5 7.5L547.9 317c-1.4.8-2.8 1.4-4.5 1.4-1.4 0-3.1-.3-4.5-1.1-2.8-1.7-4.5-4.5-4.5-7.8v-35.6H295.7c25.3 39.6 40.5 106.9 69.6 106.9H392V354c0-5 3.9-8.9 8.9-8.9H490c5 0 8.9 3.9 8.9 8.9v89.1c0 5-3.9 8.9-8.9 8.9h-89.1c-5 0-8.9-3.9-8.9-8.9v-26.7h-26.7c-75.4 0-81.1-142.5-124.7-142.5H140.3c-8.1 30.6-35.9 53.5-69 53.5C32 327.3 0 295.3 0 256s32-71.3 71.3-71.3c33.1 0 61 22.8 69 53.5 39.1 0 43.9 9.5 74.6-60.4C255 88.7 273 95.7 323.8 95.7c7.5-20.9 27-35.6 50.4-35.6 29.5 0 53.5 23.9 53.5 53.5s-23.9 53.5-53.5 53.5c-23.4 0-42.9-14.8-50.4-35.6H294c-29.1 0-44.3 67.4-69.6 106.9h310.1v-35.6c0-3.3 1.7-6.1 4.5-7.8 2.8-1.7 6.4-1.4 8.9.3l89.1 53.5c2.8 1.1 4.5 4.1 4.5 7.2z"></path></svg>
-              <span>Подключить</span>
-            </button>
-            <button aria-label="Connect" id="boot-file" onclick="" class="btn btn-primary" disabled="true">
-              <svg viewBox="0 0 576 512"><path fill="currentColor" d="M572.694 292.093L500.27 416.248A63.997 63.997 0 0 1 444.989 448H45.025c-18.523 0-30.064-20.093-20.731-36.093l72.424-124.155A64 64 0 0 1 152 256h399.964c18.523 0 30.064 20.093 20.73 36.093zM152 224h328v-48c0-26.51-21.49-48-48-48H272l-64-64H48C21.49 64 0 85.49 0 112v278.046l69.077-118.418C86.214 242.25 117.989 224 152 224z"></path></svg>
-              <span>Файл...</span>
-            </button>
-            <button aria-label="Connect" id="boot-load" onclick="" class="btn btn-primary" disabled="true">
-              <svg viewBox="0 0 512 512"><path fill="currentColor" d="M296 384h-80c-13.3 0-24-10.7-24-24V192h-87.7c-17.8 0-26.7-21.5-14.1-34.1L242.3 5.7c7.5-7.5 19.8-7.5 27.3 0l152.2 152.2c12.6 12.6 3.7 34.1-14.1 34.1H320v168c0 13.3-10.7 24-24 24zm216-8v112c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24V376c0-13.3 10.7-24 24-24h136v8c0 30.9 25.1 56 56 56h80c30.9 0 56-25.1 56-56v-8h136c13.3 0 24 10.7 24 24zm-124 88c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20zm64 0c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20z"></path></svg>
-              <span>Загрузить</span>
-            </button>
-          </div>
-          <div class="controll-panel">
-            <div class="progress">
-              <div id="boot-progress" class="progress-bar progress-bar-striped bg-danger progress-bar-animated" role="progressbar" style="width: 0%;">
-              </div>
-            </div>
-          </div>
-          <div class="alert alert-warning">
-            <h4 class="alert-heading">Инструкция</h4>
-            <ol>
-              <li>Отключите питание устройства</li>
-              <li>Активируйте DIN12</li>
-              <li>Включите питание устройства</li>
-              <li>Подключите USB к устройству</li>
-              <li>Нажмите кнопку "Подключить"</li>
-              <li>Выберите файл новой прошивки</li>
-              <li>Нажмите кнопку "Загрузить"</li>
-              <li>Дождитесь окончания загрузки прошивки</li>
-              <li>Перезагрузите устройство</li>
-            </ol>
-          </div>
-          <div class="alert alert-danger">
-            <h4 class="alert-heading">Внимание</h4>
-            <ol>
-              <li>Не пытайтесь загрузить в устройство стороннюю прошивку</li>
-              <li>Не выключайте питание и не отключайте USB во время загрузки прошивки</li>
-              <li>Нарушение данных правил может привести к неисправности устройства! В случие неисправности обращайтесь в сервисный центр.</li>
-            </ol>
-          </div>
-        </div>
+          <script>
+            var link1 = document.getElementById('firmware_page_link') 
+            var controller_page1 = link1.import.querySelector('template');                   
+            var clone1 = document.importNode(controller_page1.content, true);            
+            document.querySelector('#firmwarePage').appendChild(clone1);            
+          </script>
+        </div>         
         <!------------------------------------------------------------------------------------------------------------->
         <div id="infoPage"  class="content-data hidden electron">
           <h2>Информация</h2>
