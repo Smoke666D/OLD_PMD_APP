@@ -790,6 +790,7 @@ function Dashboard () {
       }
       switch ( value.type ) {
         case 'float':
+          console.log( typeof( data ) + ' ' + data + ' ' + value.accur + ' ' + data.toFixed( value.accur ) );
           obj.innerText = data.toFixed( value.accur ).toString();
           break;
         case 'bool':
@@ -806,6 +807,9 @@ function Dashboard () {
           break;
         case 'time':
           obj.innerText = ( data * 10 ).toString();
+          break;
+        default:
+          obj.innerText = 'NaN';
           break;
       }
     });
