@@ -1,6 +1,7 @@
 var connectInit = require('./js/render.js').connectPDMinit;
 const luaproc   = require('./js/lua-processing.js').luaproc;
 const settings  = require( './js/settings.js' ).settings;
+const { dialog }   = require( 'electron' ).remote;
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -40,3 +41,21 @@ document.addEventListener( "DOMContentLoaded", async function( event ) {
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+function GetFolderPath( element_id) {
+	console.log("dfdf");
+	let path = dialog.showOpenDialog( { 
+		title:      'Выбрать путь',
+		properties: ['openDirectory'] 
+	  }).then( function ( result ) {
+		if ( result.filePaths[0] != undefined ) {
+		 var inputfield =  document.getElementById(element_id);
+		 var temp_str = result.filePaths + '\\'
+		 inputfield.value = temp_str;		 
+		} else {
+		  
+		}
+	  }).catch( function ( error ) {
+		
+	  });
+	return;
+}
