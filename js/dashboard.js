@@ -1,6 +1,9 @@
 var pdm    = require('./pdm.js').pdm;
 var pdmAdr = require('./pdm.js').pdmDataAdr;
 
+const maxFloat = 200;
+const minFloat = 0;
+
 const doutErrorDic  = ["нет", "уставка", "перегр.", "обрыв"];
 const statusDic     = ['Init', 'Run'       , 'Error'    , 'Stop'       , 'Restart' ];
 const statusCardDic = [''    , 'bg-success', 'bg-danger',  'bg-warning', ''        ]; 
@@ -790,8 +793,13 @@ function Dashboard () {
       }
       switch ( value.type ) {
         case 'float':
-          console.log( typeof( data ) + ' ' + data + ' ' + value.accur + ' ' + data.toFixed( value.accur ) );
-          obj.innerText = data.toFixed( value.accur ).toString();
+          if ( data > maxFloat ) {
+            obj.innerText = 'maxError';
+          } else if ( data < minFloat ) {
+            obj.innerText = 'minError';
+          } else {
+            obj.innerText = data.toFixed( value.accur ).toString();
+          }
           break;
         case 'bool':
           obj.innerText = value.dic[data];
