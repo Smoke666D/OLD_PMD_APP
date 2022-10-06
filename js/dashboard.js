@@ -720,8 +720,9 @@ function bytesToUint32 ( data ) {
 function bytesToUint16 ( data ) {
   let out = 0;
   if ( data.length == 2 ) {
-    out += data[0] << 8;
-    out += data[1];
+    for ( var i=0; i<2; i++ ) {
+      out += data[i] << ( i * 8 );
+    }
   }
   return out;
 }
