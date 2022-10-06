@@ -117,7 +117,7 @@ function Telemetry ( dinN, doutN, ainN, velN ) {
     for ( var i=0; i<self.dout.length; i++ ) {
       counter += self.dout[i].parsing( blob, counter );
     }
-    self.lua.parsing( blob, ( self.length - 6 ) );
+    counter += self.lua.parsing( blob, counter );
     for ( var i=0; i<self.velocity.length; i++ ) {
       self.velocity[i][0] = blob[counter];
       counter++;
