@@ -835,6 +835,7 @@ function Dashboard () {
           break;
         case 'uint16':
           obj.innerText = bytesToUint16( data ).toString();
+          break;
         case 'uint32':
           obj.innerText = bytesToUint32( data ).toString();
           break;
