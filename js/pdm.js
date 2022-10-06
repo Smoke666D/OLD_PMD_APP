@@ -94,15 +94,16 @@ function Version () {
     return self.major + '.' + self.minor + '.' + self.patch;
   }
 }
-function Telemetry ( dinN, doutN, ainN ) {
-  var self     = this;
-  this.battery = 0;
-  this.voltage = [];
-  this.din     = [];
-  this.dout    = [];
-  this.lua     = new LuaTelemetry();
-  this.length  = ( ainN + 1 ) * 4 + dinN + doutN * 10 + 6 ;
-  this.parsing = function ( blob ) {
+function Telemetry ( dinN, doutN, ainN, velN ) {
+  var self      = this;
+  this.battery  = 0;
+  this.voltage  = [];
+  this.din      = [];
+  this.dout     = [];
+  this.velocity = [];
+  this.lua      = new LuaTelemetry();
+  this.length   = ( ainN + 1 ) * 4 + dinN + ( doutN * 10 ) + 6 + ( velN * 2 );
+  this.parsing  = function ( blob ) {
     self.battery = byteToFloat( blob, 0 );
     var counter = 4;
     for ( var i=0; i<self.voltage.length; i++ ) {
@@ -116,8 +117,13 @@ function Telemetry ( dinN, doutN, ainN ) {
     for ( var i=0; i<self.dout.length; i++ ) {
       counter += self.dout[i].parsing( blob, counter );
     }
-    //self.lua.parsing( blob, counter );
     self.lua.parsing( blob, ( self.length - 6 ) );
+    for ( var i=0; i<self.velocity.length; i++ ) {
+      self.velocity[i][0] = blob[counter];
+      counter++;
+      self.velocity[i][1] = blob[counter];
+      counter++;
+    }
     return;
   }
   function init () {
@@ -129,6 +135,9 @@ function Telemetry ( dinN, doutN, ainN ) {
     }
     for ( var i=0; i<ainN; i++ ) {
       self.voltage.push( 0 );
+    }
+    for ( var i=0; i<velN; i++ ) {
+      self.velocity.push( Array( 0, 0 ) );
     }
   }
   init();
@@ -164,6 +173,7 @@ function PDM () {
   const dinN     = 11;
   const doutN    = 20;
   const ainN     = 4;
+  const velN     = 2;
 
   this.lua       = '';
   this.isCompil  = false;
@@ -172,7 +182,7 @@ function PDM () {
   this.telemetryBlob = [];
 
   this.system    = new System();
-  this.telemetry = new Telemetry( dinN, doutN, ainN );
+  this.telemetry = new Telemetry( dinN, doutN, ainN, velN );
 
   this.setSystem = function ( callback ) {
     self.system.parsing( self.sysBlob );

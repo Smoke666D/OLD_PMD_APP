@@ -232,6 +232,16 @@ const values = [
     'type'   : 'float',
     'accur'  : 2
   },{
+    'id'     : 'value-velocity-1',
+    'adr'    : 0,
+    'source' : 'velocity',
+    'type'   : 'uint16'
+  },{
+    'id'     : 'value-velocity-2',
+    'adr'    : 1,
+    'source' : 'velocity',
+    'type'   : 'uint16'
+  },{
     'id'     : 'value-dout-1',
     'adr'    : 0,
     'source' : 'current',
@@ -707,6 +717,16 @@ function bytesToUint32 ( data ) {
   return out;
 }
 /*----------------------------------------------------------------------------*/
+function bytesToUint16 ( data ) {
+  let out = 0;
+  if ( data.length == 2 ) {
+    for ( var i=0; i<2; i++ ) {
+      out += data[i] << ( i * 8 );
+    }
+  }
+  return out;
+}
+/*----------------------------------------------------------------------------*/
 function mergeBytes ( data ) {
   let index = '';
   if ( data.length > 0 ) {
@@ -775,6 +795,9 @@ function Dashboard () {
         case 'battery':
           data = pdm.telemetry.battery;
           break;
+        case 'velocity':
+          data = pdm.telemetry.velocity[value.adr];
+          break;
         case 'current':
           data = pdm.telemetry.dout[value.adr].current;
           break;
@@ -810,6 +833,8 @@ function Dashboard () {
         case 'uint8':
           obj.innerText = data.toString();
           break;
+        case 'uint16':
+          obj.innerText = bytesToUint16( data ).toString();
         case 'uint32':
           obj.innerText = bytesToUint32( data ).toString();
           break;
