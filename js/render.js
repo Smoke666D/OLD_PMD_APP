@@ -87,6 +87,7 @@ function updateInterface ( callback ) {
 function parsingFullMessages () {
   var dashFl = false;
   var dataFl = false;
+  var loopFl = false;
   var buffer = usb.controller.getInput();
   for ( var i=0; i<buffer.length; i++ ) {
     buffer[i].init( function ( input ) {
@@ -107,6 +108,9 @@ function parsingFullMessages () {
           }
           dashFl = true;
           break;
+        case msgType.loop:
+          loopFl = true;
+          break;  
       }
       return;
     });
@@ -127,6 +131,9 @@ function parsingFullMessages () {
         return;
       });
     });
+  }
+  if ( loopFl == true ) {
+    usb.controller.enableLoop();
   }
   return;
 }

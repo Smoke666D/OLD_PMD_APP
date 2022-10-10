@@ -24,7 +24,8 @@ const msgSTAT = {
 const msgType = {
   "lua"       : 1,
   "data"      : 2,
-  "telemetry" : 3
+  "telemetry" : 3,
+  "loop"      : 4
 }
 const USB_DIR_BYTE  = 0;
 const USB_CMD_BYTE  = 1;
@@ -312,6 +313,11 @@ function USBMessage ( buffer ) {
       case msgCMD.USB_REPORT_CMD_READ_TELEMETRY:
         output = parseData();
         type   = msgType.telemetry;
+        break;
+      case msgCMD.USB_REPORT_CMD_RESTART_LUA:
+        output = 'Ok';
+        type   = msgType.loop;
+        break;
     }
     return [type, output];
   }
