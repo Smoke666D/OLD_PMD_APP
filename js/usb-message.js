@@ -315,6 +315,7 @@ function USBMessage ( buffer ) {
         type   = msgType.telemetry;
         break;
       case msgCMD.USB_REPORT_CMD_RESTART_LUA:
+        console.log( self );
         output = 'Ok';
         type   = msgType.loop;
         break;
