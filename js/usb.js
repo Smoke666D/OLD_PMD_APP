@@ -265,11 +265,14 @@ function USBtransport () {
     var result = usbHandler.continue;
     response.init( function () {
       if ( response.status == msgSTAT.USB_OK_STAT ) {
-        if ( ( response.command == msgCMD.USB_REPORT_CMD_START_WRITING ) ||
-             ( response.command == msgCMD.USB_REPORT_CMD_WRITE_SCRIPT  ) ||
-             ( response.command == msgCMD.USB_REPORT_CMD_END_WRITING   ) ||
-             ( response.command == msgCMD.USB_REPORT_CMD_READ_SCRIPT   ) ||
-             ( response.command == msgCMD.USB_REPORT_CMD_READ_DATA     ) ) {
+        if ( ( response.command == msgCMD.USB_REPORT_CMD_START_WRITING    ) ||
+             ( response.command == msgCMD.USB_REPORT_CMD_WRITE_SCRIPT     ) ||
+             ( response.command == msgCMD.USB_REPORT_CMD_END_WRITING      ) ||
+             ( response.command == msgCMD.USB_REPORT_CMD_READ_SCRIPT      ) ||
+             ( response.command == msgCMD.USB_REPORT_CMD_READ_DATA        ) ||
+             ( response.command == msgCMD.USB_REPORT_CMD_READ_TELEMETRY   ) ||
+             ( response.command == msgCMD.USB_REPORT_CMD_UPDATE_TELEMETRY ) ||
+             ( response.command == msgCMD.USB_REPORT_CMD_RESTART_LUA      ) ) {
           result = output.isEnd();
           if ( result == usbHandler.continue )
           {
@@ -355,6 +358,7 @@ function USBtransport () {
   this.initEvents  = function ( inCallback, outCallback, errorCallback, unauthorizedCallback, forbiddenCallback, autoModeCallback, callback ) {
     device.on( "data", function( data ) {
       handle = handler( data );
+      console.log( handle );
       switch ( handle ) {
         case usbHandler.finish:
           switch ( status ) {
@@ -701,7 +705,7 @@ function PdmController () {
     return;
   }
   this.restartLua          = function () {
-    //self.disableLoop();
+    self.disableLoop();
     writeSequency( 0, 0, null, false, initRestartSequency );
     return;  
   }
