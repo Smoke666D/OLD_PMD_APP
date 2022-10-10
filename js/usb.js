@@ -515,7 +515,7 @@ function PdmController () {
     transport.clean();
     msg = new USBMessage( [] );
     msg.codeRestartLua();
-    transport.addRequest( msg );
+    transport.addToOutput( msg );
     callback();
     return;
   }
