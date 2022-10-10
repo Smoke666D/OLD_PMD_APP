@@ -358,7 +358,6 @@ function USBtransport () {
   this.initEvents  = function ( inCallback, outCallback, errorCallback, unauthorizedCallback, forbiddenCallback, autoModeCallback, callback ) {
     device.on( "data", function( data ) {
       handle = handler( data );
-      console.log( handle );
       switch ( handle ) {
         case usbHandler.finish:
           switch ( status ) {
