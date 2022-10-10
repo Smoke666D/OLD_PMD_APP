@@ -1,3 +1,7 @@
+const fs = require( 'fs' );
+
+const logFileName = "./log.csv";
+
 const IDlength   = 12;
 const pdmDataAdr = {
   "DATA_ADR_UNIQUE"           : 0,
@@ -45,6 +49,16 @@ function bytesToUint32 ( data, adr ) {
   return out;
 }
 /*----------------------------------------------------------------------------*/
+function bytesToUint16 ( data ) {
+  let out = 0;
+  if ( data.length == 2 ) {
+    for ( var i=0; i<2; i++ ) {
+      out += data[i] << ( i * 8 );
+    }
+  }
+  return out;
+}
+/*----------------------------------------------------------------------------*/
 function byteToIDstring ( data, adr ) {
   let out = '';
   for ( var i=0; i<IDlength; i++ ) {
@@ -59,9 +73,9 @@ function byteToIDstring ( data, adr ) {
 /*----------------------------------------------------------------------------*/
 function LuaTelemetry () {
   var self = this;
-  this.time    = 0;
-  this.state   = 0;
-  this.counter = 0;
+  this.time    = 0; /* The current time periode for the one LUA running */
+  this.state   = 0; /* Current satate of the LUA machine */
+  this.counter = 0; /* Counter of the errors */
 
   this.parsing = function ( blob, adr ) {
     self.time    = bytesToUint32( blob, adr );
@@ -83,6 +97,19 @@ function DoutTelemetry () {
     self.state   = blob[adr + 8];
     self.error   = blob[adr + 9];
     return 10;
+  }
+  this.makeHeader = function ( n ) {
+    let out = '';
+    out += 'DOUTcurrent_' + n.toString() + ';';
+    out += 'DOUTmax_'     + n.toString() + ';';
+    out += 'DOUTstate_'   + n.toString() + ';';
+    out += 'DOUTerror_'   + n.toString();
+    return out;
+  }
+  this.makeLog = function () {
+    let out = '';
+    out += self.current.toString() + ';' + self.max.toString() + ';' + self.state.toString() + ';' + self.error.toString();
+    return out;
   }
 }
 function Version () {
@@ -125,6 +152,55 @@ function Telemetry ( dinN, doutN, ainN, velN ) {
       counter++;
     }
     return;
+  }
+  this.makeLogHeader = function () {
+    let out = '';
+    out += 'Time;';
+    out += 'LUA state;LUA time;LUA counter;';
+    out += 'batter;';
+    for ( var i=0; i<self.voltage.length; i++ ) {
+      out += 'voltage_' + i.toString() + ';';
+    }
+    for ( var i=0; i<self.din.length; i++ ) {
+      out += 'din_' + i.toString() + ';';
+    }
+    self.dout.forEach( function( dout, i ) {
+      out += dout.makeHeader( i ) + ';';
+      return;
+    });
+    for ( var i=0; i<self.velocity.length; i++ ) {
+      out += 'velocity_' + i.toString() + ';';
+    }
+    out += '\n';
+    return out;
+  }
+  this.makeLogLine = function () {
+    let out = '';
+    /* Time stamp */
+    const timeStamp = new Date( Date.now() ).toUTCString();
+    out += timeStamp + ';';
+    /* LUA machine data */
+    out += self.lua.state.toString() + ';' + self.lua.time.toString()  + ';' + self.lua.counter.toString() + ';';
+    /* Telemetry data */
+    out += self.battery + ';';
+    self.voltage.forEach( function ( value ) {
+      out += value.toString() + ';';
+      return;
+    });
+    self.din.forEach( function ( value ) {
+      out += value.toString() + ';';
+      return;
+    });
+    self.dout.forEach( function ( dout ) {
+      out += dout.makeLog() + ';';
+      return;
+    });
+    self.velocity.forEach( function ( value ) {
+      out += bytesToUint16( value ).toString() + ';';
+      return;
+    });
+    out += '\n';
+    return out;
   }
   function init () {
     for ( var i=0; i<dinN; i++ ) {
@@ -169,21 +245,21 @@ function System () {
 }
 function PDM () {
   var self       = this;
-
+  /*------------------------------------------------------------------------------- */
   const dinN     = 11;
   const doutN    = 20;
   const ainN     = 4;
   const velN     = 2;
-
+  /*------------------------------------------------------------------------------- */
   this.lua       = '';
   this.isCompil  = false;
-
+  /*------------------------------------------------------------------------------- */
   this.sysBlob       = [];
   this.telemetryBlob = [];
-
+  /*------------------------------------------------------------------------------- */
   this.system    = new System();
   this.telemetry = new Telemetry( dinN, doutN, ainN, velN );
-
+  /*------------------------------------------------------------------------------- */
   this.setSystem = function ( callback ) {
     self.system.parsing( self.sysBlob );
     self.sysBlob = [];
@@ -196,6 +272,28 @@ function PDM () {
     callback();
     return;
   }
+  this.log = function () {
+    if ( fs.existsSync( logFileName ) == false ) {
+      fs.writeFile( logFileName, self.telemetry.makeLogHeader(), function () {
+        appendLogLine();
+        return;
+      })
+    } else {
+      appendLogLine();
+    }
+    return;
+  }
+  /*------------------------------------------------------------------------------- */
+  function appendLogLine () {
+    fs.appendFile( logFileName, self.telemetry.makeLogLine(), function ( error ) {
+      if ( error ) {
+        console.log( 'Error on log file append: ' + error )
+      }
+      return;
+    });
+    return;
+  }
+  /*------------------------------------------------------------------------------- */
   return;
 }
 

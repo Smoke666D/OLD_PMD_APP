@@ -743,6 +743,7 @@ function Dashboard () {
   this.update = function ( callback ) {
     updateCards();
     updateValues();
+    pdm.log();
     callback();
     return;
   }
