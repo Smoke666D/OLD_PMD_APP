@@ -701,7 +701,7 @@ function PdmController () {
     return;
   }
   this.restartLua          = function () {
-    self.disableLoop();
+    //self.disableLoop();
     writeSequency( 0, 0, null, false, initRestartSequency );
     return;  
   }
