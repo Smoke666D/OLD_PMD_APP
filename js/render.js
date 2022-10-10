@@ -46,14 +46,22 @@ function dashLoop () {
 function resetSuccessConnection () {
   document.getElementById( 'connectButton' ).classList.remove( 'btn-success' );
   document.getElementById( 'connectButton' ).classList.add( 'btn-primary' );
+  document.getElementById( 'restartLuaButton' ).disabled = true;
   return;
 }
 function setSuccessConnection () {
   document.getElementById( 'connectButton' ).classList.remove( 'btn-primary' );
   document.getElementById( 'connectButton' ).classList.add( 'btn-success' );
+  document.getElementById( 'restartLuaButton' ).disabled = false;
   return;
 }
 function connectPDMinit () {
+  document.getElementById( 'restartLuaButton' ).addEventListener( 'click', function () { 
+    if ( usb.controller.isConnected() == true ) {
+      usb.controller.restartLua();
+    }
+    return;
+  });
   document.getElementById( 'connectButton' ).addEventListener( 'click', function () {
     if ( usb.controller.isConnected() == false ) {
       connect();

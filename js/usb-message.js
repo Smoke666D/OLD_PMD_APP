@@ -10,7 +10,8 @@ const msgCMD  = {
   "USB_REPORT_CMD_READ_SCRIPT"      : 4,
   "USB_REPORT_CMD_READ_DATA"        : 5,
   "USB_REPORT_CMD_READ_TELEMETRY"   : 6,
-  "USB_REPORT_CMD_UPDATE_TELEMETRY" : 7
+  "USB_REPORT_CMD_UPDATE_TELEMETRY" : 7,
+  "USB_REPORT_CMD_RESTART_LUA"      : 8
 };
 const msgSTAT = {
   "USB_OK_STAT"           : 1,
@@ -134,6 +135,9 @@ function USBMessage ( buffer ) {
         break;
       case msgCMD.USB_REPORT_CMD_UPDATE_TELEMETRY:
         self.command = msgCMD.USB_REPORT_CMD_UPDATE_TELEMETRY;
+        break;
+      case msgCMD.USB_REPORT_CMD_RESTART_LUA:
+        self.command = msgCMD.USB_REPORT_CMD_RESTART_LUA;
         break;
       default:
         self.command = 0;
@@ -268,6 +272,10 @@ function USBMessage ( buffer ) {
   }
   this.codeFinishWriting = function () {
     makeRequest( msgCMD.USB_REPORT_CMD_END_WRITING, 0 );
+    return;
+  }
+  this.codeRestartLua = function () {
+    makeRequest( msgCMD.USB_REPORT_CMD_RESTART_LUA, 0 );
     return;
   }
   this.codeLuaLength = function ( adr, length ) {

@@ -510,6 +510,15 @@ function PdmController () {
     callback();
     return;
   }
+  function initRestartSequency ( adr, data, callback ) {
+    let msg = null;
+    transport.clean();
+    msg = new USBMessage( [] );
+    msg.codeRestartLua();
+    transport.addRequest( msg );
+    callback();
+    return;
+  }
   function initReadSequency ( adr, data, callback ) {
     var msg = null;
     transport.clean();
@@ -690,6 +699,11 @@ function PdmController () {
   this.readTelemetry     = function () {
     readSequency( 0, 0, null, true, initTelemetrySequency );
     return;
+  }
+  this.restartLua          = function () {
+    self.disableLoop();
+    writeSequency( 0, 0, null, false, initRestartSequency );
+    return;  
   }
   this.receive           = function ( data = null, alertIn = null ) {
     this.disableLoop();
