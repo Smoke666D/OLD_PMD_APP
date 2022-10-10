@@ -301,6 +301,7 @@ function USBMessage ( buffer ) {
   this.parse = function () {
     var output = 0;
     var type   = 0;
+    console.log( self.command );
     switch ( self.command ) {
       case msgCMD.USB_REPORT_CMD_WRITE_SCRIPT:
         output = parseLua();
@@ -315,7 +316,9 @@ function USBMessage ( buffer ) {
         type   = msgType.telemetry;
         break;
       case msgCMD.USB_REPORT_CMD_RESTART_LUA:
+        console.log('----------------------')
         console.log( self );
+        console.log('----------------------')
         output = 'Ok';
         type   = msgType.loop;
         break;

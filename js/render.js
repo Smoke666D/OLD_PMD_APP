@@ -133,7 +133,7 @@ function parsingFullMessages () {
     });
   }
   if ( loopFl == true ) {
-    usb.controller.enableLoop();
+    usb.controller.resetLoopBusy();
   }
   return;
 }
