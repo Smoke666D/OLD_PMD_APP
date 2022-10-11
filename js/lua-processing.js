@@ -247,6 +247,16 @@ async function pdmload ( data ) {
   });
 }
 /*-----------------------------------------------------------------------------------*/
+const lyaCheckStages = [
+  { 
+    "name" : "luaopen",
+    "callback" : luaopen 
+  },{ 
+    "name" : "luacheck",
+    "callback" : luacheck 
+  }
+];
+/*-----------------------------------------------------------------------------------*/
 const luaStages = [
   { 
     "name" : "luaopen",
@@ -286,7 +296,26 @@ function LuaProcess ( icli, iprogress ) {
   let cli      = icli;
   let progress = iprogress;
   let prevOut  = '';
-
+    
+  this.check = async function () {
+    let res    = 'ok';
+    let out    = '';
+    let append = null;
+    progress.clean();
+    luacli.clean();
+    toolchain.init();
+    for ( var i=0; i<lyaCheckStages.length; i++ ) {
+      [res, out, append] = await procStage( luaStages[i].callback, ( i == ( luaStages.length - 1 ) ), prevOut );
+      if ( out != '' ) {
+        prevOut = out;
+      }
+      if ( ( res !='ok' ) && ( res != 'warning' ) ) {
+        luacli.newLine( 'Finish with error', 'text-danger' );
+        break;
+      }
+    }
+    return;
+  }
   this.start = async function () {
     let res    = 'ok';
     let out    = '';
