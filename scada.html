@@ -1,704 +1,715 @@
 <template>
     <div class="row">
-        <div id="card-lua" class="card col">
-          <div class="card-body">
-            <p class="card-title">LUA</p>
-            <div class="card-icon">
-              <i class="fa-solid fa-moon"></i>
-            </div>
-            <div class="d-flex justify-content-center">
-              <p id="value-lua" class="card-text">NaN</p>
-            </div>
+      <div id="card-lua" class="card col">
+        <div class="card-body">
+          <p class="card-title">LUA</p>
+          <div class="card-icon">
+            <i class="fa-solid fa-moon"></i>
+          </div>
+          <div class="d-flex justify-content-center">
+            <p id="value-lua" class="card-text">NaN</p>
           </div>
         </div>
-        
-        <div id="card-runTime" class="card col">
-          <div class="card-body">
-            <p class="card-title">Время исполнения</p>
-            <div class="card-icon">
-              <i class="fa-solid fa-clock"></i>
-            </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-text">
-                <p id="value-runTime" >0</p>
-                <p class="units">мкс</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div id="card-errorCounter" class="card col">
-          <div class="card-body">
-            <p class="card-title">Счетчик ошибок</p>
-            <div class="card-icon">
-              <i class="fa-solid fa-bug"></i>
-            </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-text">
-                <p id="value-errorCounter">0</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
       </div>
-      <div class="row">
-        <div id="card-dout-1" class="card col">
-          <div class="card-body">
-            <p class="card-title">Выход</p>
-            <div class="card-icon">
-              <p>1</p>
-            </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-comment">
-                <p id="max-dout-1">00.0</p>
-                <p class="units">А</p>
-              </div>
-              <div class="card-comment">
-                <p id="error-dout-1">нет</p>
-              </div>
-            </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-text">
-                <p id="value-dout-1">00.0</p>
-                <p class="units">А</p>
-              </div>
+      <div id="card-runTime" class="card col">
+        <div class="card-body">
+          <p class="card-title">Время исполнения</p>
+          <div class="card-icon">
+            <i class="fa-solid fa-clock"></i>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-text">
+              <p id="value-runTime" >0</p>
+              <p class="units">мкс</p>
             </div>
           </div>
         </div>
-        <div id="card-dout-2" class="card col">
-          <div class="card-body">
-            <p class="card-title">Выход</p>
-            <div class="card-icon">
-              <p>2</p>
-            </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-comment">
-                <p id="max-dout-2">00.0</p>
-                <p class="units">А</p>
-              </div>
-              <div class="card-comment">
-                <p id="error-dout-2">нет</p>
-              </div>
-            </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-text">
-                <p id="value-dout-2">00.0</p>
-                <p class="units">А</p>
-              </div>
+      </div>
+      <div id="card-errorCounter" class="card col">
+        <div class="card-body">
+          <p class="card-title">Счетчик ошибок</p>
+          <div class="card-icon">
+            <i class="fa-solid fa-bug"></i>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-text">
+              <p id="value-errorCounter">0</p>
             </div>
           </div>
         </div>
-        <div id="card-dout-3" class="card col">
-          <div class="card-body">
-            <p class="card-title">Выход</p>
-            <div class="card-icon">
-              <p>3</p>
-            </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-comment">
-                <p id="max-dout-3">00.0</p>
-                <p class="units">А</p>
-              </div>
-              <div class="card-comment">
-                <p id="error-dout-3">нет</p>
-              </div>
-            </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-text">
-                <p id="value-dout-3">00.0</p>
-                <p class="units">А</p>
-              </div>
-            </div>
+      </div>
+    </div>
+    <div class="row">
+      <div id="card-errorString" class="card col">
+        <div class="card-body">
+          <p class="card-title">Ошибка LUA</p>
+          <div class="card-icon">
+            <i class="fa-solid fa-bug"></i>
           </div>
-        </div>
-        <div id="card-dout-4" class="card col">
-          <div class="card-body">
-            <p class="card-title">Выход</p>
-            <div class="card-icon">
-              <p>4</p>
-            </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-comment">
-                <p id="max-dout-4">00.0</p>
-                <p class="units">А</p>
-              </div>
-              <div class="card-comment">
-                <p id="error-dout-4">нет</p>
-              </div>
-            </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-text">
-                <p id="value-dout-4">00.0</p>
-                <p class="units">А</p>
+          <div class="d-flex justify-content-center">
+            <div class="card-text">
+              <div class="errorString-box">
+                <p id="value-errorString" class="errorString"></p>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="row">
-        <div id="card-dout-5" class="card col">
-          <div class="card-body">
-            <p class="card-title">Выход</p>
-            <div class="card-icon">
-              <p>5</p>
+    </div>
+    <div class="row">
+      <div id="card-dout-1" class="card col">
+        <div class="card-body">
+          <p class="card-title">Выход</p>
+          <div class="card-icon">
+            <p>1</p>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-comment">
+              <p id="max-dout-1">00.0</p>
+              <p class="units">А</p>
             </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-comment">
-                <p id="max-dout-5">00.0</p>
-                <p class="units">А</p>
-              </div>
-              <div class="card-comment">
-                <p id="error-dout-5">нет</p>
-              </div>
+            <div class="card-comment">
+              <p id="error-dout-1">нет</p>
             </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-text">
-                <p id="value-dout-5">00.0</p>
-                <p class="units">А</p>
-              </div>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-text">
+              <p id="value-dout-1">00.0</p>
+              <p class="units">А</p>
             </div>
           </div>
         </div>
-        <div id="card-dout-6" class="card col">
-          <div class="card-body">
-            <p class="card-title">Выход</p>
-            <div class="card-icon">
-              <p>6</p>
+      </div>
+      <div id="card-dout-2" class="card col">
+        <div class="card-body">
+          <p class="card-title">Выход</p>
+          <div class="card-icon">
+            <p>2</p>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-comment">
+              <p id="max-dout-2">00.0</p>
+              <p class="units">А</p>
             </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-comment">
-                <p id="max-dout-6">00.0</p>
-                <p class="units">А</p>
-              </div>
-              <div class="card-comment">
-                <p id="error-dout-6">нет</p>
-              </div>
+            <div class="card-comment">
+              <p id="error-dout-2">нет</p>
             </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-text">
-                <p id="value-dout-6">00.0</p>
-                <p class="units">А</p>
-              </div>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-text">
+              <p id="value-dout-2">00.0</p>
+              <p class="units">А</p>
             </div>
           </div>
         </div>
-        <div id="card-dout-7" class="card col">
-          <div class="card-body">
-            <p class="card-title">Выход</p>
-            <div class="card-icon">
-              <p>7</p>
+      </div>
+      <div id="card-dout-3" class="card col">
+        <div class="card-body">
+          <p class="card-title">Выход</p>
+          <div class="card-icon">
+            <p>3</p>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-comment">
+              <p id="max-dout-3">00.0</p>
+              <p class="units">А</p>
             </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-comment">
-                <p id="max-dout-7">00.0</p>
-                <p class="units">А</p>
-              </div>
-              <div class="card-comment">
-                <p id="error-dout-7">нет</p>
-              </div>
+            <div class="card-comment">
+              <p id="error-dout-3">нет</p>
             </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-text">
-                <p id="value-dout-7">00.0</p>
-                <p class="units">А</p>
-              </div>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-text">
+              <p id="value-dout-3">00.0</p>
+              <p class="units">А</p>
             </div>
           </div>
         </div>
-        <div id="card-dout-8" class="card col">
-          <div class="card-body">
-            <p class="card-title">Выход</p>
-            <div class="card-icon">
-              <p>8</p>
+      </div>
+      <div id="card-dout-4" class="card col">
+        <div class="card-body">
+          <p class="card-title">Выход</p>
+          <div class="card-icon">
+            <p>4</p>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-comment">
+              <p id="max-dout-4">00.0</p>
+              <p class="units">А</p>
             </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-comment">
-                <p id="max-dout-8">00.0</p>
-                <p class="units">А</p>
+            <div class="card-comment">
+              <p id="error-dout-4">нет</p>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-text">
+              <p id="value-dout-4">00.0</p>
+              <p class="units">А</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div id="card-dout-5" class="card col">
+        <div class="card-body">
+          <p class="card-title">Выход</p>
+          <div class="card-icon">
+            <p>5</p>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-comment">
+              <p id="max-dout-5">00.0</p>
+              <p class="units">А</p>
+            </div>
+            <div class="card-comment">
+              <p id="error-dout-5">нет</p>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-text">
+              <p id="value-dout-5">00.0</p>
+              <p class="units">А</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="card-dout-6" class="card col">
+        <div class="card-body">
+          <p class="card-title">Выход</p>
+          <div class="card-icon">
+            <p>6</p>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-comment">
+              <p id="max-dout-6">00.0</p>
+              <p class="units">А</p>
+            </div>
+            <div class="card-comment">
+              <p id="error-dout-6">нет</p>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-text">
+              <p id="value-dout-6">00.0</p>
+              <p class="units">А</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="card-dout-7" class="card col">
+        <div class="card-body">
+          <p class="card-title">Выход</p>
+          <div class="card-icon">
+            <p>7</p>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-comment">
+              <p id="max-dout-7">00.0</p>
+              <p class="units">А</p>
+            </div>
+            <div class="card-comment">
+              <p id="error-dout-7">нет</p>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-text">
+              <p id="value-dout-7">00.0</p>
+              <p class="units">А</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="card-dout-8" class="card col">
+        <div class="card-body">
+          <p class="card-title">Выход</p>
+          <div class="card-icon">
+            <p>8</p>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-comment">
+              <p id="max-dout-8">00.0</p>
+              <p class="units">А</p>
+            </div>
+            <div class="card-comment">
+              <p id="error-dout-8">нет</p>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-text">
+              <p id="value-dout-8">00.0</p>
+              <p class="units">А</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div id="card-dout-9" class="card col">
+        <div class="card-body">
+          <p class="card-title">Выход</p>
+          <div class="card-icon">
+            <p>9</p>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-comment">
+              <p id="max-dout-9">00.0</p>
+              <p class="units">А</p>
+            </div>
+            <div class="card-comment">
+              <p id="error-dout-9">нет</p>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-text">
+              <p id="value-dout-9">00.0</p>
+              <p class="units">А</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="card-dout-10" class="card col">
+        <div class="card-body">
+          <p class="card-title">Выход</p>
+          <div class="card-icon">
+            <p>10</p>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-comment">
+              <p id="max-dout-10">00.0</p>
+              <p class="units">А</p>
+            </div>
+            <div class="card-comment">
+              <p id="error-dout-10">нет</p>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-text">
+              <p id="value-dout-10">00.0</p>
+              <p class="units">А</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="card-dout-11" class="card col">
+        <div class="card-body">
+          <p class="card-title">Выход</p>
+          <div class="card-icon">
+            <p>11</p>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-comment">
+              <p id="max-dout-11">00.0</p>
+              <p class="units">А</p>
+            </div>
+            <div class="card-comment">
+              <p id="error-dout-11">нет</p>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-text">
+              <p id="value-dout-11">00.0</p>
+              <p class="units">А</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="card-dout-12" class="card col">
+        <div class="card-body">
+          <p class="card-title">Выход</p>
+          <div class="card-icon">
+            <p>12</p>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-comment">
+              <p id="max-dout-12">00.0</p>
+              <p class="units">А</p>
+            </div>
+            <div class="card-comment">
+              <p id="error-dout-12">нет</p>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-text">
+              <p id="value-dout-12">00.0</p>
+              <p class="units">А</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div id="card-dout-13" class="card col">
+        <div class="card-body">
+          <p class="card-title">Выход</p>
+          <div class="card-icon">
+            <p>13</p>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-comment">
+              <p id="max-dout-13">00.0</p>
+              <p class="units">А</p>
+            </div>
+            <div class="card-comment">
+              <p id="error-dout-13">нет</p>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-text">
+              <p id="value-dout-13">00.0</p>
+              <p class="units">А</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="card-dout-14" class="card col">
+        <div class="card-body">
+          <p class="card-title">Выход</p>
+          <div class="card-icon">
+            <p>14</p>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-comment">
+              <p id="max-dout-14">00.0</p>
+              <p class="units">А</p>
+            </div>
+            <div class="card-comment">
+              <p id="error-dout-14">нет</p>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-text">
+              <p id="value-dout-14">00.0</p>
+              <p class="units">А</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="card-dout-15" class="card col">
+        <div class="card-body">
+          <p class="card-title">Выход</p>
+          <div class="card-icon">
+            <p>15</p>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-comment">
+              <p id="max-dout-15">00.0</p>
+              <p class="units">А</p>
+            </div>
+            <div class="card-comment">
+              <p id="error-dout-15">нет</p>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-text">
+              <p id="value-dout-15">00.0</p>
+              <p class="units">А</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="card-dout-16" class="card col">
+        <div class="card-body">
+          <p class="card-title">Выход</p>
+          <div class="card-icon">
+            <p>16</p>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-comment">
+              <p id="max-dout-16">00.0</p>
+              <p class="units">А</p>
+            </div>
+            <div class="card-comment">
+              <p id="error-dout-16">нет</p>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-text">
+              <p id="value-dout-16">00.0</p>
+              <p class="units">А</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div id="card-dout-17" class="card col">
+        <div class="card-body">
+          <p class="card-title">Выход</p>
+          <div class="card-icon">
+            <p>17</p>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-comment">
+              <p id="max-dout-17">00.0</p>
+              <p class="units">А</p>
+            </div>
+            <div class="card-comment">
+              <p id="error-dout-17">нет</p>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-text">
+              <p id="value-dout-17">00.0</p>
+              <p class="units">А</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="card-dout-18" class="card col">
+        <div class="card-body">
+          <p class="card-title">Выход</p>
+          <div class="card-icon">
+            <p>18</p>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-comment">
+              <p id="max-dout-18">00.0</p>
+              <p class="units">А</p>
+            </div>
+            <div class="card-comment">
+              <p id="error-dout-18">нет</p>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-text">
+              <p id="value-dout-18">00.0</p>
+              <p class="units">А</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="card-dout-19" class="card col">
+        <div class="card-body">
+          <p class="card-title">Выход</p>
+          <div class="card-icon">
+            <p>19</p>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-comment">
+              <p id="max-dout-19">00.0</p>
+              <p class="units">А</p>
+            </div>
+            <div class="card-comment">
+              <p id="error-dout-19">нет</p>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-text">
+              <p id="value-dout-19">00.0</p>
+              <p class="units">А</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="card-dout-20" class="card col">
+        <div class="card-body">
+          <p class="card-title">Выход</p>
+          <div class="card-icon">
+            <p>20</p>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-comment">
+              <p id="max-dout-20">00.0</p>
+              <p class="units">А</p>
+            </div>
+            <div class="card-comment">
+              <p id="error-dout-20">нет</p>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-text">
+              <p id="value-dout-20">00.0</p>
+              <p class="units">А</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div id="card-din" class="card col">
+        <div class="card-body">
+          <p class="card-title">Цифровые входы</p>
+          <div class="card-icon">
+            <svg viewBox="0 0 448 512"><path fill="currentColor" d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34zm192-34l-136-136c-9.4-9.4-24.6-9.4-33.9 0l-22.6 22.6c-9.4 9.4-9.4 24.6 0 33.9l96.4 96.4-96.4 96.4c-9.4 9.4-9.4 24.6 0 33.9l22.6 22.6c9.4 9.4 24.6 9.4 33.9 0l136-136c9.4-9.2 9.4-24.4 0-33.8z"></path></svg>
+          </div>
+          <div class="card-table">
+            <div class="row">
+              <div class="col">
+                <p>1</p>
               </div>
-              <div class="card-comment">
-                <p id="error-dout-8">нет</p>
+              <div class="col">
+                <p>2</p>
+              </div>
+              <div class="col">
+                <p>3</p>
+              </div>
+              <div class="col">
+                <p>4</p>
+              </div>
+              <div class="col">
+                <p>5</p>
+              </div>
+              <div class="col">
+                <p>6</p>
+              </div>
+              <div class="col">
+                <p>7</p>
+              </div>
+              <div class="col">
+                <p>8</p>
+              </div>
+              <div class="col">
+                <p>9</p>
+              </div>
+              <div class="col">
+                <p>10</p>
+              </div>
+              <div class="col">
+                <p>11</p>
               </div>
             </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-text">
-                <p id="value-dout-8">00.0</p>
-                <p class="units">А</p>
+            <div class="row">
+              <div class="col">
+                <p id="value-din-1">&#10005;</p>
+              </div>
+              <div class="col">
+                <p id="value-din-2">&#10003;</p>
+              </div>
+              <div class="col">
+                <p id="value-din-3">&#10005;</p>
+              </div>
+              <div class="col">
+                <p id="value-din-4">&#10005;</p>
+              </div>
+              <div class="col">
+                <p id="value-din-5">&#10005;</p>
+              </div>
+              <div class="col">
+                <p id="value-din-6">&#10005;</p>
+              </div>
+              <div class="col">
+                <p id="value-din-7">&#10005;</p>
+              </div>
+              <div class="col">
+                <p id="value-din-8">&#10005;</p>
+              </div>
+              <div class="col">
+                <p id="value-din-9">&#10005;</p>
+              </div>
+              <div class="col">
+                <p id="value-din-10">&#10005;</p>
+              </div>
+              <div class="col">
+                <p id="value-din-11">&#10005;</p>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="row">
-        <div id="card-dout-9" class="card col">
-          <div class="card-body">
-            <p class="card-title">Выход</p>
-            <div class="card-icon">
-              <p>9</p>
-            </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-comment">
-                <p id="max-dout-9">00.0</p>
-                <p class="units">А</p>
-              </div>
-              <div class="card-comment">
-                <p id="error-dout-9">нет</p>
-              </div>
-            </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-text">
-                <p id="value-dout-9">00.0</p>
-                <p class="units">А</p>
-              </div>
-            </div>
+    </div>
+    <div class="row">
+      <div id="card-velocity-1" class="card col">
+        <div class="card-body">
+          <p class="card-title">Обороты</p>
+          <div class="card-icon">
+            <p>1</p>
           </div>
-        </div>
-        <div id="card-dout-10" class="card col">
-          <div class="card-body">
-            <p class="card-title">Выход</p>
-            <div class="card-icon">
-              <p>10</p>
-            </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-comment">
-                <p id="max-dout-10">00.0</p>
-                <p class="units">А</p>
-              </div>
-              <div class="card-comment">
-                <p id="error-dout-10">нет</p>
-              </div>
-            </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-text">
-                <p id="value-dout-10">00.0</p>
-                <p class="units">А</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div id="card-dout-11" class="card col">
-          <div class="card-body">
-            <p class="card-title">Выход</p>
-            <div class="card-icon">
-              <p>11</p>
-            </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-comment">
-                <p id="max-dout-11">00.0</p>
-                <p class="units">А</p>
-              </div>
-              <div class="card-comment">
-                <p id="error-dout-11">нет</p>
-              </div>
-            </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-text">
-                <p id="value-dout-11">00.0</p>
-                <p class="units">А</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div id="card-dout-12" class="card col">
-          <div class="card-body">
-            <p class="card-title">Выход</p>
-            <div class="card-icon">
-              <p>12</p>
-            </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-comment">
-                <p id="max-dout-12">00.0</p>
-                <p class="units">А</p>
-              </div>
-              <div class="card-comment">
-                <p id="error-dout-12">нет</p>
-              </div>
-            </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-text">
-                <p id="value-dout-12">00.0</p>
-                <p class="units">А</p>
-              </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-text">
+              <p id="value-velocity-1">0</p>
+              <p class="units">об/мин</p>
             </div>
           </div>
         </div>
       </div>
-      <div class="row">
-        <div id="card-dout-13" class="card col">
-          <div class="card-body">
-            <p class="card-title">Выход</p>
-            <div class="card-icon">
-              <p>13</p>
-            </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-comment">
-                <p id="max-dout-13">00.0</p>
-                <p class="units">А</p>
-              </div>
-              <div class="card-comment">
-                <p id="error-dout-13">нет</p>
-              </div>
-            </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-text">
-                <p id="value-dout-13">00.0</p>
-                <p class="units">А</p>
-              </div>
-            </div>
+      <div id="card-velocity-2" class="card col">
+        <div class="card-body">
+          <p class="card-title">Обороты</p>
+          <div class="card-icon">
+            <p>2</p>
           </div>
-        </div>
-        <div id="card-dout-14" class="card col">
-          <div class="card-body">
-            <p class="card-title">Выход</p>
-            <div class="card-icon">
-              <p>14</p>
-            </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-comment">
-                <p id="max-dout-14">00.0</p>
-                <p class="units">А</p>
-              </div>
-              <div class="card-comment">
-                <p id="error-dout-14">нет</p>
-              </div>
-            </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-text">
-                <p id="value-dout-14">00.0</p>
-                <p class="units">А</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div id="card-dout-15" class="card col">
-          <div class="card-body">
-            <p class="card-title">Выход</p>
-            <div class="card-icon">
-              <p>15</p>
-            </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-comment">
-                <p id="max-dout-15">00.0</p>
-                <p class="units">А</p>
-              </div>
-              <div class="card-comment">
-                <p id="error-dout-15">нет</p>
-              </div>
-            </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-text">
-                <p id="value-dout-15">00.0</p>
-                <p class="units">А</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div id="card-dout-16" class="card col">
-          <div class="card-body">
-            <p class="card-title">Выход</p>
-            <div class="card-icon">
-              <p>16</p>
-            </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-comment">
-                <p id="max-dout-16">00.0</p>
-                <p class="units">А</p>
-              </div>
-              <div class="card-comment">
-                <p id="error-dout-16">нет</p>
-              </div>
-            </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-text">
-                <p id="value-dout-16">00.0</p>
-                <p class="units">А</p>
-              </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-text">
+              <p id="value-velocity-2">0</p>
+              <p class="units">об/мин</p>
             </div>
           </div>
         </div>
       </div>
-      <div class="row">
-        <div id="card-dout-17" class="card col">
-          <div class="card-body">
-            <p class="card-title">Выход</p>
-            <div class="card-icon">
-              <p>17</p>
-            </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-comment">
-                <p id="max-dout-17">00.0</p>
-                <p class="units">А</p>
-              </div>
-              <div class="card-comment">
-                <p id="error-dout-17">нет</p>
-              </div>
-            </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-text">
-                <p id="value-dout-17">00.0</p>
-                <p class="units">А</p>
-              </div>
-            </div>
+    </div>
+    <div class="row">
+      <div id="card-uin-1" class="card col">
+        <div class="card-body">
+          <p class="card-title">Вход</p>
+          <div class="card-icon">
+            <p>1</p>
           </div>
-        </div>
-        <div id="card-dout-18" class="card col">
-          <div class="card-body">
-            <p class="card-title">Выход</p>
-            <div class="card-icon">
-              <p>18</p>
-            </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-comment">
-                <p id="max-dout-18">00.0</p>
-                <p class="units">А</p>
-              </div>
-              <div class="card-comment">
-                <p id="error-dout-18">нет</p>
-              </div>
-            </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-text">
-                <p id="value-dout-18">00.0</p>
-                <p class="units">А</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div id="card-dout-19" class="card col">
-          <div class="card-body">
-            <p class="card-title">Выход</p>
-            <div class="card-icon">
-              <p>19</p>
-            </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-comment">
-                <p id="max-dout-19">00.0</p>
-                <p class="units">А</p>
-              </div>
-              <div class="card-comment">
-                <p id="error-dout-19">нет</p>
-              </div>
-            </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-text">
-                <p id="value-dout-19">00.0</p>
-                <p class="units">А</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div id="card-dout-20" class="card col">
-          <div class="card-body">
-            <p class="card-title">Выход</p>
-            <div class="card-icon">
-              <p>20</p>
-            </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-comment">
-                <p id="max-dout-20">00.0</p>
-                <p class="units">А</p>
-              </div>
-              <div class="card-comment">
-                <p id="error-dout-20">нет</p>
-              </div>
-            </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-text">
-                <p id="value-dout-20">00.0</p>
-                <p class="units">А</p>
-              </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-text">
+              <p id="value-uin-1">00.00</p>
+              <p class="units">В</p>
             </div>
           </div>
         </div>
       </div>
-      <div class="row">
-        <div id="card-din" class="card col">
-          <div class="card-body">
-            <p class="card-title">Цифровые входы</p>
-            <div class="card-icon">
-              <svg viewBox="0 0 448 512"><path fill="currentColor" d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34zm192-34l-136-136c-9.4-9.4-24.6-9.4-33.9 0l-22.6 22.6c-9.4 9.4-9.4 24.6 0 33.9l96.4 96.4-96.4 96.4c-9.4 9.4-9.4 24.6 0 33.9l22.6 22.6c9.4 9.4 24.6 9.4 33.9 0l136-136c9.4-9.2 9.4-24.4 0-33.8z"></path></svg>
-            </div>
-            <div class="card-table">
-              <div class="row">
-                <div class="col">
-                  <p>1</p>
-                </div>
-                <div class="col">
-                  <p>2</p>
-                </div>
-                <div class="col">
-                  <p>3</p>
-                </div>
-                <div class="col">
-                  <p>4</p>
-                </div>
-                <div class="col">
-                  <p>5</p>
-                </div>
-                <div class="col">
-                  <p>6</p>
-                </div>
-                <div class="col">
-                  <p>7</p>
-                </div>
-                <div class="col">
-                  <p>8</p>
-                </div>
-                <div class="col">
-                  <p>9</p>
-                </div>
-                <div class="col">
-                  <p>10</p>
-                </div>
-                <div class="col">
-                  <p>11</p>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col">
-                  <p id="value-din-1">&#10005;</p>
-                </div>
-                <div class="col">
-                  <p id="value-din-2">&#10003;</p>
-                </div>
-                <div class="col">
-                  <p id="value-din-3">&#10005;</p>
-                </div>
-                <div class="col">
-                  <p id="value-din-4">&#10005;</p>
-                </div>
-                <div class="col">
-                  <p id="value-din-5">&#10005;</p>
-                </div>
-                <div class="col">
-                  <p id="value-din-6">&#10005;</p>
-                </div>
-                <div class="col">
-                  <p id="value-din-7">&#10005;</p>
-                </div>
-                <div class="col">
-                  <p id="value-din-8">&#10005;</p>
-                </div>
-                <div class="col">
-                  <p id="value-din-9">&#10005;</p>
-                </div>
-                <div class="col">
-                  <p id="value-din-10">&#10005;</p>
-                </div>
-                <div class="col">
-                  <p id="value-din-11">&#10005;</p>
-                </div>
-              </div>
+      <div id="card-uin-2" class="card col">
+        <div class="card-body">
+          <p class="card-title">Вход</p>
+          <div class="card-icon">
+            <p>2</p>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-text">
+              <p id="value-uin-2">00.00</p>
+              <p class="units">В</p>
             </div>
           </div>
         </div>
       </div>
-      <div class="row">
-        <div id="card-velocity-1" class="card col">
-          <div class="card-body">
-            <p class="card-title">Обороты</p>
-            <div class="card-icon">
-              <p>1</p>
-            </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-text">
-                <p id="value-velocity-1">0</p>
-                <p class="units">об/мин</p>
-              </div>
-            </div>
+      <div id="card-uin-3" class="card col">
+        <div class="card-body">
+          <p class="card-title">Вход</p>
+          <div class="card-icon">
+            <p>3</p>
           </div>
-        </div>
-        <div id="card-velocity-2" class="card col">
-          <div class="card-body">
-            <p class="card-title">Обороты</p>
-            <div class="card-icon">
-              <p>2</p>
-            </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-text">
-                <p id="value-velocity-2">0</p>
-                <p class="units">об/мин</p>
-              </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-text">
+              <p id="value-uin-3">00.00</p>
+              <p class="units">В</p>
             </div>
           </div>
         </div>
       </div>
-      <div class="row">
-        <div id="card-uin-1" class="card col">
-          <div class="card-body">
-            <p class="card-title">Вход</p>
-            <div class="card-icon">
-              <p>1</p>
-            </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-text">
-                <p id="value-uin-1">00.00</p>
-                <p class="units">В</p>
-              </div>
-            </div>
+      <div id="card-uin-4" class="card col">
+        <div class="card-body">
+          <p class="card-title">Вход</p>
+          <div class="card-icon">
+            <p>4</p>
           </div>
-        </div>
-        <div id="card-uin-2" class="card col">
-          <div class="card-body">
-            <p class="card-title">Вход</p>
-            <div class="card-icon">
-              <p>2</p>
-            </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-text">
-                <p id="value-uin-2">00.00</p>
-                <p class="units">В</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div id="card-uin-3" class="card col">
-          <div class="card-body">
-            <p class="card-title">Вход</p>
-            <div class="card-icon">
-              <p>3</p>
-            </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-text">
-                <p id="value-uin-3">00.00</p>
-                <p class="units">В</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div id="card-uin-4" class="card col">
-          <div class="card-body">
-            <p class="card-title">Вход</p>
-            <div class="card-icon">
-              <p>4</p>
-            </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-text">
-                <p id="value-uin-4">00.00</p>
-                <p class="units">В</p>
-              </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-text">
+              <p id="value-uin-4">00.00</p>
+              <p class="units">В</p>
             </div>
           </div>
         </div>
       </div>
-      <div class="row">
-        <div id="card-battery" class="card col">
-          <div class="card-body">
-            <p class="card-title">Аккумулятор</p>
-            <div class="card-icon">
-              <i class="fa-solid fa-car-battery"></i>
-            </div>
-            <div class="d-flex justify-content-center">
-              <div class="card-text">
-                <p id="value-battery">14.40</p>
-                <p class="units">В</p>
-              </div>
+    </div>
+    <div class="row">
+      <div id="card-battery" class="card col">
+        <div class="card-body">
+          <p class="card-title">Аккумулятор</p>
+          <div class="card-icon">
+            <i class="fa-solid fa-car-battery"></i>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card-text">
+              <p id="value-battery">14.40</p>
+              <p class="units">В</p>
             </div>
           </div>
         </div>
       </div>
-
-
+    </div>
 </template>

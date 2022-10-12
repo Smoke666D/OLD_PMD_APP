@@ -11,7 +11,8 @@ const msgCMD  = {
   "USB_REPORT_CMD_READ_DATA"        : 5,
   "USB_REPORT_CMD_READ_TELEMETRY"   : 6,
   "USB_REPORT_CMD_UPDATE_TELEMETRY" : 7,
-  "USB_REPORT_CMD_RESTART_LUA"      : 8
+  "USB_REPORT_CMD_RESTART_LUA"      : 8,
+  "USB_REPORT_CMD_READ_ERROR_STR"   : 9
 };
 const msgSTAT = {
   "USB_OK_STAT"           : 1,
@@ -22,10 +23,11 @@ const msgSTAT = {
   "USB_INTERNAL"          : 6
 };
 const msgType = {
-  "lua"       : 1,
-  "data"      : 2,
-  "telemetry" : 3,
-  "loop"      : 4
+  "lua"         : 1,
+  "data"        : 2,
+  "telemetry"   : 3,
+  "loop"        : 4,
+  "errorString" : 5
 }
 const USB_DIR_BYTE  = 0;
 const USB_CMD_BYTE  = 1;
@@ -140,6 +142,9 @@ function USBMessage ( buffer ) {
       case msgCMD.USB_REPORT_CMD_RESTART_LUA:
         self.command = msgCMD.USB_REPORT_CMD_RESTART_LUA;
         break;
+      case msgCMD.USB_REPORT_CMD_READ_ERROR_STR:
+        self.command = msgCMD.USB_REPORT_CMD_READ_ERROR_STR;
+        break;  
       default:
         self.command = 0;
         self.status  = msgSTAT.USB_BAD_REQ_STAT;
@@ -263,6 +268,9 @@ function USBMessage ( buffer ) {
   this.makeTelemetryRequest = function ( adr ) {
     makeRequest( msgCMD.USB_REPORT_CMD_READ_TELEMETRY, adr );
   }
+  this.makeErrorStringRequest = function ( adr ) {
+    makeRequest( msgCMD.USB_REPORT_CMD_READ_ERROR_STR, adr );
+  }
   this.codeStartWriting = function () {
     makeRequest( msgCMD.USB_REPORT_CMD_START_WRITING, 0 );
     return;
@@ -318,6 +326,10 @@ function USBMessage ( buffer ) {
         output = 'Ok';
         type   = msgType.loop;
         break;
+      case msgCMD.USB_REPORT_CMD_READ_ERROR_STR:
+        output = parseData();
+        type   = msgType.errorString;
+        break;  
     }
     return [type, output];
   }

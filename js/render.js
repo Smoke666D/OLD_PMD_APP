@@ -85,9 +85,10 @@ function updateInterface ( callback ) {
 }
 
 function parsingFullMessages () {
-  var dashFl = false;
-  var dataFl = false;
-  var loopFl = false;
+  var dashFl  = false;
+  var dataFl  = false;
+  var loopFl  = false;
+  var errorFl = false;
   var buffer = usb.controller.getInput();
   for ( var i=0; i<buffer.length; i++ ) {
     buffer[i].init( function ( input ) {
@@ -110,7 +111,13 @@ function parsingFullMessages () {
           break;
         case msgType.loop:
           loopFl = true;
-          break;  
+          break;
+        case msgType.errorString:
+          for ( var i=0; i<out[1].length; i++ ) {
+            pdm.errorStringBlob.push( out[1][i] );
+          }
+          errorFl = true;
+          break;
       }
       return;
     });
@@ -124,10 +131,25 @@ function parsingFullMessages () {
       });
     });
   }
+  if ( errorFl == true ) {
+    pdm.setErrorString( function () {
+      dashboard.update( false, function () {
+        usb.controller.resetLoopBusy();
+        return;
+      });
+      return;
+    });
+  } else {
+    pdm.telemetry.lua.noErrorString();
+  }
   if ( dashFl == true ) {
     pdm.setTelemetry( function () {
-      dashboard.update( function () {
-        usb.controller.resetLoopBusy();
+      dashboard.update( true, function () {
+        if ( pdm.telemetry.lua.state == 2 ) {
+          usb.controller.readErrorString();
+        } else {
+          usb.controller.resetLoopBusy();
+        }
         return;
       });
     });
@@ -195,7 +217,7 @@ function connect ( readAtStart = true ) {
   });
 }
 
-dashboard.update( function(){});
+dashboard.update( true, function(){});
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

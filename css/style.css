@@ -4027,11 +4027,19 @@ input[type="button"].btn-block {
 }  
   .card-text {
     display: flex;
+    position: relative;
     height: 68px;
     margin: 0;
     padding-left: 15px;
     padding-right: 15px;
+    word-wrap: break-word;
     font-size: 38px;}
+    .errorString-box {
+      max-width: 750px;
+    }
+    .errorString {
+      font-size: 20px;  
+    }
     .card-text .units {
       padding-top: 29px;
       padding-left: 0.5rem;

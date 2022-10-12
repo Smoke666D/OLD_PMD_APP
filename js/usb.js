@@ -272,7 +272,8 @@ function USBtransport () {
              ( response.command == msgCMD.USB_REPORT_CMD_READ_DATA        ) ||
              ( response.command == msgCMD.USB_REPORT_CMD_READ_TELEMETRY   ) ||
              ( response.command == msgCMD.USB_REPORT_CMD_UPDATE_TELEMETRY ) ||
-             ( response.command == msgCMD.USB_REPORT_CMD_RESTART_LUA      ) ) {
+             ( response.command == msgCMD.USB_REPORT_CMD_RESTART_LUA      ) || 
+             ( response.command == msgCMD.USB_REPORT_CMD_READ_ERROR_STR   ) ) {
           result = output.isEnd();
           if ( result == usbHandler.continue )
           {
@@ -555,6 +556,16 @@ function PdmController () {
     callback();
     return;
   }
+  function initErrorStringSequency ( adr, data, callback ) {
+    var msg = null;
+    transport.clean();
+    for ( var i=0; i<Math.ceil( pdm.telemetry.lua.getErrorStringLength() / USB_DATA_SIZE ); i++ ) {
+      msg = new USBMessage( [] );
+      msg.makeErrorStringRequest( i * USB_DATA_SIZE )
+      transport.addRequest( msg );
+    }
+    callback();
+  }
   function initReadLuaSequency ( adr, data, callback ) {
     var msg = null;
     transport.clean();
@@ -703,7 +714,12 @@ function PdmController () {
     readSequency( 0, 0, null, true, initTelemetrySequency );
     return;
   }
-  this.restartLua          = function () {
+  this.readErrorString   = function () {
+    self.disableLoop();
+    readSequency( 0, 0, null, false, initErrorStringSequency );
+    return;  
+  }
+  this.restartLua        = function () {
     self.disableLoop();
     writeSequency( 0, 0, null, false, initRestartSequency );
     return;  

@@ -73,15 +73,36 @@ function byteToIDstring ( data, adr ) {
 /*----------------------------------------------------------------------------*/
 function LuaTelemetry () {
   var self = this;
-  this.time    = 0; /* The current time periode for the one LUA running */
-  this.state   = 0; /* Current satate of the LUA machine */
-  this.counter = 0; /* Counter of the errors */
 
+  const errorStringLength = 100;
+  const blobSize = 6;
+
+  this.time    = 0;  /* The current time periode for the one LUA running */
+  this.state   = 0;  /* Current satate of the LUA machine */
+  this.counter = 0;  /* Counter of the errors */
+  this.error   = ''; /* Rintime error string */
+
+  this.getBlobLength = function () {
+    return blobSize;
+  }
+  this.getErrorStringLength = function () {
+    return errorStringLength;
+  }
   this.parsing = function ( blob, adr ) {
     self.time    = bytesToUint32( blob, adr );
     self.state   = blob[adr + 4];
     self.counter = blob[adr + 5];
-    return 6;
+    return blobSize;
+  }
+  this.noErrorString = function () {
+    self.error = '';
+  }
+  this.errorParsing = function ( blob, adr ) {
+    self.error = '';
+    for ( var i=0; i<blob.length; i++ ) {
+      self.error += String.fromCharCode( blob[i] );
+    }
+    return; 
   }
 }
 function DoutTelemetry () {
@@ -129,7 +150,7 @@ function Telemetry ( dinN, doutN, ainN, velN ) {
   this.dout     = [];
   this.velocity = [];
   this.lua      = new LuaTelemetry();
-  this.length   = ( ainN + 1 ) * 4 + dinN + ( doutN * 10 ) + 6 + ( velN * 2 );
+  this.length   = ( ainN + 1 ) * 4 + dinN + ( doutN * 10 ) + self.lua.getBlobLength() + ( velN * 2 );
   this.parsing  = function ( blob ) {
     self.battery = byteToFloat( blob, 0 );
     var counter = 4;
@@ -254,8 +275,9 @@ function PDM () {
   this.lua       = '';
   this.isCompil  = false;
   /*------------------------------------------------------------------------------- */
-  this.sysBlob       = [];
-  this.telemetryBlob = [];
+  this.sysBlob         = [];
+  this.telemetryBlob   = [];
+  this.errorStringBlob = [];
   /*------------------------------------------------------------------------------- */
   this.system    = new System();
   this.telemetry = new Telemetry( dinN, doutN, ainN, velN );
@@ -269,6 +291,12 @@ function PDM () {
   this.setTelemetry = function ( callback ) {
     self.telemetry.parsing( self.telemetryBlob );
     self.telemetryBlob = [];
+    callback();
+    return;
+  }
+  this.setErrorString = function ( callback ) {
+    self.telemetry.lua.errorParsing( self.errorStringBlob );
+    self.errorStringBlob = [];
     callback();
     return;
   }

@@ -226,6 +226,11 @@ const values = [
     'source' : 'errorCounter',
     'type'   : 'uint8',
   },{
+    'id'     : 'value-errorString',
+    'adr'    : 0,
+    'source' : 'errorString',
+    'type'   : 'text'
+  },{
     'id'     : 'value-battery',
     'adr'    : 0,
     'source' : 'battery',
@@ -740,10 +745,12 @@ function mergeBytes ( data ) {
 }
 /*----------------------------------------------------------------------------*/
 function Dashboard () {
-  this.update = function ( callback ) {
+  this.update = function ( loging, callback ) {
     updateCards();
     updateValues();
-    pdm.log();
+    if ( loging == true ) {
+      pdm.log();
+    }
     callback();
     return;
   }
@@ -793,6 +800,9 @@ function Dashboard () {
         case 'errorCounter':
           data = pdm.telemetry.lua.counter;
           break;
+        case 'errorString':
+          data = pdm.telemetry.lua.error;
+          break;  
         case 'battery':
           data = pdm.telemetry.battery;
           break;
@@ -830,6 +840,9 @@ function Dashboard () {
           break;
         case 'string':
           obj.innerText = value.dic[data];
+          break;
+        case 'text':
+          obj.innerText = data;
           break;
         case 'uint8':
           obj.innerText = data.toString();
