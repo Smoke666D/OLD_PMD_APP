@@ -102,6 +102,7 @@ function LuaTelemetry () {
     for ( var i=0; i<blob.length; i++ ) {
       self.error += String.fromCharCode( blob[i] );
     }
+    console.log( self.error );
     return; 
   }
 }
@@ -295,6 +296,8 @@ function PDM () {
     return;
   }
   this.setErrorString = function ( callback ) {
+    console.log( self.errorStringBlob );
+    console.log( self.errorStringBlob.length );
     self.telemetry.lua.errorParsing( self.errorStringBlob );
     self.errorStringBlob = [];
     callback();

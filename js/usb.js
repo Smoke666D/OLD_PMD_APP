@@ -396,7 +396,7 @@ function USBtransport () {
       self.errorCounter++;
       status = usbStat.wait;
       self.close();
-      errorCallback();
+      errorCallback();      
     });
     callback();
     return;
@@ -563,7 +563,9 @@ function PdmController () {
       msg = new USBMessage( [] );
       msg.makeErrorStringRequest( i * USB_DATA_SIZE )
       transport.addRequest( msg );
+      console.log( msg.adr + ' ' + msg.command ) ;
     }
+    console.log( '-------' );
     callback();
   }
   function initReadLuaSequency ( adr, data, callback ) {
