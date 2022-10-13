@@ -146,6 +146,7 @@ function parsingFullMessages () {
     pdm.setTelemetry( function () {
       dashboard.update( true, function () {
         if ( pdm.telemetry.lua.state == 2 ) {
+          usb.controller.disableLoopWithResetBusy();
           usb.controller.readErrorString();
         } else {
           usb.controller.resetLoopBusy();

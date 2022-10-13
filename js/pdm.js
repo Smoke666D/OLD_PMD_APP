@@ -97,9 +97,12 @@ function LuaTelemetry () {
   this.noErrorString = function () {
     self.error = '';
   }
-  this.errorParsing = function ( blob, adr ) {
+  this.errorParsing = function ( blob ) {
     self.error = '';
     for ( var i=0; i<blob.length; i++ ) {
+      if ( blob[i] == 0 ) {
+        break;
+      }
       self.error += String.fromCharCode( blob[i] );
     }
     console.log( self.error );

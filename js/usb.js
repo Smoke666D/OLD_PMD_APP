@@ -647,6 +647,11 @@ function PdmController () {
     loopBusy   = 0;
     return;
   }
+  this.disableLoopWithResetBusy = function () {
+    loopActive = 0;
+    loopBusy   = 0;
+    return;
+  }
   this.getStatus         = function () {
     let out = usbStat.dash
     if ( connected == true ) {
