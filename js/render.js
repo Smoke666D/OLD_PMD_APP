@@ -139,8 +139,6 @@ function parsingFullMessages () {
       });
       return;
     });
-  } else {
-    pdm.telemetry.lua.noErrorString();
   }
   if ( dashFl == true ) {
     pdm.setTelemetry( function () {
@@ -149,6 +147,7 @@ function parsingFullMessages () {
           usb.controller.disableLoopWithResetBusy();
           usb.controller.readErrorString();
         } else {
+          pdm.telemetry.lua.noErrorString();
           usb.controller.resetLoopBusy();
         }
         return;
