@@ -235,6 +235,8 @@ function USBtransport () {
   function write ( data ) {
     if ( device != null ) {
       try {
+        console.log( 'output: ' );
+        console.log( data );
         device.write( data );
       } catch (e) {
         if ( ( alert != null ) || ( alert != undefined ) ) {
@@ -246,6 +248,8 @@ function USBtransport () {
   }
   function handler ( data ) {
     var result = usbHandler.finish;
+    console.log( 'input: ' );
+    console.log( data );
     let input  = new USBMessage( data );
     switch ( status ) {
       case usbStat.wait:
@@ -620,7 +624,7 @@ function PdmController () {
     transport  = new USBtransport();
     transport.scan( function () {
       transport.initEvents( inCallback, outCallback, errorCalback, unauthorizedCallback, forbiddenCallback, automodeCallback, function() {
-        result    = usbInit.done;
+        result = usbInit.done;
         try {
           let alert = new Alert( "alert-success", alerts.okIco, "Контроллер подключен по USB" );
           connected = true;

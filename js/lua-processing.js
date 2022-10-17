@@ -231,9 +231,8 @@ async function pdmload ( data ) {
         usb.controller.send( null );
         awaitUSB( function ( result ) {
           if ( result == true ) {
-            luacli.add( 'Done!' );
+            luacli.add( 'Done in ' + ( ( Date.now() - start ) / 1000 ) + ' sec!' );
             usb.controller.resetLoopBusy();
-            //console.log( ( Date.now() - start ) / 1000 + ' sec' );
             resolve( ['ok', '', null] );
           } else {
             luacli.add( 'Fail!' );
@@ -241,7 +240,6 @@ async function pdmload ( data ) {
             resolve( ['error', '', null] );
           } 
         });
-        
       }
     });
   });
