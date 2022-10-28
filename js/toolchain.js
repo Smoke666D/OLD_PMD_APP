@@ -120,6 +120,13 @@ function Toolchain () {
         } 
       });
       const exeProcess = spawn( name, args );
+      /*-----*/
+      let debug = name;
+      args.forEach( function ( arg ) {
+        debug += ' ' + arg;
+      });
+      console.log( debug );
+      /*-----*/
       exeProcess.stdout.on( 'data', function ( data ) {
         str = data.toString();
       });
