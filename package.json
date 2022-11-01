@@ -7,14 +7,14 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "start": "gulp && electron .",
+    "start": "electron .",
     "rebuild": "electron-rebuild --force",
     "make": "gulp && electron-packager ./ Sider --overwrite --platform=win32,linux,darwin --arch=x64 --icon='./img/favicon.ico' --prune=true --out=release-builds"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.1.2",
     "@popperjs/core": "2.11.5",
-    "bootstrap": "^5.2.0",
+    "bootstrap": "^5.2.2",
     "node-hid": "=2.1.1",
     "usb": "=1.6.3"
   },
