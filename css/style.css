@@ -231,11 +231,6 @@ select option:disabled
 {
   color: #d4d7da; }
 
-button,
-[type="button"],
-[type="reset"],
-[type="submit"] {
-  -webkit-appearance: button; }
 
 button:not(:disabled),
 [type="button"]:not(:disabled),
@@ -257,13 +252,7 @@ input[type="checkbox"] {
   padding: 0; }
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
   margin: 0;}
-input[type="date"],
-input[type="time"],
-input[type="datetime-local"],
-input[type="month"] {
-  -webkit-appearance: listbox; }
 
 textarea {
   overflow: auto;
@@ -295,14 +284,12 @@ progress {
 
 [type="search"] {
   outline-offset: -2px;
-  -webkit-appearance: none; }
+}
 
-[type="search"]::-webkit-search-decoration {
-  -webkit-appearance: none; }
 
 ::-webkit-file-upload-button {
   font: inherit;
-  -webkit-appearance: button; }
+}
 
 output {
   display: inline-block; }
@@ -4496,7 +4483,7 @@ input[type="button"].btn-block {
     -ms-transition: all 0.4s ease;
     transition: all 0.4s ease;}
   .alert.hidden {
-    right: -400px;}
+    right: -400px;
   }
 
 .alert-heading {
@@ -5036,14 +5023,14 @@ a.close.disabled {
   margin: 0.5rem;
   pointer-events: none; }
   .modal.fade .modal-dialog {
-    /*-webkit-transition: -webkit-transform 0.3s ease-out;
+    -webkit-transition: -webkit-transform 0.3s ease-out;
     transition: -webkit-transform 0.3s ease-out;
     -o-transition: transform 0.3s ease-out;
     transition: transform 0.3s ease-out;
     transition: transform 0.3s ease-out, -webkit-transform 0.3s ease-out;
     -webkit-transform: translate(0, -50px);
     -ms-transform: translate(0, -50px);
-    transform: translate(0, -50px);*/ }
+    transform: translate(0, -50px); }
     @media (prefers-reduced-motion: reduce) {
       .modal.fade .modal-dialog {
         -webkit-transition: none;
@@ -5184,8 +5171,7 @@ a.close.disabled {
   padding: 1rem;
   border-top: 1px solid #dee2e6;
   border-bottom-right-radius: 0.3rem;
-  border-bottom-left-radius: 0.3rem;
-  float: right;}
+  border-bottom-left-radius: 0.3rem;}
   .modal-footer > :not(:first-child) {
     margin-left: .25rem; }
   .modal-footer > :not(:last-child) {
@@ -5193,8 +5179,8 @@ a.close.disabled {
   .modal-footer .modal-footer-left{
     float: right; }
   .modal-footer .modal-footer-right{
-    float: left; }
-  }
+    float: left; 
+}
 
 .modal-scrollbar-measure {
   position: absolute;
