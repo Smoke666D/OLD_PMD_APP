@@ -8768,15 +8768,15 @@ a[data-toggle="collapse"] {
   user-select: none; /* Standard syntax */
 }
 
-.loading {
-	-webkit-animation: rotation 2s infinite linear;
-}
-
-@-webkit-keyframes rotation {
+@keyframes rotation {
   from {
 	   -webkit-transform: rotate(0deg);}
 	to {
 	   -webkit-transform: rotate(359deg);}
+}
+
+.loading {
+	animation: rotation 2s infinite linear;
 }
 
 .disable-select {
