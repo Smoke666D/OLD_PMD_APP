@@ -6,7 +6,6 @@ function Toolchain () {
   let path       = '';
   let toolsList  = [];
   let except     = [];
-  const pathFile = 'settings.json';
   const pathTemp = 'temp';
   this.run = async function ( name, source ) {
     return new Promise( async function ( resolve ) {

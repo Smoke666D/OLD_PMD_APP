@@ -11,7 +11,7 @@ let settings = new Settings ( function () {
 });
 
 function Settings ( callback ) {
-  const pathFile = 'settings.json';
+  const pathFile = 'json/settings.json';
   let   self     = this;
   let   domList  = [];
   this.ready     = false;

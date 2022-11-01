@@ -4,12 +4,12 @@
   "description": "SIDER Ltd PDM configuration tool",
   "version": "0.0.1",
   "main": "js/index.js",
+  "type": "module",
   "private": true,
   "scripts": {
-    "start": "electron .",
+    "start": "gulp && electron .",
     "rebuild": "electron-rebuild --force",
-    "make": "electron-packager ./ Sider --overwrite --platform=win32,linux,darwin --arch=x64 --icon='./img/favicon.ico' --prune=true --out=release-builds",
-    "driver": "./node_modules/.bin/chromedriver --url-base=wd/hub --port=9515"
+    "make": "gulp && electron-packager ./ Sider --overwrite --platform=win32,linux,darwin --arch=x64 --icon='./img/favicon.ico' --prune=true --out=release-builds"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.1.2",
@@ -19,11 +19,29 @@
     "usb": "=1.6.3"
   },
   "devDependencies": {
+    "@babel/core": "^7.19.6",
+    "@babel/preset-env": "^7.19.4",
+    "babel": "^6.23.0",
+    "browser-sync": "^2.27.10",
     "electron": "=8.5.5",
     "electron-builder": "22.4.1",
     "electron-chromedriver": "^11.0.0",
     "electron-packager": "15.2.0",
     "electron-rebuild": "3.2.8",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-clean": "^0.4.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-concat-css": "^3.1.0",
+    "gulp-css-minify": "^0.9.2",
+    "gulp-htmlmin": "^5.0.1",
+    "gulp-json-minify": "^1.2.2",
+    "gulp-jsvalidate": "^5.0.0",
+    "gulp-pug": "^5.0.0",
+    "gulp-sass": "^5.1.0",
+    "gulp-uglify": "^3.0.2",
+    "gulp-url-builder": "^1.0.1",
+    "sass": "^1.55.0",
     "typescript": "^4.7.4"
   }
 }
