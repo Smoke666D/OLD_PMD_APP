@@ -7,6 +7,8 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "gulp": "gulp",
+    "clean": "gulp clean",
     "start": "electron .",
     "rebuild": "electron-rebuild --force",
     "make": "gulp && electron-packager ./ Sider --overwrite --platform=win32,linux,darwin --arch=x64 --icon='./img/favicon.ico' --prune=true --out=release-builds"
@@ -14,7 +16,6 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.1.2",
     "@popperjs/core": "2.11.5",
-    "bootstrap": "^5.2.2",
     "node-hid": "=2.1.1",
     "usb": "=1.6.3"
   },
@@ -26,6 +27,7 @@
     "electron": "=8.5.5",
     "electron-builder": "22.4.1",
     "electron-chromedriver": "^11.0.0",
+    "electron-connect": "^0.6.3",
     "electron-packager": "15.2.0",
     "electron-rebuild": "3.2.8",
     "gulp": "^4.0.2",
@@ -38,6 +40,8 @@
     "gulp-json-minify": "^1.2.2",
     "gulp-jsvalidate": "^5.0.0",
     "gulp-pug": "^5.0.0",
+    "gulp-run": "^1.7.1",
+    "gulp-run-electron": "^3.0.2",
     "gulp-sass": "^5.1.0",
     "gulp-uglify": "^3.0.2",
     "gulp-url-builder": "^1.0.1",

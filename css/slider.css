@@ -23,7 +23,7 @@
     -webkit-transition: .4s;
     transition: .4s;
     border-radius: 0.25rem;
-  }
+  } 
   input:checked + .slider {
     background-color: #f8b739;}
   input[disabled]:checked + .slider {

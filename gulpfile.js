@@ -1,6 +1,7 @@
 'use strict';
 /*----------------------------------------------------------------------------*/
 import gulp       from 'gulp';
+import run        from 'gulp-run';
 import cssMinify  from 'gulp-css-minify';
 import concat     from 'gulp-concat';
 import babel      from 'gulp-babel';
@@ -12,6 +13,11 @@ import clean      from 'gulp-clean';
 //import sass       from 'gulp-sass' )( require( 'sass' ) );
 //import pug        from 'gulp-pug';
 //import urlBuilder from 'gulp-url-builder';
+import electron from 'gulp-run-electron';
+import gulpRun  from 'gulp-run';
+import connect  from 'electron-connect';
+/*----------------------------------------------------------------------------*/
+let app = connect.server.create();
 /*----------------------------------------------------------------------------*/
 const src     = '';
 const modules = './node_modules/';
@@ -29,6 +35,8 @@ const htmlSrc    = src  + 'html/**/*.html';
 const htmlDest   = dist + 'html/';
 const indexSrc   = src  + 'index.html';
 const indexDest  = dist + '';
+
+const srcArray   = [jsSrc, cssSrc, jsonSrc, imgSrc, htmlSrc, indexSrc];
 /*----------------------------------------------------------------------------*/
 const htmlminAtr = {
   collapseWhitespace: true,
@@ -39,7 +47,7 @@ gulp.task( 'clean', () => {
   gulp.src( dist, { read: false } )
     .pipe( clean( {force: true} ) ); 
 });
-gulp.task( 'styles', () => {
+gulp.task( 'css', () => {
   return gulp.src( [
       cssSrc,
       ( modules + '@fortawesome/fontawesome-free/css/fontawesome.css' ),
@@ -48,7 +56,7 @@ gulp.task( 'styles', () => {
     ])
       .pipe( concat( 'style.min.css' ) )
       .pipe( cssMinify() )
-      .pipe( gulp.dest( cssDest ) );
+      .pipe( gulp.dest( cssDest ) )
 });
 gulp.task( 'js', () => {
   return gulp.src( jsSrc )
@@ -76,10 +84,22 @@ gulp.task( 'index', () => {
     .pipe( htmlmin( htmlminAtr ) )
     .pipe( gulp.dest( indexDest ) )
 });
+gulp.task( 'reload', () => {
+  app.restart();
+  return;
+});
 /*----------------------------------------------------------------------------*/
-const tasks = [ 'styles', 'js', 'json', 'img', 'html', 'index' ];
+const tasks     = [ 'css', 'js', 'json', 'img', 'html', 'index' ];
+const reloadSeq = tasks.concat( ['reload'] );
 /*----------------------------------------------------------------------------*/
-gulp.task( 'default', gulp.parallel( tasks ) );
+gulp.task( 'start', () => {
+  app.start();
+});
+gulp.task( 'watch', () => {
+  gulp.watch( srcArray, gulp.parallel( ['watch', 'reload'] ) ); 
+});
+/*----------------------------------------------------------------------------*/
+gulp.task( 'default', gulp.parallel( ['watch', 'start'] ) );
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
