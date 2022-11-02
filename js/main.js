@@ -2,7 +2,7 @@ var connectInit = require('./js/render.js').connectPDMinit;
 const luaproc   = require('./js/lua-processing.js').luaproc;
 const settings  = require( './js/settings.js' ).settings;
 const { dialog }   = require( 'electron' ).remote;
-
+``
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/

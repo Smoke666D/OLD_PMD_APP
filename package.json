@@ -9,9 +9,9 @@
   "scripts": {
     "gulp": "gulp",
     "clean": "gulp clean",
-    "start": "electron .",
+    "start": "gulp process && electron dist",
     "rebuild": "electron-rebuild --force",
-    "make": "gulp && electron-packager ./ Sider --overwrite --platform=win32,linux,darwin --arch=x64 --icon='./img/favicon.ico' --prune=true --out=release-builds"
+    "make": "gulp process && electron-packager ./ Sider --overwrite --platform=win32,linux,darwin --arch=x64 --icon='./img/favicon.ico' --prune=true --out=release-builds"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.1.2",
@@ -41,7 +41,6 @@
     "gulp-jsvalidate": "^5.0.0",
     "gulp-pug": "^5.0.0",
     "gulp-run": "^1.7.1",
-    "gulp-run-electron": "^3.0.2",
     "gulp-sass": "^5.1.0",
     "gulp-uglify": "^3.0.2",
     "gulp-url-builder": "^1.0.1",

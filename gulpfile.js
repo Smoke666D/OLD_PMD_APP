@@ -56,7 +56,7 @@ gulp.task( 'css', () => {
     './node_modules/@fortawesome/fontawesome-free/css/brands.css',
     './node_modules/@fortawesome/fontawesome-free/css/solid.css'
   ])
-    //.pipe( concat( 'style.min.css' ) )
+    .pipe( concat( 'style.min.css' ) )
     .pipe( cssMinify() )
     .pipe( gulp.dest( cssDest ) )
 });
@@ -105,8 +105,9 @@ gulp.task( 'reload', () => {
   return;
 });
 /*----------------------------------------------------------------------------*/
-const tasks     = [ 'css', 'fonts', 'js', 'json', 'img', 'html', 'indexHTML', 'indexJS' ];
+const tasks = [ 'css', 'fonts', 'js', 'json', 'img', 'html', 'indexHTML', 'indexJS' ];
 /*----------------------------------------------------------------------------*/
+gulp.task( 'process', gulp.parallel( tasks ) );
 gulp.task( 'start', () => {
   app.start();
 });
