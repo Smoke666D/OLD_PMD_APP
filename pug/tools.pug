@@ -1,0 +1,109 @@
+html
+  head
+  body
+    h2 Настройки
+    h5
+      i.fa-solid.fa-screwdriver-wrench
+        Инструментарий
+    .row.unselect
+      .col-sm-2.pos-name
+        label Инструменты
+      .col-sm
+        input#toolchainPath.form-control(onclick='GetFolderPath("toolchainPath")', href='#')
+    br
+    h5
+      i.fa-solid.fa-clipboard-check Проверка
+    .row.unselect
+      .col-sm-auto.pos-name
+        label.switch
+          input#luacheck_enb.check-input(type='checkbox')
+          span.slider
+        label.form-check-label Активировать
+    br
+    h5
+      i.fa-solid.fa-link Линкер
+    .row.unselect
+      .col-sm-auto.pos-name
+        label.switch
+          input#lualink_enb.check-input(type='checkbox')
+          span.slider
+        label.form-check-label Активировать
+    .row.unselect
+      .col-sm-2.pos-name
+        label Библиотека
+      .col-sm
+        input#libPath.form-control(onclick='GetFolderPath("libPath")', href='#')
+    br
+    h5
+      i.fa-solid.fa-minimize Минимайзер
+    .row.unselect
+      .col-sm-auto.pos-name
+        label.switch
+          input#luamin_enb.check-input(type='checkbox')
+          span.slider
+        label.form-check-label Активировать
+    .row.unselect(hidden='')
+      .col-sm-auto.pos-name
+        label.switch
+          input#luamin_names_enb.check-input(type='checkbox')
+          span.slider
+        label.form-check-label Оптимизация имен переменных и функций
+    .row.unselect
+      .col-sm-auto.pos-name
+        label.switch
+          input#luamin_endString_enb.check-input(type='checkbox')
+          span.slider
+        label.form-check-label Оптимизировать перенос строки
+    .row.unselect
+      .col-sm-auto.pos-name
+        label.switch
+          input#luamin_spaces_enb.check-input(type='checkbox')
+          span.slider
+        label.form-check-label Оптимизировать пробелы
+    br
+    h5
+      i.fa-solid.fa-arrows-spin Сборщик
+    .row.unselect
+      .col-sm-auto.pos-name
+        label.switch
+          input#luamake_enb.check-input(type='checkbox')
+          span.slider
+        label.form-check-label Активировать
+    br
+    h5
+      i.fa-solid.fa-microchip Компилятор
+    .row.unselect
+      .col-sm-auto.pos-name
+        label.switch
+          input.check-input(type='checkbox', id='luaс_enb')
+          span.slider
+        label.form-check-label Активировать
+    br
+    h5
+      i.fa-solid.fa-upload Загрузка
+    .row.unselect
+      .col-sm-auto.pos-name
+        label.switch
+          input#loading_auto.check-input(type='checkbox')
+          span.slider
+        label.form-check-label Автоматическое определение устройства
+    .row.unselect
+      .col-sm-2.pos-name
+        label UID
+      .col-sm
+        input#usb-uid.form-control(type='number', onkeypress='return event.charCode >= 48')
+    .row.unselect
+      .col-sm-2.pos-name
+        label PID
+      .col-sm
+        input#usb-pid.form-control(type='number', onkeypress='return event.charCode >= 48')
+    .col-sm-auto.pos-name
+      label.switch
+        input#usb-loop.check-input(type='checkbox')
+        span.slider
+      label.form-check-label Циклический опрос
+    .row.unselect
+      .col-sm-2.pos-name
+        label Период опроса
+      .col-sm
+        input#usb-timeout.form-control(type='number', onkeypress='return event.charCode >= 48')

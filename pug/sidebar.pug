@@ -1,0 +1,46 @@
+nav#sidebar.shadow
+  .sidebar-button
+    a.close.d-flex.ml-auto.justify-content-center.align-items-center.px-3(href='#', onclick='toogleNav()')
+      i.fa-solid.fa-xmark
+  img.logo(src='img/logo.jpg') &#x9;      
+  ul.list-unstyled.components
+    li.nav-major
+      a#nav-luaPage.navItem(onclick="loadContent('luaPage')", href='#')
+        .fas
+          i.fa-solid.fa-moon
+        span LUA
+    li.nav-major
+      a#nav-devicePage.navItem(onclick="loadContent('devicePage')", href='#')
+        .fas
+          i.fa-solid.fa-house-chimney
+        span Контроллер
+    li.nav-major
+      a#nav-scadaPage.navItem(onclick="loadContent('scadaPage')", href='#')
+        .fas
+          svg(viewBox='0 0 512 512')
+            path(d='m197.332031 0h-160c-20.585937 0-37.332031 16.746094-37.332031 37.332031v96c0 20.589844 16.746094 37.335938 37.332031 37.335938h160c20.589844 0 37.335938-16.746094 37.335938-37.335938v-96c0-20.585937-16.746094-37.332031-37.335938-37.332031zm0 0')
+            path(d='m197.332031 213.332031h-160c-20.585937 0-37.332031 16.746094-37.332031 37.335938v224c0 20.585937 16.746094 37.332031 37.332031 37.332031h160c20.589844 0 37.335938-16.746094 37.335938-37.332031v-224c0-20.589844-16.746094-37.335938-37.335938-37.335938zm0 0')
+            path(d='m474.667969 341.332031h-160c-20.589844 0-37.335938 16.746094-37.335938 37.335938v96c0 20.585937 16.746094 37.332031 37.335938 37.332031h160c20.585937 0 37.332031-16.746094 37.332031-37.332031v-96c0-20.589844-16.746094-37.335938-37.332031-37.335938zm0 0')
+            path(d='m474.667969 0h-160c-20.589844 0-37.335938 16.746094-37.335938 37.332031v224c0 20.589844 16.746094 37.335938 37.335938 37.335938h160c20.585937 0 37.332031-16.746094 37.332031-37.335938v-224c0-20.585937-16.746094-37.332031-37.332031-37.332031zm0 0')
+        span Мониторинг
+    li.nav-major
+      a#nav-toolsPage.navItem(onclick="loadContent('toolsPage')", href='#')
+        .fas
+          i.fa-solid.fa-gear
+        span Настройки
+    li.nav-major
+      a#nav-settingsPage.navItem(onclick="loadContent('settingsPage')", href='#')
+        .fas
+          i.fa-solid.fa-gear
+        span Настройки контроллера
+    li.nav-major
+      a#nav-firmwarePage.navItem(onclick="loadContent('firmwarePage')", href='#')
+        .fas
+          i.fa-solid.fa-microchip
+        span Обновить прошивку
+    li.nav-major
+      a#nav-infoPage.navItem(onclick="loadContent('infoPage')", href='#')
+        .fas
+          i.fa-solid.fa-info
+        span Справка
+  .footer

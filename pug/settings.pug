@@ -1,0 +1,32 @@
+div
+  ul.list-unstyled.components
+    li.nav-major
+      a#nav-luaPage.navItem(onclick="loadContent('CAN_parametr_page')", href='#')
+        .fas
+        span CAN
+    li.nav-major
+      a#nav-devicePage.navItem(onclick="loadContent('devicePage')", href='#')
+        .fas
+        span Выход №1
+    li.nav-major
+      a#nav-scadaPage.navItem(onclick="loadContent('scadaPage')", href='#')
+        .fas
+        span Выход №2
+    li.nav-major
+      a#nav-toolsPage.navItem(onclick="loadContent('toolsPage')", href='#')
+        .fas
+        span Выход №2
+    li.nav-major
+      a#nav-settingsPage.navItem(onclick="loadContent('settingsPage')", href='#')
+        .fas
+        span Выход №3
+    li.nav-major
+      a#nav-firmwarePage.navItem(onclick="loadContent('firmwarePage')", href='#')
+        .fas
+        span Выход №4
+    li.nav-major
+      a#nav-infoPage.navItem(onclick="loadContent('infoPage')", href='#')
+        .fas
+        span Выход №5
+    #CAN_parametr_page.content-data.hidden.electron
+      h2 Параметры CAN

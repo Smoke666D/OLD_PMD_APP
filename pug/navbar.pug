@@ -1,0 +1,12 @@
+nav.navbar.navbar-expand-lg.navbar-light.bg-light
+  .container-fluid
+    button#connectButton.btn.btn-primary(aria-label='Connect', data-toggle='tooltip', title='Подключиться к PDM')
+      i.fa-brands.fa-usb
+    button#restartLuaButton.btn.btn-primary(aria-label='Reset lua', data-toggle='tooltip', title='Перезапустить lua', disabled='')
+      i.fa-solid.fa-arrow-rotate-right
+    button.btn.btn-primary(aria-label='Start', onclick='processingScript()', data-toggle='tooltip', title='Запуск обработки скрипта')
+      i.fa-solid.fa-play
+    button.btn.btn-primary(aria-label='Check lua', onclick='checkScript()', data-toggle='tooltip', title='Запуск обработки скрипта')
+      i.fa-solid.fa-bug
+    button.btn.btn-primary(aria-label='Toggle Menu', onclick='toogleNav()', data-toggle='tooltip', title='Скрыть/показать меню')
+      i.fa-solid.fa-bars
