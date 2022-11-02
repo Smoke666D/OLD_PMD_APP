@@ -19,24 +19,26 @@ import connect  from 'electron-connect';
 /*----------------------------------------------------------------------------*/
 let app = connect.server.create();
 /*----------------------------------------------------------------------------*/
-const src     = '';
-const modules = './node_modules/';
-const dist    = 'dist/';
+const src  = '';
+const dist = 'dist/';
 /*----------------------------------------------------------------------------*/
-const jsSrc      = src  + 'js/**/*.js';
-const jsDest     = dist + 'js/';
-const cssSrc     = src  + 'css/**/*.css';
-const cssDest    = dist + 'css/';
-const jsonSrc    = src  + 'json/**/*.json'; 
-const jsonDest   = dist + 'json/';
-const imgSrc     = src  + 'img/**';
-const imgDest    = dist + 'img/';
-const htmlSrc    = src  + 'html/**/*.html';
-const htmlDest   = dist + 'html/';
-const indexSrc   = src  + 'index.html';
-const indexDest  = dist + '';
+const jsSrc         = src  + 'js/**/*.js';
+const jsDest        = dist + 'js/';
+const cssSrc        = src  + 'css/**/*.css';
+const cssDest       = dist + 'css/';
+const fontDest      = dist + 'webfonts/'
+const jsonSrc       = src  + 'json/**/*.json'; 
+const jsonDest      = dist + 'json/';
+const imgSrc        = src  + 'img/**';
+const imgDest       = dist + 'img/';
+const htmlSrc       = src  + 'html/**/*.html';
+const htmlDest      = dist + 'html/';
+const indexHtmlSrc  = src  + 'index.html';
+const indexHtmlDest = dist + '';
+const indexJsSrc    = src  + 'index.js';
+const indexJsDest   = dist + '';
 
-const srcArray   = [jsSrc, cssSrc, jsonSrc, imgSrc, htmlSrc, indexSrc];
+const srcArray   = [jsSrc, cssSrc, jsonSrc, imgSrc, htmlSrc, indexHtmlSrc];
 /*----------------------------------------------------------------------------*/
 const htmlminAtr = {
   collapseWhitespace: true,
@@ -49,14 +51,23 @@ gulp.task( 'clean', () => {
 });
 gulp.task( 'css', () => {
   return gulp.src( [
-      cssSrc,
-      ( modules + '@fortawesome/fontawesome-free/css/fontawesome.css' ),
-      ( modules + '@fortawesome/fontawesome-free/css/brands.css' ),
-      ( modules + '@fortawesome/fontawesome-free/css/solid.css' )
-    ])
-      .pipe( concat( 'style.min.css' ) )
-      .pipe( cssMinify() )
-      .pipe( gulp.dest( cssDest ) )
+    cssSrc,
+    './node_modules/@fortawesome/fontawesome-free/css/fontawesome.css',
+    './node_modules/@fortawesome/fontawesome-free/css/brands.css',
+    './node_modules/@fortawesome/fontawesome-free/css/solid.css'
+  ])
+    //.pipe( concat( 'style.min.css' ) )
+    .pipe( cssMinify() )
+    .pipe( gulp.dest( cssDest ) )
+});
+gulp.task( 'fonts', () => {
+  return gulp.src([
+    './node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.ttf',
+    './node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.ttf',
+    './node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.woff2',
+    './node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2'
+  ])
+    .pipe( gulp.dest( fontDest ) )
 });
 gulp.task( 'js', () => {
   return gulp.src( jsSrc )
@@ -79,18 +90,22 @@ gulp.task( 'html', () => {
     .pipe( htmlmin( htmlminAtr ) )
     .pipe( gulp.dest( htmlDest ) )
 });
-gulp.task( 'index', () => {
-  return( gulp.src( indexSrc ) )
+gulp.task( 'indexHTML', () => {
+  return( gulp.src( indexHtmlSrc ) )
     .pipe( htmlmin( htmlminAtr ) )
-    .pipe( gulp.dest( indexDest ) )
+    .pipe( gulp.dest( indexHtmlDest ) )
+});
+gulp.task( 'indexJS', () => {
+  return( gulp.src( indexJsSrc ) )
+    .pipe( uglify() )
+    .pipe( gulp.dest( indexJsDest ) )
 });
 gulp.task( 'reload', () => {
   app.restart();
   return;
 });
 /*----------------------------------------------------------------------------*/
-const tasks     = [ 'css', 'js', 'json', 'img', 'html', 'index' ];
-const reloadSeq = tasks.concat( ['reload'] );
+const tasks     = [ 'css', 'fonts', 'js', 'json', 'img', 'html', 'indexHTML', 'indexJS' ];
 /*----------------------------------------------------------------------------*/
 gulp.task( 'start', () => {
   app.start();
@@ -99,7 +114,8 @@ gulp.task( 'watch', () => {
   gulp.watch( srcArray, gulp.parallel( ['watch', 'reload'] ) ); 
 });
 /*----------------------------------------------------------------------------*/
-gulp.task( 'default', gulp.parallel( ['watch', 'start'] ) );
+//gulp.task( 'default', gulp.parallel( ['watch', 'start'] ) );
+gulp.task( 'default', gulp.parallel( tasks ) );
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
