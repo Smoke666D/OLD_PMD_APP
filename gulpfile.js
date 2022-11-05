@@ -11,8 +11,8 @@ import jsonMinify from 'gulp-json-minify';
 import htmlmin    from 'gulp-htmlmin';
 import clean      from 'gulp-clean';
 //import sass       from 'gulp-sass' )( require( 'sass' ) );
-//import pug        from 'gulp-pug';
-//import urlBuilder from 'gulp-url-builder';
+import pug        from 'gulp-pug';
+import urlBuilder from 'gulp-url-builder';
 import electron from 'gulp-run-electron';
 import gulpRun  from 'gulp-run';
 import connect  from 'electron-connect';
@@ -37,6 +37,8 @@ const indexHtmlSrc  = src  + 'index.html';
 const indexHtmlDest = dist + '';
 const indexJsSrc    = src  + 'index.js';
 const indexJsDest   = dist + '';
+const pugSrc        = src  + 'pug/**/*.pug';
+const pugDest       = dist + 'html';
 
 const srcArray   = [jsSrc, cssSrc, jsonSrc, imgSrc, htmlSrc, indexHtmlSrc];
 /*----------------------------------------------------------------------------*/
@@ -46,7 +48,7 @@ const htmlminAtr = {
 };
 /*----------------------------------------------------------------------------*/
 gulp.task( 'clean', () => {
-  gulp.src( dist, { read: false } )
+  return gulp.src( dist, { read: false } )
     .pipe( clean( {force: true} ) ); 
 });
 gulp.task( 'css', () => {
@@ -85,16 +87,20 @@ gulp.task( 'img', () => {
   return gulp.src( imgSrc )
     .pipe( gulp.dest( imgDest ) )
 });
-gulp.task( 'html', () => {
-  return( gulp.src( htmlSrc ) )
-    .pipe( htmlmin( htmlminAtr ) )
-    .pipe( gulp.dest( htmlDest ) )
+gulp.task( 'pug', () => {
+  return gulp.src( pugSrc )
+    .pipe( pug().on( "error", console.log ) )
+    .pipe( urlBuilder() )
+    .pipe( gulp.dest( pugDest ) );
 });
-gulp.task( 'indexHTML', () => {
-  return( gulp.src( indexHtmlSrc ) )
-    .pipe( htmlmin( htmlminAtr ) )
-    .pipe( gulp.dest( indexHtmlDest ) )
+gulp.task( 'move', () => {
+  return( gulp.src( pugDest + '/index.html' ) )
+    .pipe( gulp.dest( dist ) )
 });
+gulp.task( 'del', () => {
+  return gulp.src( pugDest, { read: false } )
+    .pipe( clean( {force: true} ) )
+})
 gulp.task( 'indexJS', () => {
   return( gulp.src( indexJsSrc ) )
     .pipe( uglify() )
@@ -105,7 +111,7 @@ gulp.task( 'reload', () => {
   return;
 });
 /*----------------------------------------------------------------------------*/
-const tasks = [ 'css', 'fonts', 'js', 'json', 'img', 'html', 'indexHTML', 'indexJS' ];
+const tasks = [ 'css', 'fonts', 'js', 'json', 'img', 'pug', 'move', 'del', 'indexJS' ];
 /*----------------------------------------------------------------------------*/
 gulp.task( 'process', gulp.parallel( tasks ) );
 gulp.task( 'start', () => {
@@ -116,7 +122,7 @@ gulp.task( 'watch', () => {
 });
 /*----------------------------------------------------------------------------*/
 //gulp.task( 'default', gulp.parallel( ['watch', 'start'] ) );
-gulp.task( 'default', gulp.parallel( tasks ) );
+gulp.task( 'default', gulp.series( tasks ) );
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
