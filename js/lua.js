@@ -1,8 +1,0 @@
-function loadScriptFromFile () {
-
-}
-
-function ProcessScript ( ) {
-
-}
-

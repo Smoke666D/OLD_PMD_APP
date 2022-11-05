@@ -1,0 +1,66 @@
+
+
+.progress-container {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  margin-bottom: 30px;
+  max-width: 100%;
+  width: 350px;}
+  .progress-container::before {
+    content: "";
+    background-color: var(--line-border-empty);
+    position: absolute;
+    top: 42px;
+    left: 0;
+    transform: translateY(-50%);
+    height: 4px;
+    width: 100%;
+    z-index: -1;}
+    .progress-container .progress {
+      background-color: var(--line-border-fill);
+      position: absolute;
+      top: 42px;
+      left: 0;
+      transform: translateY(-50%);
+      height: 4px;
+      width: 0%;
+      z-index: -1;
+      transition: 0.4s ease;}
+    .progress-container .progress-stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;}
+      .progress-container .progress-stage i {
+        font-size: 1.5em;}
+    .progress-container .circle {
+      background-color: #fff;
+      color: #999;
+      border-radius: 50%;
+      height: 30px;
+      width: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 3px solid #e0e0e0;
+      transition: 0.4s ease;}
+      .progress-container .circle.loading {
+        border-color: var(--line-border-fill);}
+        .progress-container .circle.loading i {
+          color: var(--line-border-fill);}
+      .progress-container .circle.success {
+        background-color: var(--success);
+        border-color: var(--success);}
+        .progress-container .circle.success i {
+          color: #fff;}
+      .progress-container .circle.warning {
+        background-color: var(--warning);
+        border-color: var(--warning);}
+        .progress-container .circle.warning i {
+          color: #fff;}
+      .progress-container .circle.error {
+        background-color: var(--danger);
+        border-color: var(--danger);}
+        .progress-container .circle.error i {
+          color: #fff;
+}

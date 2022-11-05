@@ -9,7 +9,7 @@
   "scripts": {
     "gulp": "gulp",
     "clean": "gulp clean",
-    "start": "gulp process && electron dist",
+    "start": "gulp && electron dist",
     "rebuild": "electron-rebuild --force",
     "make": "gulp process && electron-packager ./ Sider --overwrite --platform=win32,linux,darwin --arch=x64 --icon='./img/favicon.ico' --prune=true --out=release-builds"
   },
