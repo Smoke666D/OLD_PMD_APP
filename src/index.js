@@ -9,7 +9,7 @@ function createWindow () {
     height:    700,
     frame:     false,
     hasShadow: true,
-    icon:      __dirname + "/img/favicon-32x32.png",
+    icon:      __dirname + "/img/favicon.png",
     webPreferences: {
       nodeIntegration: true,
     }

@@ -11,7 +11,7 @@
     "clean": "gulp clean",
     "start": "gulp process && electron dist",
     "rebuild": "electron-rebuild --force",
-    "make": "gulp clean && gulp process && gulp deps && electron-packager ./dist Sider --overwrite --platform=win32,linux,darwin --arch=x64 --icon='./img/favicon.ico' --prune=true --out=release"
+    "make": "gulp clean && gulp process && gulp deps && electron-packager ./dist Sider --overwrite --platform=win32,linux,darwin --arch=x64 --icon='./src/img/favicon.ico' --prune=true --out=release"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.1.2",
