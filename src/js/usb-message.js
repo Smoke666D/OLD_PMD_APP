@@ -83,7 +83,7 @@ function USBMessage ( buffer ) {
       if ( buf.length == 1 ) {
         buf = char.charCodeAt( 0 ).toString( 10 );
       } else {
-        buf = parseInt( Number( "0x" + buf.slice( 1, 3 ) + buf.slice( 4, 6 ) ), 10 );
+        buf = parseInt( Number( '0x' + buf.slice( 1, 3 ) + buf.slice( 4, 6 ) ), 10 );
       }
     }
     return buf;
@@ -148,7 +148,7 @@ function USBMessage ( buffer ) {
       default:
         self.command = 0;
         self.status  = msgSTAT.USB_BAD_REQ_STAT;
-        console.log("CMD error");
+        console.log( 'CMD error' );
         break;
     }
     return;
@@ -258,36 +258,36 @@ function USBMessage ( buffer ) {
     callback( self );
     return;
   }
-  this.makeLuaRequest = function () {
+  this.makeLuaRequest = () => {
     makeRequest( msgCMD.USB_REPORT_CMD_READ_SCRIPT, 0 );
     return;
   }
-  this.makeDataRequest = function ( adr ) {
+  this.makeDataRequest = ( adr ) => {
     makeRequest( msgCMD.USB_REPORT_CMD_READ_DATA, adr );
   }
-  this.makeTelemetryRequest = function ( adr ) {
+  this.makeTelemetryRequest = ( adr ) => {
     makeRequest( msgCMD.USB_REPORT_CMD_READ_TELEMETRY, adr );
   }
-  this.makeErrorStringRequest = function ( adr ) {
+  this.makeErrorStringRequest = ( adr ) => {
     makeRequest( msgCMD.USB_REPORT_CMD_READ_ERROR_STR, adr );
   }
-  this.codeStartWriting = function () {
+  this.codeStartWriting = () => {
     makeRequest( msgCMD.USB_REPORT_CMD_START_WRITING, 0 );
     return;
   }
-  this.codeUpdateTelemetry = function () {
+  this.codeUpdateTelemetry = () => {
     makeRequest( msgCMD.USB_REPORT_CMD_UPDATE_TELEMETRY, 0 );
     return;
   }
-  this.codeFinishWriting = function () {
+  this.codeFinishWriting = () => {
     makeRequest( msgCMD.USB_REPORT_CMD_END_WRITING, 0 );
     return;
   }
-  this.codeRestartLua = function () {
+  this.codeRestartLua = () => {
     makeRequest( msgCMD.USB_REPORT_CMD_RESTART_LUA, 0 );
     return;
   }
-  this.codeLuaLength = function ( adr, length ) {
+  this.codeLuaLength = ( adr, length ) => {
     let data = [];
     for ( var i=0; i<4; i++ ) {
       data.push( ( Math.abs( length ) >> ( i * 8 ) ) & 0xFF );
@@ -295,7 +295,7 @@ function USBMessage ( buffer ) {
     makeResponse( msgCMD.USB_REPORT_CMD_WRITE_SCRIPT, adr, data, 4 );
     return;
   }
-  this.codeLua = function( adr, length, script ) {
+  this.codeLua = ( adr, length, script ) => {
     let data = [];
     for ( var i=0; i<length; i++ ) {
       data.push( script[i] & 0xFF );
@@ -303,10 +303,10 @@ function USBMessage ( buffer ) {
     makeResponse( msgCMD.USB_REPORT_CMD_WRITE_SCRIPT, adr, data, length );
     return;
   }
-  this.codeTerminator = function ( adr ) {
+  this.codeTerminator = ( adr ) => {
     makeResponse( msgCMD.USB_REPORT_CMD_WRITE_SCRIPT, adr, [ 0 ], 1 );
   }
-  this.parse = function () {
+  this.parse = () => {
     var output = 0;
     var type   = 0;
     switch ( self.command ) {

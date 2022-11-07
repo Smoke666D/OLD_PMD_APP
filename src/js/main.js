@@ -8,11 +8,13 @@ const { dialog }   = require( 'electron' ).remote;
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-window.addEventListener ( 'load', function() {
+window.addEventListener ( 'load', () => {
 	window.scrollTo( 0, 0 );
+	return;
 });
-document.addEventListener ( 'touchmove', function( e ) {
-	e.preventDefault()
+document.addEventListener ( 'touchmove', ( e ) => {
+	e.preventDefault();
+	return;
 });
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -27,17 +29,7 @@ function checkScript () {
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-document.addEventListener( "DOMContentLoaded", async function( event ) {
-  /*
-	$( function () {
-		$( '[data-toggle="tooltip"]' ).tooltip( {
-		  delay:     { 'show': 500, 'hide': 0 },
-			trigger:   'hover',
-			placement: 'auto',
-			animation: true,
-		})
-	})
-	*/
+document.addEventListener( 'DOMContentLoaded', async ( event ) => {
 	document.getElementById( 'versionSowtware' ).innerHTML   = softwareVersion;
 	windowButtonsInit();
 	connectInit();
@@ -47,18 +39,15 @@ document.addEventListener( "DOMContentLoaded", async function( event ) {
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-function GetFolderPath( element_id) {
-	console.log("dfdf");
+function GetFolderPath( element_id ) {
 	let path = dialog.showOpenDialog( { 
 		title:      'Выбрать путь',
 		properties: ['openDirectory'] 
 	  }).then( function ( result ) {
 		if ( result.filePaths[0] != undefined ) {
-		 var inputfield =  document.getElementById(element_id);
-		 var temp_str = result.filePaths + '\\'
+		 var inputfield = document.getElementById( element_id );
+		 var temp_str = result.filePaths + '\\';
 		 inputfield.value = temp_str;		 
-		} else {
-		  
 		}
 	  }).catch( function ( error ) {
 		

@@ -149,65 +149,66 @@ function Firmware ( ) {
 }
 /*----------------------------------------------------------------------------*/
 function bootInit () {
-  swBootConnect = document.getElementById( "boot-connect" );
-  swBootFile    = document.getElementById( "boot-file" );
-  swBootLoad    = document.getElementById( "boot-load" );
-  bootProgress  = document.getElementById( "boot-progress" );
+  swBootConnect = document.getElementById( 'boot-connect' );
+  swBootFile    = document.getElementById( 'boot-file' );
+  swBootLoad    = document.getElementById( 'boot-load' );
+  bootProgress  = document.getElementById( 'boot-progress' );
   /*------------------------------------------------------*/
-  swBootConnect.addEventListener( 'click', function () {
+  swBootConnect.addEventListener( 'click', () => {
     try {
-      dfuDevice.init( async function () {
+      dfuDevice.init( async () => {
         swBootFile.disabled = false;
+        return;
       });
     } catch {
-      let alert = new alerts.Alert( "alert-warning", alerts.triIco, "Контроллер не найден" );
+      let alert = new alerts.Alert( 'alert-warning', alerts.triIco, 'Контроллер не найден' );
     }
   });
   /*------------------------------------------------------*/
-  swBootFile.addEventListener( 'click', function () {
-    bootProgress.style.width = "0%"
+  swBootFile.addEventListener( 'click', () => {
+    bootProgress.style.width = '0%';
     firmware.free();
     dialog.showOpenDialog({
-      filters    : [
-        { name : "Intel HEX",   extensions : ['hex'] }
+      filters : [
+        { name : 'Intel HEX',   extensions : ['hex'] }
       ],
       properties : ['openFile', 'multiSelections']
     }).then( function ( files ) {
-      if (files !== undefined) {
-        fs.readFile( files.filePaths[0], 'utf8', function ( err, data ) {
+      if ( files !== undefined ) {
+        fs.readFile( files.filePaths[0], 'utf8', ( err, data ) => {
           firmware.fromHEX( data );
           if ( firmware.valid > 0 ) {
-            let alert   = new alerts.Alert( "alert-success", alerts.okIco, "Файл готов к записи" );
+            let alert = new alerts.Alert( 'alert-success', alerts.okIco, 'Файл готов к записи' );
             swBootLoad.disabled = false;
             firmware.print();
           } else {
-            let alert   = new alerts.Alert( "alert-warning", alerts.triIco, "Ошибка при проверке файла" );
+            let alert = new alerts.Alert( 'alert-warning', alerts.triIco, 'Ошибка при проверке файла' );
           }
         });
     }});
   });
   /*------------------------------------------------------*/
-  swBootLoad.addEventListener( 'click', async function () {
+  swBootLoad.addEventListener( 'click', async () => {
     try {
       if ( dfuProcess == 0 ) {
         if ( ( firmware.valid > 0 ) && ( dfuDevice != null ) ) {
           dfuProcess = 1;
           let adr    = await dfuDevice.searchSector( firmware.start );
           let result = await dfuDevice.downloadFirmware( firmware.data, adr, function( max, n ) {
-            bootProgress.style.width = ( n / max * 100 ) + "%";
+            bootProgress.style.width = ( n / max * 100 ) + '%';
           }, function( mes ) {
             console.log( mes );
           });
-          bootProgress.style.width = "100%"
+          bootProgress.style.width = '100%';
           let alert   = new alerts.Alert( "alert-success", alerts.okIco, "Прошивка успешно загружена", 1 );
-          setTimeout ( function () {
-            bootProgress.style.width = "0%"
+          setTimeout ( () => {
+            bootProgress.style.width = '0%';
           }, 1000 );
         }
       }
     } catch {
-      let alert   = new alerts.Alert( "alert-warning", alerts.triIco, "Ошибка во время записи" );
-      bootProgress.style.width = "0%"
+      let alert   = new alerts.Alert( 'alert-warning', alerts.triIco, 'Ошибка во время записи' );
+      bootProgress.style.width = '0%';
     }
     dfuProcess = 0;
   });

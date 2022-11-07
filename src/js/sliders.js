@@ -18,13 +18,13 @@ function sliderInit() {
 				'max': 100
 			},
 		})
-		s_sliders[i].noUiSlider.on( 'update', ( function() {
+		s_sliders[i].noUiSlider.on( 'update', ( () => {
 			var j=i;
-			return function() {
+			return () => {
 				s_sinputs[j].value = parseFloat( s_sliders[j].noUiSlider.get() ).toFixed( calcFracLength( s_sinputs[j].step ) );
 			}
 		})() );
-		s_sinputs[i].addEventListener( 'change', ( function() {
+		s_sinputs[i].addEventListener( 'change', ( () => {
 			var j = i;
 			return function() {
 	    	s_sliders[j].noUiSlider.set( [s_sinputs[j].value] );

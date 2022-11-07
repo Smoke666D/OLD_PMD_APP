@@ -1,4 +1,5 @@
 const fs       = require( 'fs' );
+const pathNJS   = require( 'path' );
 const settings = require( './settings.js' ).settings;
 const spawn    = require("child_process").spawn;
 function Toolchain () {
@@ -7,8 +8,8 @@ function Toolchain () {
   let toolsList  = [];
   let except     = [];
   const pathTemp = 'temp';
-  this.run = async function ( name, source ) {
-    return new Promise( async function ( resolve ) {
+  this.run = async ( name, source ) => {
+    return new Promise( async ( resolve ) => {
       let exist = false;
       for ( var key in settings.data ) {
         if ( name == key ) {
@@ -30,14 +31,14 @@ function Toolchain () {
           }
           if ( toolsList.includes( name ) ) {
             if ( options.type == 'python' ) {
-              let message = await runPython( ( path + name ), options, source );
+              let message = await runPython( pathNJS.join( path, name ), options, source );
               if ( message != "Fail" ) {
                 resolve( ['ok', null, message ] );
               } else {
                 resolve( ['error', "Python script error", null ] );
               }
             } else if ( options.type == 'exe' ) {
-              let message = await runExe( ( path + name ), options, source );
+              let message = await runExe( pathNJS.join( path, name ), options, source );
               if ( ( message != "Fail" ) || ( err > 0 ) ) {
                 resolve( ['ok', null, message ] );
               } else {
@@ -56,21 +57,21 @@ function Toolchain () {
       }
     });
   }
-  this.clean = function () {
+  this.clean = () => {
     return;
   }
-  this.init = function () {
-    return new Promise( async function ( resolve ) {
+  this.init = () => {
+    return new Promise( async ( resolve ) => {
       await settings.init();
-      path = settings.data.toolchainPath;
-      fs.readdir( path, function ( error, list ) {
+      path = pathNJS.normalize( settings.data.toolchainPath );
+      fs.readdir( path, ( error, list ) => { 
         if ( error == null ) {
-          list.forEach( function ( item ) {
+          list.forEach( ( item ) => {
             if ( ( item.startsWith( 'lua' ) ) && ( item.endsWith( '.py'  ) || item.endsWith( '.exe' ) ) ) {
               toolsList.push( item );
             }
           });
-          fs.readFile( ( settings.data.toolchainPath + "exceptionsNames.json" ), 'utf-8', async function ( error, data ) { 
+          fs.readFile( pathNJS.join( path, 'exceptionsNames.json' ), 'utf-8', async ( error, data ) => { 
             if ( error ) {
               resolve( false );
             } else {
@@ -80,17 +81,18 @@ function Toolchain () {
             }
           });
         } else {
+          let alert = new Alert( 'alert-danger', triIco, 'Ошибка чтения инструментов' );
           resolve( false );
         }
       });
     });
   }
   async function runExe ( name, options, source ) {
-    return new Promise( async function ( resolve ) {
+    return new Promise( async ( resolve ) => {
       let str   = '';
       workspace = await makeTempFolder();
       args      = [];
-      options.keys.forEach( function ( key ) {
+      options.keys.forEach( ( key ) => {
         if ( ( 'enb' in key ) == true ) {
           if ( ( key.enb == true ) && ( key.key.length > 0 ) ) {
             args.push( key.key );
@@ -102,13 +104,17 @@ function Toolchain () {
         }
         switch ( key.id ) {
           case 'lib':
-            args.push( settings.data.libPath );
+            let out = settings.data.libPath;
+            if ( out.endsWith( '\\' ) ) {
+              out = out.slice( 0, -1 );
+            }
+            args.push( out );
             break;
           case 'source':
             args.push( source );
             break;
           case 'globals':
-            except.forEach( function ( item ) {
+            except.forEach( ( item ) => {
               args.push( item );
             }) 
             break; 
@@ -119,17 +125,10 @@ function Toolchain () {
         } 
       });
       const exeProcess = spawn( name, args );
-      /*-----*/
-      let debug = name;
-      args.forEach( function ( arg ) {
-        debug += ' ' + arg;
-      });
-      console.log( debug );
-      /*-----*/
-      exeProcess.stdout.on( 'data', function ( data ) {
+      exeProcess.stdout.on( 'data', ( data ) => {
         str = data.toString();
       });
-      exeProcess.on( 'close', function ( code, mes ) {
+      exeProcess.on( 'close', ( code ) => {
         if ( ( str.length == 0 ) && ( code == 0 ) ) {
           resolve( 'DONE: ' + workspace + source.substring( ( source.lastIndexOf( '\\' ) + 1 ), source.lastIndexOf( '.' ) ) + '.luac.lua')
         } else {
@@ -139,11 +138,11 @@ function Toolchain () {
     });
   }
   async function runPython ( name, options, source ) {
-    return new Promise( async function ( resolve ) {
+    return new Promise( async ( resolve ) => {
       let str  = '';
       workspace = await makeTempFolder();
       args      = [ name ];
-      options.keys.forEach( function ( key ) {
+      options.keys.forEach( ( key ) => {
         if ( ( 'enb' in key ) == true ) {
           if ( key.enb == true ) {
             args.push( key.key );
@@ -173,10 +172,10 @@ function Toolchain () {
         callStr += arg + ' ';
       });
 
-      pythonProcess.stdout.on( 'data', function ( data ) {
+      pythonProcess.stdout.on( 'data', ( data ) => {
         str = data.toString();
       });
-      pythonProcess.on( 'close', function ( code, mes ) {
+      pythonProcess.on( 'close', ( code ) => {
         if ( code == 0 ){
           resolve( str );
         } else {
@@ -186,7 +185,7 @@ function Toolchain () {
     });
   }
   async function makeTempFolder () {
-    return new Promise( function ( resolve ) {
+    return new Promise( ( resolve ) => {
       let dir = __dirname + '\\' + pathTemp + '\\';
       if ( fs.existsSync( dir ) == false ) {
         fs.mkdirSync( dir );

@@ -142,7 +142,7 @@ function Alert ( type, ico, text, ack, progress ) {
   }
   /*--------------------------------------------------------------------------*/
   this.close = function ( timeout ) {
-    setTimeout ( function () {
+    setTimeout ( () => {
       closeAlert( self.index );
     }, timeout * 1000 );
   }

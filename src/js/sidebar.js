@@ -1,4 +1,4 @@
-function toogleNav() {
+function toogleNav () {
 	var sb   = document.getElementById( 'sidebar' );
 	if ( sb.classList.contains( 'active' ) ) {
 		sb.classList.remove( 'active' );
@@ -8,7 +8,7 @@ function toogleNav() {
 	return;
 }
 
-function hideContent() {
+function hideContent () {
 	var contentPages = document.getElementsByClassName( 'content-data' );
 	var navItems     = document.getElementsByClassName( 'navItem' );
 	for ( var i=0; i<navItems.length; i++ ) {
@@ -20,7 +20,7 @@ function hideContent() {
 	return;
 }
 
-function loadContent( id ) {
+function loadContent ( id ) {
 	hideContent();
 	document.getElementById( id ).classList.remove( 'hidden' );
 	document.getElementById( 'nav-' + id ).classList.add( 'checked' );
@@ -34,7 +34,7 @@ function loadContent( id ) {
 }
 
 var sidebarDone = 0;
-document.getElementById( 'content' ).addEventListener( 'click', function() {
+document.getElementById( 'content' ).addEventListener( 'click', () => {
 	var sb = document.getElementById( 'sidebar' );
 	if ( !sb.classList.contains( 'active' ) ) {
 		sidebarDone = 0;
@@ -44,7 +44,7 @@ document.getElementById( 'content' ).addEventListener( 'click', function() {
 		sidebarDone = 0;
 }});
 
-document.getElementById( 'sidebar' ).addEventListener( 'transitionend', function() {
+document.getElementById( 'sidebar' ).addEventListener( 'transitionend', () => {
 	var sb = document.getElementById( 'sidebar' );
 	if ( ( window.matchMedia( '(max-width: 991.98px)' ).matches ) && ( sb.classList.contains( 'active' ) ) ) {
 		sidebarDone = 1;

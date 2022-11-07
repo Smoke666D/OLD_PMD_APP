@@ -11,34 +11,19 @@ const settings  = require('./settings.js').settings;
 var loopCounter = 0;
 var loopTimeout = 100;
 /*----------------------------------------------------------------------------*/
-document.getElementById("min-btn").addEventListener("click", function (e) {
-  var window = remote.getCurrentWindow();
-  window.minimize();
-});
-document.getElementById("max-btn").addEventListener("click", function (e) {
-  var window = remote.getCurrentWindow();
-  if (!window.isMaximized()) {
-    window.maximize();
-  } else {
-    window.unmaximize();
-  }
-});
-document.getElementById("close-btn").addEventListener("click", function (e) {
-  var window = remote.getCurrentWindow();
-  window.close();
-});
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 function dashLoop () {
-  setTimeout( function () {
+  setTimeout( () => {
     loopCounter += loopTimeout;
     if ( loopCounter >= usb.controller.getLoopTimeout() ) {
       usb.controller.loop();
       loopCounter = 0;
     }
     dashLoop();
+    return;
   }, loopTimeout );
+  return;
 }
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -56,13 +41,13 @@ function setSuccessConnection () {
   return;
 }
 function connectPDMinit () {
-  document.getElementById( 'restartLuaButton' ).addEventListener( 'click', function () { 
+  document.getElementById( 'restartLuaButton' ).addEventListener( 'click', () => { 
     if ( usb.controller.isConnected() == true ) {
       usb.controller.restartLua();
     }
     return;
   });
-  document.getElementById( 'connectButton' ).addEventListener( 'click', function () {
+  document.getElementById( 'connectButton' ).addEventListener( 'click', () => {
     if ( usb.controller.isConnected() == false ) {
       connect();
     } else {
@@ -123,17 +108,17 @@ function parsingFullMessages () {
     });
   }
   if ( dataFl == true ) {
-    pdm.setSystem( function () {
-      updateInterface( function () {
-        let alert = new Alert( "alert-success", alerts.okIco, "Данные успешно обновленны" );
+    pdm.setSystem( () => {
+      updateInterface( () => {
+        let alert = new Alert( 'alert-success', alerts.okIco, 'Данные успешно обновленны' );
         usb.controller.enableLoop();
         return;
       });
     });
   }
   if ( errorFl == true ) {
-    pdm.setErrorString( function () {
-      dashboard.update( false, function () {
+    pdm.setErrorString( () => {
+      dashboard.update( false, () => {
         usb.controller.resetLoopBusy();
         return;
       });
@@ -141,8 +126,8 @@ function parsingFullMessages () {
     });
   }
   if ( dashFl == true ) {
-    pdm.setTelemetry( function () {
-      dashboard.update( true, function () {
+    pdm.setTelemetry( () => {
+      dashboard.update( true, () => {
         if ( pdm.telemetry.lua.state == 2 ) {
           usb.controller.disableLoopWithResetBusy();
           usb.controller.readErrorString();
@@ -160,15 +145,15 @@ function parsingFullMessages () {
   return;
 }
 function outCallback () {
-  let alert = new Alert( "alert-success", alerts.okIco, "Данные успешно переданы", 1 );
+  let alert = new Alert( 'alert-success', alerts.okIco, 'Данные успешно переданы', 1 );
   usb.controller.setFinish();
   usb.controller.enableLoop();
   return;
 }
 function errorCalback () {
   closeAllAlerts();
-  setTimeout( function() {
-    let alert = new Alert( "alert-warning", alerts.triIco, "Ошибка передачи данных по USB" );
+  setTimeout( () => {
+    let alert = new Alert( 'alert-warning', alerts.triIco, 'Ошибка передачи данных по USB' );
   }, 1000 );
   usb.controller.close();
   usb.controller.disableLoop();
@@ -176,32 +161,32 @@ function errorCalback () {
   return;
 }
 function unauthorizedCallback () {
-  let alert = new Alert( "alert-warning", alerts.triIco, "Ошибка авторизации" );
+  let alert = new Alert( 'alert-warning', alerts.triIco, 'Ошибка авторизации' );
   return;
 }
 function forbiddenCallback () {
-  let alert = new Alert( "alert-warning", alerts.triIco, "Установка не остановлена. Доступ запрещен" );
+  let alert = new Alert( 'alert-warning', alerts.triIco, 'Установка не остановлена. Доступ запрещен' );
   return;
 }
 function autoModeCallback () {
-  let alert = new Alert( "alert-warning", alerts.triIco, "Контроллер в авто режиме. Запись настроек запрещена" );
+  let alert = new Alert( 'alert-warning', alerts.triIco, 'Контроллер в авто режиме. Запись настроек запрещена' );
   return;
 }
 function connectUpdate () {
   let state = usb.controller.getStatus();
-  let alert = new Alert( "alert-warning", triIco, "ghe", 0, 0 );
+  let alert = new Alert( 'alert-warning', triIco, 'ghe', 0, 0 );
   if ( ( state == 1 ) || ( state == 4 ) ) {
-    let alert = new Alert( "alert-warning", triIco, "Загрузка", 0, 1 );
+    let alert = new Alert( 'alert-warning', triIco, 'Загрузка', 0, 1 );
     usb.controller.receive( null, alert );
   }
   return;
 }
 function connect ( readAtStart = true ) {
-  return new Promise( async function ( resolve ) {
+  return new Promise( async ( resolve ) => {
     if ( usb.controller.isConnected() == false ) {
       let res = usb.controller.init( parsingFullMessages, outCallback, errorCalback, unauthorizedCallback, forbiddenCallback, autoModeCallback );
       if ( res == 1 ) {
-        setTimeout( function () {
+        setTimeout( () => {
           setSuccessConnection();
           if ( readAtStart ) {
             connectUpdate();

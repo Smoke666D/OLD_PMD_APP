@@ -3,31 +3,31 @@ function ProgressCircle ( id ) {
   let body  = document.getElementById( id );
   let state = 'empty';
   let self  = this;
-  this.setSuccess = function () {   
-    body.classList.add( "success" );
+  this.setSuccess = () => {   
+    body.classList.add( 'success' );
     body.innerHTML = '<i class="fa-solid fa-check"></i>';
-    state = "seccess";
+    state = 'seccess';
     return;
   }
-  this.setError   = function () {
-    body.classList.add( "error" );
+  this.setError   = () => {
+    body.classList.add( 'error' );
     body.innerHTML = '<i class="fa-solid fa-xmark"></i>';
-    state = "error";
+    state = 'error';
     return;
   }
-  this.setWarning = function () {
-    body.classList.add( "warning" );
+  this.setWarning = () => {
+    body.classList.add( 'warning' );
     body.innerHTML = '<i class="fa-solid fa-question"></i>';
-    state = "warning";
+    state = 'warning';
     return;
   }
-  this.setLoading = function () {
-    body.classList.add( "loading" );
+  this.setLoading = () => {
+    body.classList.add( 'loading' );
     body.innerHTML = '<i class="fa-solid fa-spinner"></i>';
-    state = "loading";
+    state = 'loading';
     return;
   }
-  this.setState = function ( newState ) {
+  this.setState = ( newState ) => {
     if ( self.getState() != newState ) {
       self.clean();
       switch ( newState ) {
@@ -49,16 +49,16 @@ function ProgressCircle ( id ) {
     }
     return;
   }
-  this.clean = function () {
-    body.classList.remove( "success" );
-    body.classList.remove( "error" );
-    body.classList.remove( "loading" );
-    body.classList.remove( "warning" );
+  this.clean = () => {
+    body.classList.remove( 'success' );
+    body.classList.remove( 'error' );
+    body.classList.remove( 'loading' );
+    body.classList.remove( 'warning' );
     body.innerHTML = '';
-    state = "empty";
+    state = 'empty';
     return;
   }
-  this.getState = function () {
+  this.getState = () => {
     return state;
   }
   return;
@@ -70,9 +70,8 @@ function ProgressStep ( id ) {
   let circles = [];
   let line    = null;
   let body    = document.getElementById( id );
-
-  this.next = async function () {
-    return new Promise( async function ( resolve ) {
+  this.next = async () => {
+    return new Promise( async ( resolve ) => {
       if ( current < circles.length ) {
         current++;
         await update();
@@ -82,10 +81,10 @@ function ProgressStep ( id ) {
       }
     });
   }
-  this.clean = async function () {
-    return new Promise( async function ( resolve ) {
+  this.clean = async () => {
+    return new Promise( async ( resolve ) => {
       current = 0;
-      circles.forEach( function ( circle ) {
+      circles.forEach( ( circle ) => {
         circle.clean();
       });
       await update();
@@ -93,45 +92,45 @@ function ProgressStep ( id ) {
     });
     return;
   }
-  this.setSeccess = async function () {
-    return new Promise( async function ( resolve ) {
+  this.setSeccess = async () => {
+    return new Promise( async ( resolve ) => {
       circles[current].setState( 'success' );
-      setTimeout( function () {
+      setTimeout( () => {
         resolve();
       }, styleAwaitTime );
     });
   }
-  this.setError = async function () {
-    return new Promise( async function ( resolve ) {
+  this.setError = async () => {
+    return new Promise( async ( resolve ) => {
       circles[current].setState( 'error' );
-      setTimeout( function () {
+      setTimeout( () => {
         resolve();
       }, styleAwaitTime );
     });
   }
-  this.setWarning = async function () {
-    return new Promise( async function ( resolve ) {
+  this.setWarning = async () => {
+    return new Promise( async ( resolve ) => {
       circles[current].setState( 'warning' );
-      setTimeout( function () {
+      setTimeout( () => {
         resolve();
       }, styleAwaitTime );
     });
   }
-  this.setLoading = async function () {
-    return new Promise( async function ( resolve ) {
+  this.setLoading = async () => {
+    return new Promise( async ( resolve ) => {
       circles[current].setState( 'loading' );
-      setTimeout( function () {
+      setTimeout( () => {
         resolve();
       }, styleAwaitTime );
     });
   }
   async function update () {
-    return new Promise( async function ( resolve ) {
+    return new Promise( async ( resolve ) => {
       let length = ( current / ( circles.length - 1 ) ) * 100;
       if ( length > 0 ) {
         length = length - 1;
       }
-      line.style.width = length + "%";
+      line.style.width = length + '%';
       resolve();
     });
   }

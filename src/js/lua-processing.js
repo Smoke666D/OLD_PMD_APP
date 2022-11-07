@@ -20,18 +20,18 @@ let lua = '';
 let scriptFirstLine = 0;
 /*-----------------------------------------------------------------------------------*/
 async function luaopen ( data ) {
-  return new Promise( function ( resolve ) {
+  return new Promise( ( resolve ) => {
     let res  = false;
     luacli.newLine( 'Openning ' );
     let path = dialog.showOpenDialog( { 
       title:      'Открыть lua',
       filters:    [{ name: 'lua', extensions: ['lua']}],
       properties: ['openFile'] 
-    }).then( function ( result ) {
+    }).then( ( result ) => {
       if ( result.filePaths[0] != undefined ) {
         luaPath = result.filePaths[0];
         luacli.add( ' ' + luaPath + '...' );
-        fs.readFile( luaPath, 'utf8', function ( error, data ) {
+        fs.readFile( luaPath, 'utf8', ( error, data ) => {
           if ( error ) {
             resolve( ['error', '', null] );    
           }
@@ -43,14 +43,14 @@ async function luaopen ( data ) {
         luacli.add( '...Fail!' );
         resolve( ['error', '', null] );
       }
-    }).catch( function ( error ) {
+    }).catch( ( error ) => {
       luacli.add( '...Fail! ' + error );
       resolve( ['error', '', null] );
     });
   });
 }
 async function runTool ( name, path ) {
-  return new Promise( async function ( resolve ) {
+  return new Promise( async ( resolve ) => {
     let res = 'ok';
     let err = '';
     let mes = '';
@@ -76,7 +76,7 @@ async function runTool ( name, path ) {
   });
 }
 async function parsingCheckerMessage ( str ) {
-  return new Promise( async function ( resolve ) {
+  return new Promise( async ( resolve ) => {
     let color    = null;
     let done     = 'ok';
     let text     = 'DONE';
@@ -100,7 +100,7 @@ async function parsingCheckerMessage ( str ) {
   });
 }
 async function parsingCompilMessage ( str ) {
-  return new Promise( async function ( resolve ) {
+  return new Promise( async ( resolve ) => {
     if ( str.length == 0 ) {
       luacli.add( 'FAIL', 'text-danger' );
       resolve( ['error', '', null] );
@@ -114,12 +114,12 @@ async function parsingCompilMessage ( str ) {
   });
 }
 async function parsingPythonMessage ( message ) {
-  return new Promise( async function ( resolve ) {
+  return new Promise( async ( resolve ) => {
     if ( message != null ) {
       let done    = 'ok';
       let outPath = '';
       let append  = '';
-      let lines   = message.split('\n');
+      let lines   = message.split( '\n' );
       for ( var i=0; i<lines.length; i++ ) {
         if ( lines[i].length > 0 ) {
           let color = null;
@@ -136,7 +136,6 @@ async function parsingPythonMessage ( message ) {
               text = text.substring( 0, text.indexOf( '\033[' ) );
             }
           }
-
           if ( text.startsWith( 'DONE' ) ) {
             outPath = text.substring( 6 );
             append  = null;
@@ -151,32 +150,32 @@ async function parsingPythonMessage ( message ) {
   });
 }
 async function luacheck ( data ) {
-  return new Promise( async function ( resolve ) {
+  return new Promise( async ( resolve ) => {
     resolve( await runTool( 'luacheck', data ) );
   });
 }
 async function lualink ( data ) {
-  return new Promise( async function ( resolve ) {
+  return new Promise( async ( resolve ) => {
     resolve( await runTool( 'lualink', data ) );
   });
 }
 async function luamin ( data ) {
-  return new Promise( async function ( resolve ) {
+  return new Promise( async ( resolve ) => {
     resolve( await runTool( 'luamin', data ) );
   });
 }
 async function luamake ( data ) {
-  return new Promise( async function ( resolve ) {
+  return new Promise( async ( resolve ) => {
     resolve( await runTool( 'luamake', data ) );
   });
 }
 async function luac ( data ) {
-  return new Promise( async function ( resolve ) {
+  return new Promise( async ( resolve ) => {
     resolve( await runTool( 'luac', data ) );
   });
 }
 async function pdmconnect ( data ) {
-  return new Promise( async function ( resolve ) {
+  return new Promise( async ( resolve ) => {
     luacli.newLine( 'Try to connect to the PDM via USB...')
     let state = await connect( false );
     let res   = 'error';
@@ -190,7 +189,7 @@ async function pdmconnect ( data ) {
   });
 }
 function awaitUSB ( callback ) {
-  setTimeout( async function () {
+  setTimeout( async () => {
     let state  = usb.controller.getStatus();
     let finish = usb.controller.getFinish();
     if ( ( ( state == usb.usbStat.wait ) || ( state == usb.usbStat.dash ) ) && ( finish == true ) ) {
@@ -207,7 +206,7 @@ function awaitUSB ( callback ) {
   return;
 }
 async function pdmload ( data ) {
-  return new Promise( async function ( resolve ) {
+  return new Promise( async ( resolve ) => {
     luacli.newLine( 'Loading the lua script to the PDM...')
     let state = usb.controller.getStatus();
     if ( data.indexOf( '.luac.' ) > -1 ) {
@@ -215,7 +214,7 @@ async function pdmload ( data ) {
     } else {
       pdm.isCompil = false;
     }
-    fs.readFile( data, null, async function ( error, data ) {
+    fs.readFile( data, null, async ( error, data ) => {
       if ( error ) {
         luacli.newLine( 'Error on file open' );
         resolve( ['error', '', null] );
@@ -284,7 +283,7 @@ const luaStages = [
 ];
 
 function skip () {
-  return new Promise( async function ( resolve ) {
+  return new Promise( async ( resolve ) => {
     resolve( true );
   });
 }
@@ -294,8 +293,7 @@ function LuaProcess ( icli, iprogress ) {
   let cli      = icli;
   let progress = iprogress;
   let prevOut  = '';
-    
-  this.check = async function () {
+  this.check = async () => {
     let res    = 'ok';
     let out    = '';
     let append = null;
@@ -314,7 +312,7 @@ function LuaProcess ( icli, iprogress ) {
     }
     return;
   }
-  this.start = async function () {
+  this.start = async () => {
     let res    = 'ok';
     let out    = '';
     let append = null;
@@ -334,7 +332,7 @@ function LuaProcess ( icli, iprogress ) {
     return;
   }
   async function procStage ( callback, isEnd, input ) {
-    return new Promise( async function ( resolve ) {
+    return new Promise( async ( resolve ) => {
       let result = false;
       let out    = '';
       let append = null;

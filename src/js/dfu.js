@@ -90,8 +90,8 @@ function Map ( string ) {
   this.erasable = 0;
   this.writable = 0;
   /*---------------------------------------------*/
-  strInd     = string.indexOf("*");
-  endInd     = string.search("K");
+  strInd     = string.indexOf( '*' );
+  endInd     = string.search( 'K' );
   this.count = parseInt( string.substr( 0, strInd ) );
   this.size  = parseInt( string.substr( ( strInd + 1 ), endInd - 3 ) );
   switch ( string.substr( endInd+1, string.length )  ) {
@@ -140,26 +140,26 @@ function Memory( string ) {
   var midInd    = 0;
   var endInd    = 0;
   var endFl     = 0;
-  var sectorStr = "";
+  var sectorStr = '';
   var adrCount  = 0;
   /*------------------- Public ------------------*/
-  this.type    = "";
+  this.type    = '';
   this.start   = 0;
   this.size    = 0;
   this.map     = [];
   this.sectors = [];
   /*---------------------------------------------*/
-  strInd = string.search("@");
-  endInd = string.search("/");
+  strInd = string.search( '@' );
+  endInd = string.search( '/' );
   if ( ( strInd != -1 ) && ( endInd != -1 ) ) {
     this.type = string.substr( ( strInd + 1 ), ( endInd - 1 ) );
     string = string.substr( ( endInd + 1 ), string.length );
-    endInd = string.search("/");
+    endInd = string.search( '/' );
     if ( endInd != -1 ) {
       this.start = parseInt( string.substr( 0, endInd ) );
       string = string.substr( ( endInd + 1 ), string.length );
       while ( endFl == 0 ) {
-        endInd = string.search(",");
+        endInd = string.search( ',' );
         if ( endInd > 0 ) {
           this.map.push( new Map( string.substr( 0, endInd ) ) );
           this.size += this.map[this.map.length - 1].count * this.map[this.map.length - 1].size;
@@ -204,9 +204,9 @@ function dfuDevice() {
   var   iface  = null;
   var   opened = false;
   /*------------------- Public ------------------*/
-  this.manufacturer = "No";
-  this.product      = "No";
-  this.serial       = "No";
+  this.manufacturer = 'No';
+  this.product      = 'No';
+  this.serial       = 'No';
   this.memory       = {};
   /*---------------------------------------------*/
   function       checkTransferSize( size ) {
@@ -229,46 +229,46 @@ function dfuDevice() {
     return out;
   }
   function       strState ( state ) {
-    var str = "No state";
+    var str = 'No state';
     switch ( state ) {
       case dfu.state.appIDLE:
-        str = "App idle"
+        str = 'App idle';
         break;
       case dfu.state.appDETACH:
-        str = "Detach"
+        str = 'Detach';
         break;
       case dfu.state.dfuIDLE:
-        str = "DFU idle"
+        str = 'DFU idle';
         break;
       case dfu.state.dfuDNLOAD_SYNC:
-        str = "Download synchronization"
+        str = 'Download synchronization';
         break;
       case dfu.state.dfuDNBUSY:
-        str = "Download busy"
+        str = 'Download busy';
         break;
       case dfu.state.dfuDNLOAD_IDLE:
-        str = "Download idle"
+        str = 'Download idle';
         break;
       case dfu.state.dfuMANIFEST_SYNC:
-        str = "Manifest synchronization"
+        str = 'Manifest synchronization';
         break;
       case dfu.state.dfuMANIFEST:
-        str = "Manifest"
+        str = 'Manifest';
         break;
       case dfu.state.dfuMANIFEST_WAIT_RESET:
-        str = "Manifest wait reset"
+        str = 'Manifest wait reset';
         break;
       case dfu.state.dfuUPLOAD_IDLE:
-        str = "Upload idle"
+        str = 'Upload idle';
         break;
       case dfu.state.dfuERROR:
-        str = "Error"
+        str = 'Error';
         break;
     }
     return str;
   }
-  function       adrToHexStr ( adr ) {
-    return "0x0" + adr.toString(16);
+  function adrToHexStr ( adr ) {
+    return '0x0' + adr.toString(16);
   }
   async function initBuffer ( cmd, adr ) {
     if ( adr == 0 ) {
@@ -276,7 +276,6 @@ function dfuDevice() {
     } else {
       let data = Buffer.from( [cmd] );
     }
-    console.log( data );
     return data
   }
   async function asyncSleep ( ms ) {
@@ -285,7 +284,7 @@ function dfuDevice() {
     });
   }
   /*---------------------------------------------*/
-  this.print            = function () {
+  this.print = function () {
     console.log( '******** DFU *********' );
     console.log( 'Manufacturer: ' + self.manufacturer );
     console.log( 'Product:      ' + self.product      );
@@ -297,56 +296,55 @@ function dfuDevice() {
   }
   this.init             = async function ( callback ) {
     var result = 0;
-    //device = usb.findByIds( 0x16D0, 0x10BD );
     device = usb.findByIds( 1155, 57105 );
     if ( device != null ) {
       try {
         device.open();
-        device.getStringDescriptor( device.deviceDescriptor.iManufacturer, function( error, string ) {
+        device.getStringDescriptor( device.deviceDescriptor.iManufacturer, ( error, string ) => {
           if ( error == undefined ) {
             self.manufacturer = string;
-            device.getStringDescriptor( device.deviceDescriptor.iProduct, function( error, string ) {
+            device.getStringDescriptor( device.deviceDescriptor.iProduct, ( error, string ) => {
               if ( error == undefined ) {
                 self.product = string;
-                device.getStringDescriptor( device.deviceDescriptor.iSerialNumber, function( error, string ) {
+                device.getStringDescriptor( device.deviceDescriptor.iSerialNumber, ( error, string ) => {
                   if ( error == undefined ) {
                     self.serial = string;
                     iface = device.interface( ifaceN );
                     iface.claim();
-                    device.getStringDescriptor( iface.descriptor.iInterface, function( error, flashDescriptor ) {
+                    device.getStringDescriptor( iface.descriptor.iInterface, ( error, flashDescriptor ) => {
                       if ( error == undefined ) {
                         self.memory = new Memory( flashDescriptor );
                         opened      = true;
                         self.print();
-                        let alert   = new alerts.Alert( "alert-success", alerts.okIco, "Устройство подключено по USB в DFU режиме" );
-                        result      = 1;
+                        let alert = new alerts.Alert( 'alert-success', alerts.okIco, 'Устройство подключено по USB в DFU режиме' );
+                        result    = 1;
                         callback();
                       } else {
-                        let alert = new alerts.Alert("alert-warning",alerts.triIco,"Ошибка чтения дискриптора памяти");
+                        let alert = new alerts.Alert( 'alert-warning', alerts.triIco, 'Ошибка чтения дискриптора памяти' );
                       }
                     });
                   } else {
-                    let alert = new alerts.Alert("alert-warning",alerts.triIco,"Ошибка чтения дискриптора серийного номера");
+                    let alert = new alerts.Alert( 'alert-warning', alerts.triIco, 'Ошибка чтения дискриптора серийного номера' );
                   }
                 });
               } else {
-                let alert = new alerts.Alert("alert-warning",alerts.triIco,"Ошибка чтения дискриптора продукта");
+                let alert = new alerts.Alert( 'alert-warning', alerts.triIco, 'Ошибка чтения дискриптора продукта' );
               }
             });
           } else {
-            let alert = new alerts.Alert("alert-warning",alerts.triIco,"Ошибка чтения дискриптора производителя");
+            let alert = new alerts.Alert( 'alert-warning', alerts.triIco, 'Ошибка чтения дискриптора производителя' );
           }
         });
       } catch (e) {
         device = null;
-        let alert = new alerts.Alert("alert-warning",alerts.triIco,"Устройство занято другим приложением");
+        let alert = new alerts.Alert( 'alert-warning', alerts.triIco, 'Устройство занято другим приложением' );
       }
     } else {
-      let alert = new alerts.Alert("alert-warning",alerts.triIco,"Устройство не подключенно");
+      let alert = new alerts.Alert( 'alert-warning', alerts.triIco, 'Устройство не подключенно' );
     }
     return result;
   }
-  this.searchSector     = async function ( adr ) {
+  this.searchSector = async function ( adr ) {
     let result = 0xFFFF;
     if ( ( adr >= this.memory.start ) && ( adr < ( this.memory.start + this.memory.size ) ) ) {
       for ( var i=0; i<this.memory.sectors.length; i++ ) {
@@ -359,7 +357,7 @@ function dfuDevice() {
     }
     return result;
   }
-  this.checkSectors     = async function ( start, size ) {
+  this.checkSectors = async function ( start, size ) {
     let calcSize = size;
     let result   = 0;
     for ( var i=start; i<this.memory.sectors.length; i++ ) {
@@ -376,22 +374,22 @@ function dfuDevice() {
     }
     return result;
   }
-  this.request          = async function ( bRequest, wLength, wValue = 0, read_not_write = 1 ) {
-    return await new Promise( function ( resolve, reject ) {
-      device.controlTransfer( getRequestType( read_not_write ), bRequest, wValue, ifaceN, wLength, async function( error, data ) {
+  this.request = async function ( bRequest, wLength, wValue = 0, read_not_write = 1 ) {
+    return await new Promise( ( resolve, reject ) => {
+      device.controlTransfer( getRequestType( read_not_write ), bRequest, wValue, ifaceN, wLength, async ( error, data ) => {
         resolve( data );
       });
     });
   }
-  this.detach           = async function ( wTimeout ) {
+  this.detach = async ( wTimeout ) => {
     await this.request( dfu.req.DETACH, Buffer.from( [wTimeout] ), 0, 0 );
     return;
   }
-  this.download         = async function ( data, wBlockNum = 0 ) {
+  this.download = async function ( data, wBlockNum = 0 ) {
     await this.request( dfu.req.DNLOAD, data, wBlockNum, 0 );
     return;
   }
-  this.command          = async function ( cmd, data ) {
+  this.command = async ( cmd, data ) => {
     let result = 0;
     let raw = [ cmd ];
     if ( data != 0 ) {
@@ -414,47 +412,47 @@ function dfuDevice() {
     }
     return result;
   }
-  this.upload           = async function ( length, wBlockNum ) {
+  this.upload = async ( length, wBlockNum ) => {
     let data = await this.request( dfu.req.UPLOAD, length, wBlockNum );
     return data;
   }
-  this.reset            = async function ( timeout = 0 ) {
+  this.reset = async ( timeout = 0 ) => {
     await asyncSleep ( timeout );
     await this.download( new Buffer.alloc(0), 0 );
     return;
   }
-  this.sectorErase      = async function ( sector ) {
+  this.sectorErase = async ( sector ) => {
     let result = 0;
     if ( sector.erasable > 0 ) {
       result = await this.command( dfu.cmd.ERASE, sector.adr );
     }
     return result;
   }
-  this.setAdr           = async function ( adr ) {
+  this.setAdr = async ( adr ) => {
     let result = await this.command( dfu.cmd.SET_ADDR, adr );
     return result;
   }
-  this.readUnprotect    = async function ( ) {
+  this.readUnprotect = async () => {
     let result = await this.command( dfu.cmd.READ_UNPROTECT, 0 );
     return result;
   }
-  this.getStatus        = async function ( ) {
+  this.getStatus = async () => {
     let data = await this.request( dfu.req.GETSTATUS, 6 );
     return new Status( data );
   }
-  this.clearStatus      = async function ( ) {
+  this.clearStatus = async () => {
     await this.request( dfu.req.CLRSTATUS, Buffer.alloc(0), 0, 0 );
     return;
   }
-  this.getState         = async function ( ) {
+  this.getState = async () => {
     let state = await this.request( dfu.req.GETSTATE, 1 );
     return state[0];
   }
-  this.abort            = async function ( ) {
+  this.abort = async () => {
     await this.request( dfu.req.ABORT, Buffer.alloc(0), 0, 0 );
     return;
   }
-  this.pullUntil        = async function ( targetState, timeout = 0 ) {
+  this.pullUntil = async ( targetState, timeout = 0 ) => {
     let status = await this.getStatus();
     let time   = timeout;
     if ( timeout == 0 ) {
@@ -466,7 +464,7 @@ function dfuDevice() {
     }
     return status;
   }
-  this.clearToIdle      = async function ( ) {
+  this.clearToIdle = async () => {
     let state = await this.getState();
     while ( state == dfu.state.dfuERROR ) {
       await this.clearStatus();
@@ -474,12 +472,12 @@ function dfuDevice() {
     }
     return state;
   }
-  this.abortToIdle      = async function ( ) {
+  this.abortToIdle = async () => {
     await this.abort();
     let state = await this.clearToIdle();
     return state;
   }
-  this.downloadSector   = async function ( transferSize, data, sector ) {
+  this.downloadSector = async ( transferSize, data, sector ) => {
     let bytesSent = 0;
     let size      = data.length;
     let chunkSize = 0;
@@ -507,7 +505,7 @@ function dfuDevice() {
     }
     return result;
   }
-  this.downloadFirmware = async function ( firmware, adr, progCallback, errorCallback, verify = 1, fullErase = 1 ) {
+  this.downloadFirmware = async ( firmware, adr, progCallback, errorCallback, verify = 1, fullErase = 1 ) => {
     let result   = 0;
     let size     = firmware.length;                        /* Firmware size in bytes */
     let startAdr = adr;                                    /* Start sector number for firmware */
@@ -523,63 +521,62 @@ function dfuDevice() {
       console.log( '****** LOADING *******' );
       /*------------------- FULL ERASE -------------------*/
       if ( fullErase > 0 ) {
-        console.log( "Start chip erasing..." );
+        console.log( 'Start chip erasing...' );
         progSize += this.memory.sectors.length;
         for ( var i=0; i<this.memory.sectors.length; i++ ) {
           this.sectorErase( this.memory.sectors[i] );
           prog++;
           progCallback( progSize, prog );
         }
-        console.log( "Finish chip erasing!" );
+        console.log( 'Finish chip erasing!' );
       }
       /*---------------- DOWNLAD FIRMWARE ----------------*/
-      console.log( "Start firmware downloading..." );
-      let buffer   = new Buffer.from( firmware );
+      console.log( 'Start firmware downloading...' );
+      let buffer = new Buffer.from( firmware );
       for ( var i=startAdr; i<=endAdr; i++ ) {
         let sector = this.memory.sectors[i];
-        console.log("Writing sector " + i );
+        console.log( 'Writing sector ' + i );
         result = await this.downloadSector( defTransfSize, buffer.slice( count, ( count + sector.size ) ), sector );
         if ( result == 0 ) {
-          errorCallback( "Ошибка загрузки прошивки" );
+          errorCallback( 'Ошибка загрузки прошивки' );
           break;
         }
         count += sector.size;
         prog++;
         progCallback( progSize, prog );
       }
-      console.log( "Finish firmware downloading..." );
+      console.log( 'Finish firmware downloading...' );
     /*------------- FIRMWARE VERIFICATION --------------*/
       if ( result > 0 ) {
-        console.log( "Start firmware verification..." );
+        console.log( 'Start firmware verification...' );
         for ( var i=startAdr; i<=endAdr; i++ ) {
           let sector = this.memory.sectors[i];
           let block = await this.uploadBlod( defTransfSize, sector.size, sector.shift );
           for ( var j=0; j<block.length; j++ ) {
             if ( block[j] != firmware[j] ) {
               result = 0;
-              errorCallback( "Ошибка при проверке прошивки" );
+              errorCallback( 'Ошибка при проверке прошивки' );
               break;
             }
           }
           prog++;
           progCallback( progSize, prog );
         }
-        console.log( "Finish firmware verification" );
+        console.log( 'Finish firmware verification' );
         console.log( '**********************' );
       }
     } else {
-      errorCallback( "Неправильная адрессация прошивки" )
+      errorCallback( 'Неправильная адрессация прошивки' )
     }
     await this.abortToIdle();
     return result;
   }
-  this.uploadBlod       = async function ( transferSize, size, startBlock = 0 ) {
+  this.uploadBlod = async ( transferSize, size, startBlock = 0 ) => {
     let bytesToRead = 0;
     let bytesGot    = 0;
     let result      = {};
     let blockCount  = startBlock + 2;
     let blocks      = [];
-
     transferSize = checkTransferSize( transferSize );
     await this.clearToIdle();
     do {
@@ -595,7 +592,7 @@ function dfuDevice() {
     }
     return blocks;
   }
-  this.uploadFirmware   = async function ( ) {
+  this.uploadFirmware = async () => {
     let blocks = [];
     let sector = [];
     var count  = 0;
@@ -606,14 +603,14 @@ function dfuDevice() {
       }
     }
     blob = new Blob( blocks, { type: "application/octet-stream" } );
-    saveAs( blob, "firmware.bin");
+    saveAs( blob, 'firmware.bin' );
     return;
   }
-  this.close            = function ( ) {
+  this.close = () => {
     if ( device != null ) {
       device.close();
       device = null;
-      let alert   = new alerts.Alert( "alert-success", alerts.okIco, "Контроллер отключен. Требуеться перезагрузка." );
+      let alert = new alerts.Alert( 'alert-success', alerts.okIco, 'Контроллер отключен. Требуеться перезагрузка.' );
     }
     return;
   }

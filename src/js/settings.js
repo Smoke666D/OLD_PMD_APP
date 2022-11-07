@@ -1,7 +1,8 @@
-const fs = require( 'fs' );
-const render  = require('./render.js');
+const fs     = require( 'fs' );
+const path   = require( 'path' );
+const render = require('./render.js');
 
-
+const pathFile = path.join( path.dirname( __dirname + '../' ), 'json/settings.json' );
 
 let settings = new Settings ( function () { 
   if ( settings.data.usb.loop ) {
@@ -11,15 +12,14 @@ let settings = new Settings ( function () {
 });
 
 function Settings ( callback ) {
-  const pathFile = 'json/settings.json';
   let   self     = this;
   let   domList  = [];
   this.ready     = false;
   this.data      = null;
-  this.init = async function () {
-    return new Promise( async function ( resolve ) {
+  this.init = async () => {
+    return new Promise( async ( resolve ) => {
       initDomList();
-      fs.readFile( pathFile, 'utf-8', async function ( error, data ) {
+      fs.readFile( pathFile, 'utf-8', async ( error, data ) => {
         if ( error == null ) {
           self.data  = JSON.parse( data );
           writeToDom();
@@ -27,6 +27,7 @@ function Settings ( callback ) {
           callback();
           resolve();
         } else {
+          let alert = new Alert( 'alert-danger', triIco, 'Ошибка чтения настроек' );
           readFromDom();
           saveSettings();
           resolve();
@@ -34,7 +35,6 @@ function Settings ( callback ) {
       });
     });
   }
-
   function initDomList () {
     domList = [
       document.getElementById( 'toolchainPath' ),
@@ -53,23 +53,21 @@ function Settings ( callback ) {
       document.getElementById( 'usb-loop' ),
       document.getElementById( 'loading_auto' )
     ];
-    domList.forEach( function ( obj ) {
-      obj.addEventListener( 'change', function () {
+    domList.forEach( ( obj ) => {
+      obj.addEventListener( 'change', () => {
         readFromDom();
         saveSettings();
       });
     });
     return;
   }
-
   async function saveSettings () {
-    return new Promise( async function ( resolve ) {
+    return new Promise( async ( resolve ) => {
       let data = JSON.stringify( self.data );
       await fs.writeFileSync( pathFile, data );
       resolve();
     });
   }
-  
   function readFromDom () {
     self.data.toolchainPath = document.getElementById( 'toolchainPath' ).value;
     self.data.libPath       = document.getElementById( 'libPath' ).value;
@@ -83,7 +81,7 @@ function Settings ( callback ) {
     self.data.usb.pid       = document.getElementById( 'usb-pid' ).value;
     self.data.usb.timeout   = document.getElementById( 'usb-timeout' ).value;
     self.data.usb.loop      = document.getElementById( 'usb-loop' ).checked;
-    self.data.luamin.keys.forEach( function ( key ) {
+    self.data.luamin.keys.forEach( ( key ) => {
       switch ( key.id ) {
         case "spaces":
           key.enb = document.getElementById( 'luamin_spaces_enb' ).checked;
@@ -98,7 +96,6 @@ function Settings ( callback ) {
     });
     return;
   }
-
   async function writeToDom () {
     document.getElementById( 'toolchainPath' ).value  = self.data.toolchainPath;
     document.getElementById( 'libPath' ).value        = self.data.libPath;
@@ -112,7 +109,7 @@ function Settings ( callback ) {
     document.getElementById( 'usb-pid' ).value        = self.data.usb.pid;
     document.getElementById( 'usb-timeout' ).value    = self.data.usb.timeout;
     document.getElementById( 'usb-loop' ).checked     = self.data.usb.loop;
-    self.data.luamin.keys.forEach( function ( key ) {
+    self.data.luamin.keys.forEach( ( key ) => {
       switch ( key.id ) {
         case "spaces":
           document.getElementById( 'luamin_spaces_enb' ).checked = key.enb;

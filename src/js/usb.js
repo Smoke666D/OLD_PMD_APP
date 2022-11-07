@@ -1,16 +1,16 @@
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-const remote          = require('electron').remote;
-var HID               = require('node-hid');
-const alerts          = require('./alerts.js');
-const USBMessage      = require('./usb-message.js').USBMessage;
-const msgCMD          = require('./usb-message.js').msgCMD;
-const msgSTAT         = require('./usb-message.js').msgSTAT;
-const USB_DATA_SIZE   = require('./usb-message.js').USB_DATA_SIZE;
-const pdmDataAdr      = require('./pdm.js').pdmDataAdr;
-const settings        = require('./settings.js').settings;
-const pdm             = require('./pdm.js').pdm;
+const remote          = require( 'electron' ).remote;
+var HID               = require( 'node-hid' );
+const alerts          = require( './alerts.js' );
+const USBMessage      = require( './usb-message.js' ).USBMessage;
+const msgCMD          = require( './usb-message.js' ).msgCMD;
+const msgSTAT         = require( './usb-message.js' ).msgSTAT;
+const USB_DATA_SIZE   = require( './usb-message.js' ).USB_DATA_SIZE;
+const pdmDataAdr      = require( './pdm.js' ).pdmDataAdr;
+const settings        = require( './settings.js' ).settings;
+const pdm             = require( './pdm.js' ).pdm;
 /*----------------------------------------------------------------------------*/
 const usbStat = {
   "wait"  : 1,
@@ -40,54 +40,54 @@ function MessageArray () {
   var sequence = [];
   var counter  = 0;
   /*------------------- Pablic ------------------*/
-  this.print = function () {
-    sequence.forEach( function ( item ) {
+  this.print = () => {
+    sequence.forEach( ( item ) => {
       console.log( item );
     })
     console.log( counter );
     return;
   }
-  this.getCurrentAdr = function () {
+  this.getCurrentAdr = () => {
     if ( sequence.len == 0 ) {
       return 0xFFFF;
     } else {
       return sequence[sequence.length-1].adr;
     }
   }
-  this.getLength     = function () {
+  this.getLength = () => {
     return sequence.length;
   }
-  this.getCounter    = function () {
+  this.getCounter = () => {
     return counter;
   }
-  this.getProgress   = function () {
+  this.getProgress = () => {
     return Math.ceil( ( ( counter + 1 ) / sequence.length ) * 100 );
   }
-  this.incCounter    = function () {
+  this.incCounter = () => {
     counter++;
     return;
   }
-  this.getData       = function ( n ) {
+  this.getData = ( n ) => {
     return sequence[n].data;
   }
-  this.getFullData   = function () {
+  this.getFullData = () => {
     let out = [];
     for ( var i=0; i<sequence.length; i++ ) {
       out.push( new USBMessage( sequence[i].data ) );
     }
     return out;
   }
-  this.clean         = function () {
+  this.clean = () => {
     sequence = [];
     counter  = 0;
     return;
   }
-  this.resetCounter  = function () {
+  this.resetCounter = () => {
     counter = 0;
     return;
   }
-  this.addMessage    = function ( message ) {
-    if ( typeof message.buffer[0] == "object" ) {
+  this.addMessage = ( message ) => {
+    if ( typeof message.buffer[0] == 'object' ) {
       for ( var i=0; i<message.buffer.length; i++ ) {
         sequence.push( new MessageUnit( message.buffer[i], message.adr ) );
       }
@@ -105,14 +105,14 @@ function InputMessageArray () {
   var response = new MessageArray();
   var request  = new MessageArray();
   /*------------------- Pablic ------------------*/
-  this.printRequests = function () {
+  this.printRequests = () => {
     request.print();
     return;
   }
-  this.getCurrentAdr = function () {
+  this.getCurrentAdr = () => {
     return response.getCurrentAdr();
   }
-  this.nextRequest   = function () {
+  this.nextRequest = () => {
     let output;
     if ( request.getCounter < request.getLength ) {
       output = request.getData( request.getCounter() );
@@ -120,10 +120,10 @@ function InputMessageArray () {
     }
     return output;
   }
-  this.getProgress   = function () {
+  this.getProgress = () => {
     return request.getProgress();
   }
-  this.process       = function ( message ) {
+  this.process = ( message ) => {
     let result = usbHandler.error;
     if ( message.status == msgSTAT.USB_OK_STAT ) {
       if ( response.getLength() > 0 ) {
@@ -135,11 +135,7 @@ function InputMessageArray () {
       }
       response.addMessage( message );
       length += USB_DATA_SIZE;
-      //if ( length >= message.length ) {
-        result = usbHandler.finish;
-      //} else {
-      //  result = usbHandler.continue;
-      //}
+      result = usbHandler.finish;
     } else {
       if ( message.status == msgSTAT.USB_BAD_REQ_STAT ) {
         result = usbHandler.error;
@@ -155,27 +151,27 @@ function InputMessageArray () {
     }
     return result;
   }
-  this.isEnd         = function () {
+  this.isEnd = () => {
     let out = usbHandler.finish;
     if ( request.getCounter() < request.getLength() ) {
       out = usbHandler.continue;
     }
     return out;
   }
-  this.clean         = function () {
+  this.clean = () => {
     response.clean();
     request.clean();
     return;
   }
-  this.addRequest    = function ( message ) {
+  this.addRequest = ( message ) => {
     request.addMessage( message );
     request.resetCounter();
     return;
   }
-  this.getData       = function () {
+  this.getData = () => {
     return response.getFullData();
   }
-  this.getLength     = function () {
+  this.getLength = () => {
     return length;
   }
   return;
@@ -185,10 +181,10 @@ function OutputMessageArray () {
   var self  = this;
   var array = new MessageArray();
   /*------------------- Pablic ------------------*/
-  this.getCurrentAdr = function () {
+  this.getCurrentAdr = () => {
     return array.getCurrentAdr();
   }
-  this.nextMessage   = function () {
+  this.nextMessage = () => {
     let output;
     if ( array.getCounter() < array.getLength() ) {
       output = array.getData( array.getCounter() );
@@ -196,26 +192,26 @@ function OutputMessageArray () {
     }
     return output;
   }
-  this.getProgress   = function () {
+  this.getProgress = () => {
     return array.getProgress();
   }
-  this.isEnd         = function () {
+  this.isEnd = () => {
     let out = usbHandler.finish
     if ( array.getCounter() < array.getLength() ) {
       out = usbHandler.continue;
     }
     return out;
   }
-  this.clean         = function () {
+  this.clean = () => {
     array.clean();
     return;
   }
-  this.addMessage    = function ( message ) {
+  this.addMessage = ( message ) => {
     array.addMessage( message );
     return;
   }
-  this.printState    = function () {
-    console.log( ( array.getCounter() * USB_DATA_SIZE ) + "/" + ( array.getLength() * USB_DATA_SIZE ) + " bytes ( " + ( array.getCounter() / array.getLength() * 100 ) + "% )" );
+  this.printState = () => {
+    console.log( ( array.getCounter() * USB_DATA_SIZE ) + '/' + ( array.getLength() * USB_DATA_SIZE ) + ' bytes ( ' + ( array.getCounter() / array.getLength() * 100 ) + '% )' );
     return;
   }
   return;
@@ -265,7 +261,7 @@ function USBtransport () {
   }
   function writeHandler ( response ) {
     var result = usbHandler.continue;
-    response.init( function () {
+    response.init( () => {
       if ( response.status == msgSTAT.USB_OK_STAT ) {
         if ( ( response.command == msgCMD.USB_REPORT_CMD_START_WRITING    ) ||
              ( response.command == msgCMD.USB_REPORT_CMD_WRITE_SCRIPT     ) ||
@@ -285,7 +281,6 @@ function USBtransport () {
             write( output.nextMessage() );
           }
         } else {
-          //console.log("Error with command: " + response.command + " expected: " + msgCMD.USB_PUT_CONFIG_CMD + " or " + msgCMD.USB_PUT_CHART_CMD + " or " + msgCMD.USB_PUT_EWA_CMD );
           if ( alert != undefined ) {
             if ( ( alert != null ) || ( alert != undefined ) ) {
               alert.close( 0 );
@@ -316,7 +311,7 @@ function USBtransport () {
   }
   function readHandler ( message ) {
     result = usbHandler.error;
-    message.init( function () {
+    message.init( () => {
       result = input.process( message );
       if ( ( result == usbHandler.finish ) && ( input.isEnd() == usbHandler.continue ) ) {
         if ( alert != null ) {
@@ -328,8 +323,6 @@ function USBtransport () {
         if ( ( alert != null ) || ( alert != undefined ) ) {
           alert.close( 0 );
         }
-      } else {
-        //console.log( result )
       }
     });
     return result;
@@ -337,11 +330,11 @@ function USBtransport () {
   /*---------------------------------------------*/
   /*------------------- Pablic ------------------*/
   /*---------------------------------------------*/
-  this.printRequests = function () {
+  this.printRequests = () => {
     input.printRequests();
     return;
   }
-  this.scan        = function ( success, fail ) {
+  this.scan = ( success, fail ) => {
     var devices = HID.devices();
     var res     = 0;
     device      = null;
@@ -358,8 +351,8 @@ function USBtransport () {
     }
     return res;
   }
-  this.initEvents  = function ( inCallback, outCallback, errorCallback, unauthorizedCallback, forbiddenCallback, autoModeCallback, callback ) {
-    device.on( "data", function( data ) {
+  this.initEvents  = ( inCallback, outCallback, errorCallback, unauthorizedCallback, forbiddenCallback, autoModeCallback, callback ) => {
+    device.on( 'data', ( data ) => {
       handle = handler( data );
       switch ( handle ) {
         case usbHandler.finish:
@@ -393,7 +386,7 @@ function USBtransport () {
           break;
       }
     });
-    device.on( "error", function( err ) {
+    device.on( 'error', ( err ) => {
       self.error.push( err );
       self.errorCounter++;
       status = usbStat.wait;
@@ -403,35 +396,35 @@ function USBtransport () {
     callback();
     return;
   }
-  this.close       = function () {
+  this.close = () => {
     if ( device != null ) {
       device.close();
     }
     return;
   }
-  this.getInput    = function () {
+  this.getInput = () => {
     return input.getData();
   }
-  this.getStatus   = function () {
+  this.getStatus = () => {
     return status;
   }
-  this.getLoopBusy = function () {
+  this.getLoopBusy = () => {
     return loopBusy;
   }
-  this.clean       = function () {
+  this.clean = () => {
     output.clean();
     input.clean();
     return;
   }
-  this.addToOutput = function ( message ) {
+  this.addToOutput = ( message ) => {
     output.addMessage( message );
     return;
   }
-  this.addRequest  = function ( message ) {
+  this.addRequest = ( message ) => {
     input.addRequest( message );
     return;
   }
-  this.start       = function ( dir, alertIn ) {
+  this.start = ( dir, alertIn ) => {
     alert = alertIn;
     switch ( dir ) {
       case usbStat.write:
@@ -581,8 +574,8 @@ function PdmController () {
   }
   function awaitLoopBusyReset ( callback ) {
     if ( ( loopBusy > 0 ) && ( transport.getStatus != usbStat.wait ) ) {
-      setTimeout( function () {
-        console.log( "Await loop reset ");
+      setTimeout( () => {
+        console.log( 'Await loop reset ');
         awaitLoopBusyReset( callback );
       }, 100 );
     } else {
@@ -592,14 +585,14 @@ function PdmController () {
   }
   function sendSequency ( adr, data, alert, cmd, sync, makeSeqCallBack ) {
     function startSeq () {
-      makeSeqCallBack( adr, data, function () {
+      makeSeqCallBack( adr, data, () => {
         transport.start( cmd, alert );
         return;
       });
       return;
     }
     if ( sync == false ) {
-      awaitLoopBusyReset( function () {
+      awaitLoopBusyReset( () => {
         startSeq();
       });
     } else if ( transport.getStatus() == usbStat.wait ) {
@@ -616,45 +609,45 @@ function PdmController () {
     return;
   }
   /*---------------------------------------------*/
-  this.init              = function ( inCallback, outCallback, errorCalback, unauthorizedCallback, forbiddenCallback, automodeCallback ) {
+  this.init = ( inCallback, outCallback, errorCalback, unauthorizedCallback, forbiddenCallback, automodeCallback ) => {
     var result = usbInit.fail;
     var handle = usbHandler.finish;
     transport  = new USBtransport();
-    transport.scan( function () {
-      transport.initEvents( inCallback, outCallback, errorCalback, unauthorizedCallback, forbiddenCallback, automodeCallback, function() {
+    transport.scan( () => {
+      transport.initEvents( inCallback, outCallback, errorCalback, unauthorizedCallback, forbiddenCallback, automodeCallback, () => {
         result = usbInit.done;
         try {
-          let alert = new Alert( "alert-success", alerts.okIco, "Контроллер подключен по USB" );
+          let alert = new Alert( 'alert-success', alerts.okIco, 'Контроллер подключен по USB' );
           connected = true;
         } catch (e) {}
       });
-    }, function() {
-      let alert = new Alert( "alert-warning", alerts.triIco, "Контроллер не подключен по USB" );
+    }, () => {
+      let alert = new Alert( 'alert-warning', alerts.triIco, 'Контроллер не подключен по USB' );
     });
     return result;
   }
-  this.isConnected       = function () {
+  this.isConnected = () => {
     return connected;
   }
-  this.enableLoop        = function () {
+  this.enableLoop = () => {
     loopActive = 1;
     return;
   }
-  this.disableLoop       = function () {
+  this.disableLoop = () => {
     loopActive = 0;
     return;
   }
-  this.resetLoopBusy     = function () {
+  this.resetLoopBusy = () => {
     loopActive = 1;
     loopBusy   = 0;
     return;
   }
-  this.disableLoopWithResetBusy = function () {
+  this.disableLoopWithResetBusy = () => {
     loopActive = 0;
     loopBusy   = 0;
     return;
   }
-  this.getStatus         = function () {
+  this.getStatus = () => {
     let out = usbStat.dash
     if ( connected == true ) {
       out = usbStat.dash
@@ -666,23 +659,23 @@ function PdmController () {
     }   
     return out;
   }
-  this.getLoopBusy       = function () {
+  this.getLoopBusy = () => {
     return loopBusy;
   }
-  this.getLoopActive     = function () {
+  this.getLoopActive = () => {
     return loopActive;
   }
-  this.getFinish        = function () {
+  this.getFinish = () => {
     return finish;
   }
-  this.setFinish        = function () {
+  this.setFinish = () => {
     finish = true;
   }
-  this.resetFinish      = function () {
+  this.resetFinish = () => {
     finish = false;
     return;
   }
-  this.close             = function () {
+  this.close = () => {
     self.disableLoop();
     loopBusy = 0;
     if ( transport != null ) {
@@ -692,10 +685,10 @@ function PdmController () {
     connected = false;
     return;
   }
-  this.getLoopTimeout    = function () {
+  this.getLoopTimeout = () => {
     return settings.data.usb.timeout;
   }
-  this.loop              = function () {
+  this.loop              = () => {
     if ( ( loopActive > 0 ) && ( loopBusy == 0 ) ) {
       console.log( 'loop time: ' + ( ( Date.now() - loopTime ) / 1000 ) + ' sec' );
       loopTime = Date.now();
@@ -706,34 +699,34 @@ function PdmController () {
     }
     return;
   }
-  this.getInput          = function () {
+  this.getInput = () => {
     return transport.getInput();
   }
-  this.send              = function ( alertIn = null ) {
+  this.send = ( alertIn = null ) => {
     this.disableLoop();
     alert = alertIn;
     writeSequency( 0, 0, alert, false, initWriteSequency );
     return;
   }
-  this.readOutput        = function () {
+  this.readOutput = () => {
     readSequency( 0, 0, null, true, initReadSequency );
     return;
   }
-  this.readTelemetry     = function () {
+  this.readTelemetry = () => {
     readSequency( 0, 0, null, true, initTelemetrySequency );
     return;
   }
-  this.readErrorString   = function () {
+  this.readErrorString = () => {
     self.disableLoop();
     readSequency( 0, 0, null, false, initErrorStringSequency );
     return;  
   }
-  this.restartLua        = function () {
+  this.restartLua = () => {
     self.disableLoop();
     writeSequency( 0, 0, null, false, initRestartSequency );
     return;  
   }
-  this.receive           = function ( data = null, alertIn = null ) {
+  this.receive = function ( data = null, alertIn = null ) {
     this.disableLoop();
     alert = alertIn;
     readSequency( 0, data, alert, false, initReadSequency );

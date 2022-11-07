@@ -14,33 +14,37 @@ function createWindow () {
       nodeIntegration: true,
     }
   });
-  console.log('her')
-  win.loadFile('./index.html');
-  win.on('closed', function () {
+  win.loadFile( './index.html' );
+  win.on( 'closed', () => {
     mainWindow = null;
   });
 }
-app.whenReady().then( function(){
+app.whenReady().then( () => {
   createWindow();
 });
 
-app.on('browser-window-focus', function () {
-  globalShortcut.register("CommandOrControl+R", function () {
-    console.log("CommandOrControl+R is pressed: Shortcut Disabled");
+app.on( 'browser-window-focus', () => {
+  globalShortcut.register( 'CommandOrControl+R', () => {
+    console.log( 'CommandOrControl+R is pressed: Shortcut Disabled' );
+    return;
   });
-  globalShortcut.register("F5", function () {
-    console.log("F5 is pressed: Shortcut Disabled");
+  globalShortcut.register( 'F5', () => {
+    console.log( 'F5 is pressed: Shortcut Disabled' );
+    return;
   });
+  return;
 });
 
-app.on('window-all-closed', function () {
-  if (process.platform !== 'darwin') {
+app.on( 'window-all-closed', () => {
+  if ( process.platform !== 'darwin' ) {
     app.quit();
   }
+  return;
 });  // OS X
 
-app.on('activate', function () {
-  if (mainWindow === null) {
+app.on( 'activate', () => {
+  if ( mainWindow === null ) {
     createWindow();
   }
+  return;
 });
