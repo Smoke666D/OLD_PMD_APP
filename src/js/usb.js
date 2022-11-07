@@ -248,8 +248,6 @@ function USBtransport () {
   }
   function handler ( data ) {
     var result = usbHandler.finish;
-    console.log( 'input: ' );
-    console.log( data );
     let input  = new USBMessage( data );
     switch ( status ) {
       case usbStat.wait:

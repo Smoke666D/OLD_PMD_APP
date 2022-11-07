@@ -71,7 +71,6 @@ gulp.task( 'fonts', () => {
 gulp.task( 'js', () => {
   return gulp.src( jsSrc )
     //.pipe( jsValidate() )
-    //.pipe( babel({presets: ['@babel/env']}))
     .pipe( uglify() )
     .pipe( gulp.dest( jsDest ) )
 });
