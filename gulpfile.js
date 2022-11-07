@@ -10,12 +10,11 @@ import jsValidate from 'gulp-jsvalidate';
 import jsonMinify from 'gulp-json-minify';
 import htmlmin    from 'gulp-htmlmin';
 import clean      from 'gulp-clean';
-//import sass       from 'gulp-sass' )( require( 'sass' ) );
 import pug        from 'gulp-pug';
 import urlBuilder from 'gulp-url-builder';
-import electron from 'gulp-run-electron';
-import gulpRun  from 'gulp-run';
-import connect  from 'electron-connect';
+import gulpRun    from 'gulp-run';
+import connect    from 'electron-connect';
+//import sass       from 'gulp-sass' )( require( 'sass' ) );
 /*----------------------------------------------------------------------------*/
 let app = connect.server.create();
 /*----------------------------------------------------------------------------*/
@@ -102,16 +101,23 @@ gulp.task( 'del', () => {
     .pipe( clean( {force: true} ) )
 })
 gulp.task( 'indexJS', () => {
-  return( gulp.src( indexJsSrc ) )
+  return gulp.src( indexJsSrc )
     .pipe( uglify() )
     .pipe( gulp.dest( indexJsDest ) )
+});
+gulp.task( 'package', () => {
+  return gulp.src( 'package.json' )
+    .pipe( gulp.dest( dist ) );
+});
+gulp.task( 'deps', () => {
+  return gulpRun( 'yarn install --production --modules-folder ' + dist + '/node_modules' ).exec()
 });
 gulp.task( 'reload', () => {
   app.restart();
   return;
 });
 /*----------------------------------------------------------------------------*/
-const tasks = [ 'css', 'fonts', 'js', 'json', 'img', 'pug', 'move', 'del', 'indexJS' ];
+const tasks = [ 'css', 'fonts', 'js', 'json', 'img', 'pug', 'move', 'del', 'indexJS', 'package' ];
 /*----------------------------------------------------------------------------*/
 gulp.task( 'process', gulp.parallel( tasks ) );
 gulp.task( 'start', () => {
@@ -122,7 +128,7 @@ gulp.task( 'watch', () => {
 });
 /*----------------------------------------------------------------------------*/
 //gulp.task( 'default', gulp.parallel( ['watch', 'start'] ) );
-gulp.task( 'default', gulp.series( tasks ) );
+gulp.task( 'process', gulp.series( tasks ) );
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

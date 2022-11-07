@@ -3,15 +3,15 @@
   "productName": "SIDER Ltd PDM Configurator Tool",
   "description": "SIDER Ltd PDM configuration tool",
   "version": "0.0.1",
-  "main": "js/index.js",
+  "main": "index.js",
   "type": "module",
   "private": true,
   "scripts": {
-    "gulp": "gulp",
+    "gulp": "gulp process",
     "clean": "gulp clean",
-    "start": "gulp && electron dist",
+    "start": "gulp process && electron dist",
     "rebuild": "electron-rebuild --force",
-    "make": "gulp process && electron-packager ./ Sider --overwrite --platform=win32,linux,darwin --arch=x64 --icon='./img/favicon.ico' --prune=true --out=release-builds"
+    "make": "gulp clean && gulp process && gulp deps && electron-packager ./dist Sider --overwrite --platform=win32,linux,darwin --arch=x64 --icon='./img/favicon.ico' --prune=true --out=release"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.1.2",
