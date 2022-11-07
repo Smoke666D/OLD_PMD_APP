@@ -1,20 +1,17 @@
 'use strict';
 /*----------------------------------------------------------------------------*/
 import gulp       from 'gulp';
-import run        from 'gulp-run';
 import cssMinify  from 'gulp-css-minify';
 import concat     from 'gulp-concat';
-import babel      from 'gulp-babel';
 import uglify     from 'gulp-uglify';
 import jsValidate from 'gulp-jsvalidate';
 import jsonMinify from 'gulp-json-minify';
-import htmlmin    from 'gulp-htmlmin';
 import clean      from 'gulp-clean';
 import pug        from 'gulp-pug';
 import urlBuilder from 'gulp-url-builder';
 import gulpRun    from 'gulp-run';
 import connect    from 'electron-connect';
-//import sass       from 'gulp-sass' )( require( 'sass' ) );
+import uncss      from 'gulp-uncss';
 /*----------------------------------------------------------------------------*/
 let app = connect.server.create();
 /*----------------------------------------------------------------------------*/
@@ -58,6 +55,7 @@ gulp.task( 'css', () => {
     './node_modules/@fortawesome/fontawesome-free/css/solid.css'
   ])
     .pipe( concat( 'style.min.css' ) )
+    .pipe( uncss( { html: [indexHtmlDest + '/index.html'] } ))
     .pipe( cssMinify() )
     .pipe( gulp.dest( cssDest ) )
 });
@@ -117,7 +115,7 @@ gulp.task( 'reload', () => {
   return;
 });
 /*----------------------------------------------------------------------------*/
-const tasks = [ 'css', 'fonts', 'js', 'json', 'img', 'pug', 'move', 'del', 'indexJS', 'package' ];
+const tasks = [ 'fonts', 'js', 'json', 'img', 'pug', 'move', 'del', 'css', 'indexJS', 'package' ];
 /*----------------------------------------------------------------------------*/
 gulp.task( 'process', gulp.parallel( tasks ) );
 gulp.task( 'start', () => {
