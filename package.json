@@ -38,10 +38,11 @@
     "gulp-json-minify": "^1.2.2",
     "gulp-jsvalidate": "^5.0.0",
     "gulp-pug": "^5.0.0",
+    "gulp-purifycss": "^0.2.0",
     "gulp-run": "^1.7.1",
     "gulp-uglify": "^3.0.2",
-    "gulp-uncss": "^1.0.6",
     "gulp-url-builder": "^1.0.1",
+    "purify-css": "^1.2.5",
     "sass": "^1.55.0",
     "typescript": "^4.7.4"
   }

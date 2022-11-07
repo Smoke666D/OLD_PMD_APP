@@ -11,7 +11,7 @@ import pug        from 'gulp-pug';
 import urlBuilder from 'gulp-url-builder';
 import gulpRun    from 'gulp-run';
 import connect    from 'electron-connect';
-import uncss      from 'gulp-uncss';
+import purifycss  from 'gulp-purifycss';
 /*----------------------------------------------------------------------------*/
 let app = connect.server.create();
 /*----------------------------------------------------------------------------*/
@@ -55,7 +55,7 @@ gulp.task( 'css', () => {
     './node_modules/@fortawesome/fontawesome-free/css/solid.css'
   ])
     .pipe( concat( 'style.min.css' ) )
-    .pipe( uncss( { html: [indexHtmlDest + '/index.html'] } ))
+    .pipe( purifycss( [jsSrc, ( indexHtmlDest + '/index.html' )] ) )
     .pipe( cssMinify() )
     .pipe( gulp.dest( cssDest ) )
 });
