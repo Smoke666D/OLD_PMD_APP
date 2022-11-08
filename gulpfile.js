@@ -70,7 +70,7 @@ gulp.task( 'fonts', () => {
 });
 gulp.task( 'js', () => {
   return gulp.src( jsSrc )
-    //.pipe( uglify() )
+    .pipe( uglify() )
     .pipe( gulp.dest( jsDest ) )
 });
 gulp.task( 'json', () => {

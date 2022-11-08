@@ -14,15 +14,12 @@
     "make": "gulp clean && gulp process && gulp deps && electron-packager ./dist Sider --overwrite --platform=win32,linux,darwin --arch=x64 --icon='./src/img/favicon.ico' --prune=true --out=release"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^6.1.2",
-    "@popperjs/core": "2.11.5",
     "node-hid": "=2.1.1",
     "usb": "=1.6.3"
   },
   "devDependencies": {
-    "@babel/core": "^7.19.6",
-    "@babel/preset-env": "^7.19.4",
-    "babel": "^6.23.0",
+    "@popperjs/core": "2.11.5",
+    "@fortawesome/fontawesome-free": "^6.1.2",
     "browser-sync": "^2.27.10",
     "electron": "=8.5.5",
     "electron-builder": "22.4.1",
