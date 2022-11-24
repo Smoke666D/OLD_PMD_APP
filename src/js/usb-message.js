@@ -264,12 +264,15 @@ function USBMessage ( buffer ) {
   }
   this.makeDataRequest = ( adr ) => {
     makeRequest( msgCMD.USB_REPORT_CMD_READ_DATA, adr );
+    return;
   }
   this.makeTelemetryRequest = ( adr ) => {
     makeRequest( msgCMD.USB_REPORT_CMD_READ_TELEMETRY, adr );
+    return;
   }
   this.makeErrorStringRequest = ( adr ) => {
     makeRequest( msgCMD.USB_REPORT_CMD_READ_ERROR_STR, adr );
+    return;
   }
   this.codeStartWriting = () => {
     makeRequest( msgCMD.USB_REPORT_CMD_START_WRITING, 0 );

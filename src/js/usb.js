@@ -560,7 +560,6 @@ function PdmController () {
       transport.addRequest( msg );
       console.log( msg.adr + ' ' + msg.command ) ;
     }
-    console.log( '-------' );
     callback();
   }
   function initReadLuaSequency ( adr, data, callback ) {

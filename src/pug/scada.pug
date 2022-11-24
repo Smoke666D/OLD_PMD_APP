@@ -411,6 +411,10 @@
         .card-text
           p#value-velocity-2 0
           p.units об/мин
+
+
+
+
 .row
   #card-uin-1.card.col
     .card-body
@@ -439,16 +443,6 @@
         .card-text
           p#value-uin-3 00.00
           p.units В
-  #card-uin-4.card.col
-    .card-body
-      p.card-title Вход
-      .card-icon
-        p 4
-      .d-flex.justify-content-center
-        .card-text
-          p#value-uin-4 00.00
-          p.units В
-.row
   #card-battery.card.col
     .card-body
       p.card-title Аккумулятор
@@ -458,3 +452,32 @@
         .card-text
           p#value-battery 14.40
           p.units В
+.row
+  #card-temperature.card.col
+    .card-boady
+      p.card-title Аккумулятор
+      .card-icon
+        i.fa-solid.fa-car-battery
+      .d-flex.justify-content-center
+        .card-text
+          p#value-temperature 0.00
+          p.units ℃
+  #card-roll.card.col
+    .card-boady
+      p.card-title Крен
+      .card-icon
+        i.fa-solid.fa-arrow-rotate-right
+      .d-flex.justify-content-center
+        .card-text
+          p#value-roll 0.00
+          p.units °
+  #card-pitch.card.col
+    .card-boady
+      p.card-title Тангаж
+      .card-icon
+        i.fa-solid.fa-arrow-rotate-right
+      .d-flex.justify-content-center
+        .card-text
+          p#value-pitch 0.00
+          p.units °
+  

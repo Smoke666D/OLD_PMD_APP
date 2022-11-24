@@ -1,8 +1,6 @@
 const fs = require( 'fs' );
-
 const logFileName = './log.csv';
-
-const IDlength   = 12;
+const IDlength = 12;
 const pdmDataAdr = {
   "DATA_ADR_UNIQUE"           : 0,
   "DATA_ADR_BOOTLOADER_MAJOR" : 12,
@@ -26,7 +24,7 @@ const pdmTelemetryAdr = {
   "TELEMETRY_ADR_LUA"     : 4,
 };
 /*----------------------------------------------------------------------------*/
-function byteToFloat ( data, adr ) {
+byteToFloat = ( data, adr ) => {
   let out = 0;
   if ( data.length >= ( 4 + adr ) ) {
     var buf  = new ArrayBuffer( 4 );
@@ -39,7 +37,7 @@ function byteToFloat ( data, adr ) {
   return out;
 }
 /*----------------------------------------------------------------------------*/
-function bytesToUint32 ( data, adr ) {
+bytesToUint32 = ( data, adr ) => {
   let out = 0;
   if ( data.length >= ( adr + 4 ) ) {
     for ( var i=0; i<4; i++ ) {
@@ -49,7 +47,7 @@ function bytesToUint32 ( data, adr ) {
   return out;
 }
 /*----------------------------------------------------------------------------*/
-function bytesToUint16 ( data ) {
+bytesToUint16 = ( data ) => {
   let out = 0;
   if ( data.length == 2 ) {
     for ( var i=0; i<2; i++ ) {
@@ -59,7 +57,7 @@ function bytesToUint16 ( data ) {
   return out;
 }
 /*----------------------------------------------------------------------------*/
-function byteToIDstring ( data, adr ) {
+byteToIDstring = ( data, adr ) => {
   let out = '';
   for ( var i=0; i<IDlength; i++ ) {
     let number =  data[adr + i].toString( 16 ).toUpperCase();
@@ -143,16 +141,19 @@ function Version () {
     return self.major + '.' + self.minor + '.' + self.patch;
   }
 }
-function Telemetry ( dinN, doutN, ainN, velN ) {
-  var self      = this;
-  this.battery  = 0;
-  this.voltage  = [];
-  this.din      = [];
-  this.dout     = [];
-  this.velocity = [];
-  this.lua      = new LuaTelemetry();
-  this.length   = ( ainN + 1 ) * 4 + dinN + ( doutN * 10 ) + self.lua.getBlobLength() + ( velN * 2 );
-  this.parsing  = function ( blob ) {
+function Telemetry ( dinN, doutN, ainN, velN, tempN, angleN ) {
+  const angleNames = [ 'roll', 'pitch', 'yaw' ];
+  var self         = this;
+  this.battery     = 0;
+  this.voltage     = [];
+  this.din         = [];
+  this.dout        = [];
+  this.velocity    = [];
+  this.temperature = [];
+  this.angle       = [];
+  this.lua         = new LuaTelemetry();
+  this.length      = ( ainN + 1 ) * 4 + dinN + ( doutN * 10 ) + self.lua.getBlobLength() + ( velN * 2 );
+  this.parsing     = ( blob ) => {
     self.battery = byteToFloat( blob, 0 );
     var counter = 4;
     for ( var i=0; i<self.voltage.length; i++ ) {
@@ -173,6 +174,14 @@ function Telemetry ( dinN, doutN, ainN, velN ) {
       self.velocity[i][1] = blob[counter];
       counter++;
     }
+    for ( var i=0; i<self.temperature.length; i++ ) {
+      self.temperature[i] = byteToFloat( blob, counter );
+      counter += 4;
+    }
+    for ( var i=0; i< self.angle.length; i++ ) {
+      self.angle[i] = byteToFloat( blob, counter );
+      counter += 4;
+    }
     return;
   }
   this.makeLogHeader = () => {
@@ -192,6 +201,12 @@ function Telemetry ( dinN, doutN, ainN, velN ) {
     });
     for ( var i=0; i<self.velocity.length; i++ ) {
       out += 'velocity_' + i.toString() + ';';
+    }
+    for ( var i=0; i<self.temperature.length; i++ ) {
+      out += 'temperature_' + i.toString() + ';';
+    }
+    for ( var i=0; i< self.angle.length; i++ ) {
+      out += angleNames[i] + ';';
     }
     out += '\n';
     return out;
@@ -221,10 +236,18 @@ function Telemetry ( dinN, doutN, ainN, velN ) {
       out += bytesToUint16( value ).toString() + ';';
       return;
     });
+    self.temperature.forEach( ( value ) => {
+      out += value.toString() + ';';
+      return;
+    });
+    self.angle.forEach( ( value ) => {
+      out += value.toString() + ';';
+      return;
+    });
     out += '\n';
     return out;
   }
-  function init () {
+  init = () => {
     for ( var i=0; i<dinN; i++ ) {
       self.din.push( 0 );
     }
@@ -237,6 +260,12 @@ function Telemetry ( dinN, doutN, ainN, velN ) {
     for ( var i=0; i<velN; i++ ) {
       self.velocity.push( Array( 0, 0 ) );
     }
+    for ( var i=0; i<tempN; i++ ) {
+      self.temperature.push( 0 );
+    }
+    for ( var i=0; i<angleN; i++ ) {
+      self.angle.push( 0 );
+    }
   }
   init();
 }
@@ -248,7 +277,7 @@ function System () {
   this.hardware   = new Version();
   this.lua        = new Version();
   this.length     = 12 + 4 * 3;
-  this.parsing    = function ( blob ) {
+  this.parsing    = ( blob ) => {
     self.uid              = byteToIDstring( blob, pdmDataAdr.DATA_ADR_UNIQUE );
     self.bootloader.major = blob[pdmDataAdr.DATA_ADR_BOOTLOADER_MAJOR];
     self.bootloader.minor = blob[pdmDataAdr.DATA_ADR_BOOTLOADER_MINOR];
@@ -270,8 +299,10 @@ function PDM () {
   /*------------------------------------------------------------------------------- */
   const dinN     = 11;
   const doutN    = 20;
-  const ainN     = 4;
+  const ainN     = 3;
   const velN     = 2;
+  const tempN    = 1;
+  const angleN   = 2;
   /*------------------------------------------------------------------------------- */
   this.lua       = '';
   this.isCompil  = false;
@@ -281,7 +312,7 @@ function PDM () {
   this.errorStringBlob = [];
   /*------------------------------------------------------------------------------- */
   this.system    = new System();
-  this.telemetry = new Telemetry( dinN, doutN, ainN, velN );
+  this.telemetry = new Telemetry( dinN, doutN, ainN, velN, tempN, angleN );
   /*------------------------------------------------------------------------------- */
   this.setSystem = ( callback ) => {
     self.system.parsing( self.sysBlob );
@@ -315,7 +346,7 @@ function PDM () {
     return;
   }
   /*------------------------------------------------------------------------------- */
-  function appendLogLine () {
+  appendLogLine = () => {
     fs.appendFile( logFileName, self.telemetry.makeLogLine(), ( error ) => {
       if ( error ) {
         console.log( 'Error on log file append: ' + error )

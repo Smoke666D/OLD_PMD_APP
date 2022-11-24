@@ -201,12 +201,24 @@ const cards = [
     'type'   : null,
     'dic'    : []
   },{
-    'id'     : 'card-uin-4',
+    'id'     : 'card-temperature',
     'adr'    : null,
     'source' : null,
     'type'   : null,
     'dic'    : []
-  },
+  },{
+    'id'     : 'card-roll',
+    'adr'    : null,
+    'source' : null,
+    'type'   : null,
+    'dic'    : []
+  },{
+    'id'     : 'card-pitch',
+    'adr'    : null,
+    'source' : null,
+    'type'   : null,
+    'dic'    : []
+  }
 ]
 const values = [
   {
@@ -691,9 +703,21 @@ const values = [
     'type'   : 'float',
     'accur'  : 2
   },{
-    'id'     : 'value-uin-4',
-    'adr'    : 3,
-    'source' : 'voltage',
+    'id'     : 'value-temperature',
+    'adr'    : 0,
+    'source' : 'temperature',
+    'type'   : 'float',
+    'accur'  : 2
+  },{
+    'id'     : 'value-roll',
+    'adr'    : 0,
+    'source' : 'angle',
+    'type'   : 'float',
+    'accur'  : 2
+  },{
+    'id'     : 'value-pitch',
+    'adr'    : 1,
+    'source' : 'angle',
     'type'   : 'float',
     'accur'  : 2
   }
@@ -824,41 +848,52 @@ function Dashboard () {
         case 'voltage':
           data = pdm.telemetry.voltage[value.adr];
           break;
+        case 'temperature':
+          data = pdm.telemetry.temperature[value.adr];
+          break;
+        case 'angle':
+          data = pdm.telemetry.angle[value.adr];
+          break;    
       }
-      switch ( value.type ) {
-        case 'float':
-          if ( data > maxFloat ) {
-            obj.innerText = 'maxError';
-          } else if ( data < minFloat ) {
-            obj.innerText = 'minError';
-          } else {
-            obj.innerText = data.toFixed( value.accur ).toString();
-          }
-          break;
-        case 'bool':
-          obj.innerText = value.dic[data];
-          break;
-        case 'string':
-          obj.innerText = value.dic[data];
-          break;
-        case 'text':
-          obj.innerText = data;
-          break;
-        case 'uint8':
-          obj.innerText = data.toString();
-          break;
-        case 'uint16':
-          obj.innerText = bytesToUint16( data ).toString();
-          break;
-        case 'uint32':
-          obj.innerText = bytesToUint32( data ).toString();
-          break;
-        case 'time':
-          obj.innerText = ( data * 10 ).toString();
-          break;
-        default:
-          obj.innerText = 'NaN';
-          break;
+      if ( typeof data !== 'undefined' ) {
+        switch ( value.type ) {
+          case 'float':
+            if ( data > maxFloat ) {
+              obj.innerText = 'maxError';
+            } else if ( data < minFloat ) {
+              obj.innerText = 'minError';
+            } else {
+              console.log( value.id )
+              obj.innerText = data.toFixed( value.accur ).toString();
+            }
+            break;
+          case 'bool':
+            obj.innerText = value.dic[data];
+            break;
+          case 'string':
+            obj.innerText = value.dic[data];
+            break;
+          case 'text':
+            obj.innerText = data;
+            break;
+          case 'uint8':
+            obj.innerText = data.toString();
+            break;
+          case 'uint16':
+            obj.innerText = bytesToUint16( data ).toString();
+            break;
+          case 'uint32':
+            obj.innerText = bytesToUint32( data ).toString();
+            break;
+          case 'time':
+            obj.innerText = ( data * 10 ).toString();
+            break;
+          default:
+            obj.innerText = 'NaN';
+            break;
+        }
+      } else {
+        obj.innerText = 'Error';
       }
     });
     return;
