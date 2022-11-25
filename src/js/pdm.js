@@ -152,7 +152,7 @@ function Telemetry ( dinN, doutN, ainN, velN, tempN, angleN ) {
   this.temperature = [];
   this.angle       = [];
   this.lua         = new LuaTelemetry();
-  this.length      = ( ainN + 1 ) * 4 + dinN + ( doutN * 10 ) + self.lua.getBlobLength() + ( velN * 2 );
+  this.length      = ( ainN + 1 ) * 4 + dinN + ( doutN * 10 ) + self.lua.getBlobLength() + ( velN * 2 ) + ( tempN * 4 ) + ( angleN * 4 );
   this.parsing     = ( blob ) => {
     self.battery = byteToFloat( blob, 0 );
     var counter = 4;

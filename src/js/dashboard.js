@@ -863,7 +863,6 @@ function Dashboard () {
             } else if ( data < minFloat ) {
               obj.innerText = 'minError';
             } else {
-              console.log( value.id )
               obj.innerText = data.toFixed( value.accur ).toString();
             }
             break;

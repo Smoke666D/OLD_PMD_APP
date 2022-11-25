@@ -231,8 +231,8 @@ function USBtransport () {
   function write ( data ) {
     if ( device != null ) {
       try {
-        console.log( 'output: ' );
-        console.log( data );
+        //console.log( 'output: ' );
+        //console.log( data );
         device.write( data );
       } catch (e) {
         if ( ( alert != null ) || ( alert != undefined ) ) {
