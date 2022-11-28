@@ -18,6 +18,7 @@ const usbStat = {
   "read"  : 3,
   "dash"  : 4,
   "error" : 5 };
+const usbStrStat = ["none", "wait", "write", "read", "dash", "error"] ;
 const usbHandler = {
   "finish"       : 1,
   "error"        : 2,
@@ -408,6 +409,9 @@ function USBtransport () {
   this.getStatus = () => {
     return status;
   }
+  this.getStringStatus = () => {
+    return usbStrStat[status];
+  }
   this.getLoopBusy = () => {
     return loopBusy;
   }
@@ -558,7 +562,6 @@ function PdmController () {
       msg = new USBMessage( [] );
       msg.makeErrorStringRequest( i * USB_DATA_SIZE )
       transport.addRequest( msg );
-      console.log( msg.adr + ' ' + msg.command ) ;
     }
     callback();
   }
@@ -572,9 +575,13 @@ function PdmController () {
     return;
   }
   function awaitLoopBusyReset ( callback ) {
-    if ( ( loopBusy > 0 ) && ( transport.getStatus != usbStat.wait ) ) {
+    if ( ( loopBusy > 0 ) && ( transport.getStatus() != usbStat.wait ) ) {
       setTimeout( () => {
-        console.log( 'Await loop reset ');
+        let busyString = 'busy';
+        if ( loopBusy == 0 ) {
+          busyString = 'free';
+        }
+        console.log( 'Await loop reset. State is ' + transport.getStringStatus() + ' and loop is ' + busyString );
         awaitLoopBusyReset( callback );
       }, 100 );
     } else {
@@ -688,6 +695,7 @@ function PdmController () {
     return settings.data.usb.timeout;
   }
   this.loop              = () => {
+    //console.log( 'Active = ' + loopActive + ' busy = ' + loopBusy );
     if ( ( loopActive > 0 ) && ( loopBusy == 0 ) ) {
       console.log( 'loop time: ' + ( ( Date.now() - loopTime ) / 1000 ) + ' sec' );
       loopTime = Date.now();
