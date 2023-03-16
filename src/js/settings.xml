@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appSettings>
+  <Settings path="E:\LUA_SCRIPTS\lib\Delay.lua">ScriptName</Settings>
+  <Settings path="E:\LUA_SCRIPTS\lib">LibPath</Settings>
+  <Settings path="C:\Users\dymov\Desktop\MEMS">UtilPath</Settings>
+</appSettings>

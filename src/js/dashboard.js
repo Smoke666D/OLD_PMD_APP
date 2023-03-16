@@ -2,7 +2,7 @@ var pdm    = require('./pdm.js').pdm;
 var pdmAdr = require('./pdm.js').pdmDataAdr;
 
 const maxFloat = 200;
-const minFloat = 0;
+const minFloat = -200;
 
 const doutErrorDic  = ["нет", "уставка", "перегр.", "обрыв"];
 const statusDic     = ['Init', 'Run'       , 'Error'    , 'Stop'       , 'Restart' ];
